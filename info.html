@@ -3,16 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>입시정보 — FINAL SPORTS ACADEMY</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Bebas+Neue&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 :root {
-  --red:#cb1f2f; --red-deep:#9e1824; --red-dim:rgba(203,31,47,0.12); --red-faint:rgba(203,31,47,0.06);
-  --black:#0b0d0c; --gray-dark:#363838; --gray-mid:#1e2020; --gray-panel:#161818; --gray-card:#111313;
+  --red:#cb1f2f; --red-deep:#9e1824; --red-faint:rgba(203,31,47,0.06);
+  --black:#0b0d0c; --gray-panel:#161818; --gray-card:#111313;
   --white:#fff; --white-80:rgba(255,255,255,0.80); --white-50:rgba(255,255,255,0.50);
-  --white-25:rgba(255,255,255,0.25); --white-10:rgba(255,255,255,0.10);
+  --white-25:rgba(255,255,255,0.25);
   --border:rgba(255,255,255,0.07); --border-red:rgba(203,31,47,0.25);
   --sans:'Noto Sans KR',sans-serif; --display:'Bebas Neue','Noto Sans KR',sans-serif;
 }
@@ -22,6 +23,8 @@ body { font-family:var(--sans); background:var(--black); color:var(--white); ove
 ::-webkit-scrollbar-track { background:var(--black); }
 ::-webkit-scrollbar-thumb { background:var(--red-deep); }
 a { text-decoration:none; color:inherit; }
+
+/* ── NAV ── */
 .nav {
   position:fixed; top:0; left:0; right:0; z-index:1000;
   display:flex; align-items:center; justify-content:space-between;
@@ -63,6 +66,8 @@ a { text-decoration:none; color:inherit; }
   font-size:12px; font-weight:700; padding:9px 22px; border:none; cursor:pointer; transition:background 0.2s;
 }
 .nav-cta:hover { background:var(--red-deep); }
+
+/* ── PAGE HERO ── */
 .page-hero {
   padding:140px 64px 72px; background:var(--gray-panel);
   border-bottom:2px solid var(--red); position:relative; overflow:hidden;
@@ -82,6 +87,8 @@ a { text-decoration:none; color:inherit; }
 .breadcrumb .current { color:var(--red); }
 .page-title { font-family:var(--display); font-size:clamp(48px,7vw,88px); line-height:0.95; letter-spacing:1px; margin-bottom:6px; }
 .page-title-ko { font-size:clamp(18px,2.5vw,28px); font-weight:700; letter-spacing:-1px; color:var(--white-50); }
+
+/* ── 서브탭 ── */
 .sub-tabs { display:flex; border-bottom:0.5px solid var(--border); background:var(--gray-panel); padding:0 64px; }
 .sub-tab {
   font-size:13px; color:var(--white-25); padding:16px 24px; cursor:pointer;
@@ -90,11 +97,113 @@ a { text-decoration:none; color:inherit; }
 }
 .sub-tab:hover { color:var(--white-80); }
 .sub-tab.active { color:var(--white); border-bottom-color:var(--red); font-weight:500; }
-.sec { padding:80px 64px; }
-.sec-label { font-size:9px; font-weight:500; letter-spacing:4px; color:var(--red); margin-bottom:12px; }
-.sec-title { font-family:var(--display); font-size:clamp(28px,4vw,44px); letter-spacing:1px; line-height:1.1; margin-bottom:8px; }
-.sec-title-ko { font-size:clamp(20px,2.5vw,28px); font-weight:700; letter-spacing:-1px; }
-.red-rule { width:32px; height:2px; background:var(--red); margin:14px 0 44px; }
+
+/* ── 필터 바 ── */
+.filter-bar {
+  padding:28px 64px; background:var(--black);
+  display:flex; justify-content:space-between; align-items:center;
+  border-bottom:0.5px solid var(--border);
+}
+.filter-tags { display:flex; gap:8px; flex-wrap:wrap; }
+.filter-tag {
+  font-family:var(--sans); font-size:11px; color:var(--white-25);
+  padding:6px 16px; border:0.5px solid var(--border);
+  background:transparent; cursor:pointer; transition:all 0.2s; letter-spacing:0.5px;
+}
+.filter-tag:hover { color:var(--white-80); border-color:rgba(255,255,255,0.3); }
+.filter-tag.active { background:var(--red); color:var(--white); border-color:var(--red); }
+.filter-count { font-size:11px; color:var(--white-25); letter-spacing:0.5px; }
+.filter-count span { color:var(--red); font-weight:700; }
+
+/* ── 인스타 피드 그리드 ── */
+.insta-section { padding:56px 64px; background:var(--black); }
+.insta-header {
+  display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:36px;
+}
+.insta-header-left .sec-label { font-size:9px; letter-spacing:4px; color:var(--red); margin-bottom:8px; }
+.insta-header-left h2 { font-size:22px; font-weight:700; letter-spacing:-0.5px; }
+.insta-account {
+  display:flex; align-items:center; gap:8px;
+  font-size:12px; color:var(--white-25);
+}
+.insta-account a { color:var(--red); transition:opacity 0.2s; }
+.insta-account a:hover { opacity:0.7; }
+
+/* 피드 그리드 */
+.feed-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+  background:var(--border);
+}
+.feed-card {
+  background:var(--gray-card); position:relative; overflow:hidden;
+  cursor:pointer; aspect-ratio:1;
+  transition:background 0.2s;
+}
+.feed-card:hover .feed-overlay { opacity:1; }
+.feed-card:hover .feed-img { transform:scale(1.05); }
+
+/* 임시 플레이스홀더 */
+.feed-img {
+  width:100%; height:100%; object-fit:cover; display:block;
+  transition:transform 0.5s ease;
+}
+.feed-placeholder {
+  width:100%; height:100%;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;
+  background:linear-gradient(135deg, #161818, #1a1c1c);
+}
+.feed-placeholder-icon { font-size:28px; opacity:0.2; }
+.feed-placeholder-tag {
+  font-size:8px; letter-spacing:2px; color:rgba(203,31,47,0.5);
+  border:0.5px solid rgba(203,31,47,0.3); padding:3px 10px;
+}
+.feed-placeholder-text { font-size:11px; color:var(--white-25); line-height:1.6; text-align:center; padding:0 16px; }
+
+/* 호버 오버레이 */
+.feed-overlay {
+  position:absolute; inset:0; opacity:0;
+  background:rgba(11,13,12,0.85);
+  display:flex; flex-direction:column; justify-content:flex-end;
+  padding:20px; transition:opacity 0.3s;
+}
+.feed-overlay-tag {
+  font-size:8px; letter-spacing:2px; color:var(--red);
+  border:0.5px solid var(--border-red); padding:3px 8px;
+  align-self:flex-start; margin-bottom:8px;
+}
+.feed-overlay-text { font-size:13px; font-weight:500; color:var(--white); line-height:1.5; }
+.feed-overlay-date { font-size:10px; color:var(--white-25); margin-top:6px; }
+.feed-overlay-link {
+  margin-top:12px; align-self:flex-start;
+  font-size:10px; color:var(--red); letter-spacing:1px;
+  border-bottom:0.5px solid var(--red); padding-bottom:2px;
+}
+
+/* 더보기 버튼 */
+.load-more-wrap { text-align:center; padding:48px 0 0; }
+.load-more {
+  font-family:var(--sans); font-size:12px; color:var(--white-50);
+  padding:12px 40px; border:0.5px solid rgba(255,255,255,0.15);
+  background:transparent; cursor:pointer; letter-spacing:1px; transition:all 0.2s;
+}
+.load-more:hover { color:var(--white); border-color:rgba(255,255,255,0.35); }
+
+/* ── 연동 안내 배너 ── */
+.connect-banner {
+  margin:0 64px 56px; padding:20px 28px;
+  background:rgba(203,31,47,0.06); border:0.5px solid rgba(203,31,47,0.2);
+  display:flex; align-items:center; justify-content:space-between; gap:20px;
+}
+.connect-banner-text { font-size:13px; color:var(--white-50); line-height:1.6; }
+.connect-banner-text strong { color:var(--white); }
+.connect-banner-btn {
+  font-family:var(--sans); font-size:11px; font-weight:700;
+  padding:8px 20px; background:var(--red); color:var(--white);
+  border:none; cursor:pointer; white-space:nowrap; transition:background 0.2s; flex-shrink:0;
+}
+.connect-banner-btn:hover { background:var(--red-deep); }
+
+/* ── FOOTER ── */
 footer { background:#060808; padding:52px 64px; border-top:0.5px solid var(--border); }
 .footer-inner { display:flex; justify-content:space-between; flex-wrap:wrap; gap:32px; }
 .footer-wordmark { font-family:var(--display); font-size:18px; letter-spacing:2px; }
@@ -108,71 +217,26 @@ footer { background:#060808; padding:52px 64px; border-top:0.5px solid var(--bor
 .footer-sns a { font-size:10px; color:var(--white-25); border:0.5px solid var(--border); padding:5px 12px; letter-spacing:1.5px; transition:all 0.2s; }
 .footer-sns a:hover { color:var(--red); border-color:var(--border-red); }
 .footer-bottom { margin-top:40px; padding-top:20px; border-top:0.5px solid var(--border); font-size:10px; color:rgba(255,255,255,0.15); }
+
 @media(max-width:960px) {
   .nav { padding:0 24px; } .nav-links { display:none; }
   .page-hero { padding:120px 24px 56px; }
   .sub-tabs { padding:0 24px; overflow-x:auto; }
-  .sec { padding:56px 24px; }
+  .filter-bar { padding:20px 24px; flex-direction:column; align-items:flex-start; gap:12px; }
+  .insta-section { padding:40px 24px; }
+  .feed-grid { grid-template-columns:repeat(2,1fr); }
+  .connect-banner { margin:0 24px 40px; flex-direction:column; }
   footer { padding:40px 24px; }
   .footer-nav { align-items:flex-start; } .footer-sns { justify-content:flex-start; }
 }
+@media(max-width:480px) {
+  .feed-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
 
-/* ai 전용 */
-.ai-hero-band {
-  background:var(--red); padding:64px;
-  display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center;
-}
-.ai-hero-band h2 {
-  font-family:'Oswald',sans-serif; font-size:clamp(36px,5vw,72px);
-  color:#fff; line-height:0.95; letter-spacing:-1px; font-weight:700;
-}
-.ai-hero-band p { font-size:15px; color:rgba(255,255,255,0.85); line-height:1.9; }
-.ai-features {
-  display:grid; grid-template-columns:repeat(3,1fr);
-  border-top:0.5px solid var(--border); border-left:0.5px solid var(--border);
-}
-.ai-feat {
-  padding:48px 36px; border-right:0.5px solid var(--border);
-  border-bottom:0.5px solid var(--border); background:var(--gray-card);
-  position:relative; overflow:hidden; transition:background 0.3s;
-}
-.ai-feat:hover { background:#181a1a; }
-.ai-feat::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:2px;
-  background:var(--red); transform:scaleX(0); transition:transform 0.4s; transform-origin:left;
-}
-.ai-feat:hover::before { transform:scaleX(1); }
-.ai-feat-icon { font-size:32px; margin-bottom:20px; }
-.ai-feat-title { font-size:18px; font-weight:700; margin-bottom:12px; letter-spacing:-0.3px; }
-.ai-feat-body { font-size:13px; color:var(--white-50); line-height:1.8; }
-.ai-process {
-  padding:80px 64px; background:var(--black);
-}
-.ai-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:44px; }
-.ai-step {
-  padding:36px 28px; border-right:0.5px solid var(--border);
-  position:relative;
-}
-.ai-step:last-child { border-right:none; }
-.ai-step-num {
-  font-family:'Oswald',sans-serif; font-size:64px; font-weight:700;
-  color:rgba(203,31,47,0.12); line-height:1; margin-bottom:16px;
-}
-.ai-step-title { font-size:16px; font-weight:700; margin-bottom:10px; }
-.ai-step-body { font-size:13px; color:var(--white-50); line-height:1.75; }
-.ai-step::after {
-  content:'→'; position:absolute; right:-14px; top:50%;
-  transform:translateY(-50%); font-size:18px; color:var(--red); opacity:0.5; z-index:2;
-}
-.ai-step:last-child::after { display:none; }
-@media(max-width:960px) {
-  .ai-hero-band { grid-template-columns:1fr; padding:48px 24px; }
-  .ai-features { grid-template-columns:1fr; }
-  .ai-process { padding:56px 24px; }
-  .ai-steps { grid-template-columns:1fr 1fr; }
-  .ai-step::after { display:none; }
-}
-</style><title>파이널AI — FINAL SPORTS ACADEMY</title></head><body>
+<!-- NAV -->
 <nav class="nav">
   <a href="index.html" class="nav-logo">
     <img src="data:image/png;base64,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" alt="FINAL SPORTS ACADEMY">
@@ -200,105 +264,190 @@ footer { background:#060808; padding:52px 64px; border-top:0.5px solid var(--bor
     <button class="nav-cta" onclick="window.open('https://ig.me/m/final._.time','_blank')">무료 상담</button>
   </div>
 </nav>
+
+<!-- PAGE HERO -->
 <div class="page-hero">
-  <div class="page-hero-bg">AI</div>
+  <div class="page-hero-bg">INFO</div>
   <div class="page-hero-content">
     <div class="breadcrumb">
       <a href="index.html">HOME</a><span class="sep">/</span>
-      <span>파이널체대입시</span><span class="sep">/</span>
-      <span class="current">파이널AI</span>
+      <span>입시정보</span><span class="sep">/</span>
+      <span class="current">최신입시</span>
     </div>
-    <div class="page-title">FINAL AI</div>
-    <div class="page-title-ko">피지컬AI 입시분석</div>
+    <div class="page-title">ADMISSION</div>
+    <div class="page-title-ko">최신 입시정보</div>
   </div>
 </div>
 
+<!-- 서브탭 -->
 <div class="sub-tabs">
-  <a href="about.html"><button class="sub-tab">파이널소개</button></a>
-  <a href="history.html"><button class="sub-tab">파이널연혁</button></a>
-  <a href="ai.html"><button class="sub-tab active">파이널AI</button></a>
+  <button class="sub-tab active">최신입시</button>
 </div>
 
-<div class="ai-hero-band">
-  <div>
-    <h2>PHYSICAL<br>AI.</h2>
+<!-- 필터 바 -->
+<div class="filter-bar">
+  <div class="filter-tags">
+    <button class="filter-tag active" onclick="filterFeed('all',this)">전체</button>
+    <button class="filter-tag" onclick="filterFeed('입시요강',this)">입시요강</button>
+    <button class="filter-tag" onclick="filterFeed('합격자',this)">합격자</button>
+    <button class="filter-tag" onclick="filterFeed('실기',this)">실기정보</button>
+    <button class="filter-tag" onclick="filterFeed('일정',this)">입시일정</button>
+    <button class="filter-tag" onclick="filterFeed('꿀팁',this)">입시꿀팁</button>
   </div>
-  <div>
-    <p>파이널체대입시만의 독자적인 피지컬AI 분석 시스템.<br><br>
-    10년 이상 축적된 방대한 체대입시 빅데이터를 기반으로 
-    개인별 합격 가능성을 정밀 분석하고, 
-    최적의 대학·전형을 추천합니다.<br><br>
-    감이 아닌 <strong>데이터</strong>로, 경험이 아닌 <strong>알고리즘</strong>으로 합격을 설계합니다.</p>
-  </div>
+  <div class="filter-count">총 <span id="feedCount">9</span>개의 게시물</div>
 </div>
 
-<section class="sec" style="background:var(--gray-panel); padding-bottom:0;">
-  <div class="sec-label">AI FEATURES</div>
-  <div class="sec-title">WHAT WE ANALYZE</div>
-  <div class="sec-title-ko">파이널AI가 분석하는 것들</div>
-  <div class="red-rule"></div>
-  <div class="ai-features">
-    <div class="ai-feat">
-      <div class="ai-feat-icon">📊</div>
-      <div class="ai-feat-title">합격 커트라인 예측</div>
-      <div class="ai-feat-body">최근 5년간 데이터 분석을 통해 매년 98%에 가까운 대입 커트라인 적중률을 보여줍니다.</div>
+<!-- 인스타 연동 안내 배너 -->
+<div class="connect-banner" id="connectBanner">
+  <div class="connect-banner-text">
+    <strong>📸 인스타그램 자동 연동 준비 중</strong><br>
+    Meta 액세스 토큰을 입력하면 @final_univ 피드가 이 페이지에 자동으로 표시됩니다.
+  </div>
+  <button class="connect-banner-btn" onclick="promptToken()">토큰 입력하기</button>
+</div>
+
+<!-- 피드 섹션 -->
+<section class="insta-section">
+  <div class="insta-header">
+    <div class="insta-header-left">
+      <div class="sec-label">INSTAGRAM FEED</div>
+      <h2>파이널 입시정보</h2>
     </div>
-    <div class="ai-feat">
-      <div class="ai-feat-icon">🎯</div>
-      <div class="ai-feat-title">개인 실기 분석</div>
-      <div class="ai-feat-body">현재 수험생의 실기 수준을 정량화하고, 목표 대학 합격에 필요한 향상 목표를 제시합니다.</div>
+    <div class="insta-account">
+      <span>📷</span>
+      <a href="https://www.instagram.com/final_univ" target="_blank">@final_univ</a>
+      <span>팔로우</span>
     </div>
-    <div class="ai-feat">
-      <div class="ai-feat-icon">🏫</div>
-      <div class="ai-feat-title">대학별 전형 매칭</div>
-      <div class="ai-feat-body">수험생의 강점과 목표를 분석해 가장 유리한 대학·전형 조합을 자동으로 추천합니다.</div>
+  </div>
+
+  <!-- 피드 그리드 — 토큰 연동 전 플레이스홀더 -->
+  <div class="feed-grid" id="feedGrid">
+    <!-- 플레이스홀더 9개 — 토큰 연동 시 자동 교체됨 -->
+    <div class="feed-card" data-tag="입시요강">
+      <div class="feed-placeholder">
+        <div class="feed-placeholder-icon">📋</div>
+        <div class="feed-placeholder-tag">입시요강</div>
+        <div class="feed-placeholder-text">2027학년도 체육대학<br>수시전형 입시요강</div>
+      </div>
+      <div class="feed-overlay">
+        <div class="feed-overlay-tag">입시요강</div>
+        <div class="feed-overlay-text">2027학년도 체육대학 수시전형 입시요강 완벽 정리</div>
+        <div class="feed-overlay-date">2026.06</div>
+        <div class="feed-overlay-link">인스타그램에서 보기 →</div>
+      </div>
     </div>
-    <div class="ai-feat">
-      <div class="ai-feat-icon">📈</div>
-      <div class="ai-feat-title">성장 추이 트래킹</div>
-      <div class="ai-feat-body">주간 실기 측정 데이터를 축적해 성장 속도와 합격 가능성 변화를 실시간으로 추적합니다.</div>
+    <div class="feed-card" data-tag="합격자">
+      <div class="feed-placeholder">
+        <div class="feed-placeholder-icon">🏆</div>
+        <div class="feed-placeholder-tag">합격자</div>
+        <div class="feed-placeholder-text">2026학년도<br>최종 합격자 발표</div>
+      </div>
+      <div class="feed-overlay">
+        <div class="feed-overlay-tag">합격자</div>
+        <div class="feed-overlay-text">2026학년도 체대입시 최종 합격자 현황 공개</div>
+        <div class="feed-overlay-date">2026.05</div>
+        <div class="feed-overlay-link">인스타그램에서 보기 →</div>
+      </div>
     </div>
-    <div class="ai-feat">
-      <div class="ai-feat-icon">⚡</div>
-      <div class="ai-feat-title">실시간 입시 정보</div>
-      <div class="ai-feat-body">전국 30개 캠퍼스 네트워크에서 수집되는 실시간 입시 정보를 분석해 즉각 반영합니다.</div>
+    <div class="feed-card" data-tag="실기">
+      <div class="feed-placeholder">
+        <div class="feed-placeholder-icon">⚡</div>
+        <div class="feed-placeholder-tag">실기정보</div>
+        <div class="feed-placeholder-text">전국 실기평가<br>종목별 기준 공개</div>
+      </div>
+      <div class="feed-overlay">
+        <div class="feed-overlay-tag">실기정보</div>
+        <div class="feed-overlay-text">2027 전국 실기평가 종목별 기준 및 배점 공개</div>
+        <div class="feed-overlay-date">2026.05</div>
+        <div class="feed-overlay-link">인스타그램에서 보기 →</div>
+      </div>
     </div>
-    <div class="ai-feat">
-      <div class="ai-feat-icon">🔮</div>
-      <div class="ai-feat-title">합격 시뮬레이션</div>
-      <div class="ai-feat-body">다양한 시나리오별 합격 가능성을 시뮬레이션해 최적의 입시 전략을 수립합니다.</div>
+    <div class="feed-card" data-tag="일정">
+      <div class="feed-placeholder">
+        <div class="feed-placeholder-icon">📅</div>
+        <div class="feed-placeholder-tag">입시일정</div>
+        <div class="feed-placeholder-text">2027 체대입시<br>연간 일정표</div>
+      </div>
+      <div class="feed-overlay">
+        <div class="feed-overlay-tag">입시일정</div>
+        <div class="feed-overlay-text">2027학년도 체대입시 연간 일정 한눈에 보기</div>
+        <div class="feed-overlay-date">2026.04</div>
+        <div class="feed-overlay-link">인스타그램에서 보기 →</div>
+      </div>
     </div>
+    <div class="feed-card" data-tag="꿀팁">
+      <div class="feed-placeholder">
+        <div class="feed-placeholder-icon">💡</div>
+        <div class="feed-placeholder-tag">입시꿀팁</div>
+        <div class="feed-placeholder-text">체대입시<br>성공 전략 TOP 5</div>
+      </div>
+      <div class="feed-overlay">
+        <div class="feed-overlay-tag">입시꿀팁</div>
+        <div class="feed-overlay-text">파이널이 공개하는 체대입시 성공 전략 TOP 5</div>
+        <div class="feed-overlay-date">2026.04</div>
+        <div class="feed-overlay-link">인스타그램에서 보기 →</div>
+      </div>
+    </div>
+    <div class="feed-card" data-tag="입시요강">
+      <div class="feed-placeholder">
+        <div class="feed-placeholder-icon">🎓</div>
+        <div class="feed-placeholder-tag">입시요강</div>
+        <div class="feed-placeholder-text">정시전형<br>주요 대학 분석</div>
+      </div>
+      <div class="feed-overlay">
+        <div class="feed-overlay-tag">입시요강</div>
+        <div class="feed-overlay-text">2027 정시전형 주요 체육대학 전형 방법 분석</div>
+        <div class="feed-overlay-date">2026.03</div>
+        <div class="feed-overlay-link">인스타그램에서 보기 →</div>
+      </div>
+    </div>
+    <div class="feed-card" data-tag="실기">
+      <div class="feed-placeholder">
+        <div class="feed-placeholder-icon">🏃</div>
+        <div class="feed-placeholder-tag">실기정보</div>
+        <div class="feed-placeholder-text">50m 달리기<br>합격 기준 분석</div>
+      </div>
+      <div class="feed-overlay">
+        <div class="feed-overlay-tag">실기정보</div>
+        <div class="feed-overlay-text">대학별 50m 달리기 합격 커트라인 완벽 분석</div>
+        <div class="feed-overlay-date">2026.03</div>
+        <div class="feed-overlay-link">인스타그램에서 보기 →</div>
+      </div>
+    </div>
+    <div class="feed-card" data-tag="합격자">
+      <div class="feed-placeholder">
+        <div class="feed-placeholder-icon">🥇</div>
+        <div class="feed-placeholder-tag">합격자</div>
+        <div class="feed-placeholder-text">IN서울<br>합격자 인터뷰</div>
+      </div>
+      <div class="feed-overlay">
+        <div class="feed-overlay-tag">합격자</div>
+        <div class="feed-overlay-text">서울 소재 체육대학 합격생 인터뷰 — 나의 합격 비결</div>
+        <div class="feed-overlay-date">2026.02</div>
+        <div class="feed-overlay-link">인스타그램에서 보기 →</div>
+      </div>
+    </div>
+    <div class="feed-card" data-tag="꿀팁">
+      <div class="feed-placeholder">
+        <div class="feed-placeholder-icon">📖</div>
+        <div class="feed-placeholder-tag">입시꿀팁</div>
+        <div class="feed-placeholder-text">학생부 체육활동<br>기재 전략</div>
+      </div>
+      <div class="feed-overlay">
+        <div class="feed-overlay-tag">입시꿀팁</div>
+        <div class="feed-overlay-text">생기부 체육활동 기재로 수시 합격률 높이는 법</div>
+        <div class="feed-overlay-date">2026.02</div>
+        <div class="feed-overlay-link">인스타그램에서 보기 →</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="load-more-wrap">
+    <button class="load-more" id="loadMoreBtn" onclick="loadMore()">더 보기 +</button>
   </div>
 </section>
 
-<div class="ai-process">
-  <div class="sec-label">HOW IT WORKS</div>
-  <div class="sec-title">AI PROCESS</div>
-  <div class="sec-title-ko">파이널AI 분석 프로세스</div>
-  <div class="ai-steps">
-    <div class="ai-step">
-      <div class="ai-step-num">01</div>
-      <div class="ai-step-title">데이터 수집</div>
-      <div class="ai-step-body">개인 실기 측정, 학생부, 목표 대학 등 기초 데이터를 수집합니다.</div>
-    </div>
-    <div class="ai-step">
-      <div class="ai-step-num">02</div>
-      <div class="ai-step-title">AI 분석</div>
-      <div class="ai-step-body">빅데이터 기반 알고리즘으로 합격 가능성과 최적 전략을 도출합니다.</div>
-    </div>
-    <div class="ai-step">
-      <div class="ai-step-num">03</div>
-      <div class="ai-step-title">맞춤 전략 수립</div>
-      <div class="ai-step-body">분석 결과를 바탕으로 개인 맞춤형 입시 전략과 커리큘럼을 설계합니다.</div>
-    </div>
-    <div class="ai-step">
-      <div class="ai-step-num">04</div>
-      <div class="ai-step-title">지속 모니터링</div>
-      <div class="ai-step-body">주간 데이터를 업데이트해 전략을 지속적으로 최적화합니다.</div>
-    </div>
-  </div>
-</div>
-
+<!-- FOOTER -->
 <footer>
   <div class="footer-inner">
     <div>
@@ -306,8 +455,7 @@ footer { background:#060808; padding:52px 64px; border-top:0.5px solid var(--bor
         <small>파이널체대입시 — FOR THE FINAL TIME</small></div>
       <div class="footer-info">
         주식회사 에프티 &nbsp;|&nbsp; 대표: 한현호 &nbsp;|&nbsp; 031-266-8864<br>
-        young3843@naver.com<br>경기도 성남시 분당구 수내로 201 삼부근린상가 B1<br>
-        COPYRIGHTⓒ 파이널체대입시 All rights reserved
+        young3843@naver.com<br>경기도 성남시 분당구 수내로 201 삼부근린상가 B1
       </div>
     </div>
     <div>
@@ -317,10 +465,102 @@ footer { background:#060808; padding:52px 64px; border-top:0.5px solid var(--bor
       </div>
       <div class="footer-sns">
         <a href="https://pf.kakao.com/_JGrXn">KAKAO</a>
-        <a href="https://www.instagram.com/final._.time">INSTA</a>
+        <a href="https://www.instagram.com/final_univ">INSTA</a>
         <a href="https://www.youtube.com/@maxcaptainspo">YOUTUBE</a>
       </div>
     </div>
   </div>
   <div class="footer-bottom">COPYRIGHTⓒ 2026 FINAL SPORTS ACADEMY. ALL RIGHTS RESERVED.</div>
-</footer></body></html>
+</footer>
+
+<script>
+// ════════════════════════════════════════════
+// 인스타그램 연동 설정
+// ★ 토큰 받으면 아래 YOUR_ACCESS_TOKEN 부분만 교체하세요
+// ════════════════════════════════════════════
+const IG_ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN'; // ← @final_univ 계정 토큰
+const IG_USER_ID      = 'YOUR_IG_USER_ID';   // ← @final_univ 유저 ID
+const IS_TOKEN_SET    = IG_ACCESS_TOKEN !== 'YOUR_ACCESS_TOKEN';
+
+// 토큰 있으면 자동으로 인스타 피드 로드
+if (IS_TOKEN_SET) {
+  document.getElementById('connectBanner').style.display = 'none';
+  loadInstagramFeed();
+}
+
+async function loadInstagramFeed() {
+  try {
+    const res = await fetch(
+      `https://graph.instagram.com/${IG_USER_ID}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=12&access_token=${IG_ACCESS_TOKEN}`
+    );
+    const data = await res.json();
+    if (!data.data) return;
+
+    const grid = document.getElementById('feedGrid');
+    grid.innerHTML = '';
+    document.getElementById('feedCount').textContent = data.data.length;
+
+    data.data.forEach(post => {
+      if (post.media_type === 'VIDEO' && !post.thumbnail_url) return;
+      const imgSrc = post.media_type === 'VIDEO' ? post.thumbnail_url : post.media_url;
+      const caption = post.caption ? post.caption.substring(0, 60) + '...' : '';
+      const date = new Date(post.timestamp).toLocaleDateString('ko-KR', {year:'numeric',month:'2-digit'}).replace('. ','.');
+
+      // 해시태그로 카테고리 자동 분류
+      const cap = post.caption || '';
+      const tag = cap.includes('#입시요강') ? '입시요강'
+                : cap.includes('#합격자') || cap.includes('#합격') ? '합격자'
+                : cap.includes('#실기') ? '실기'
+                : cap.includes('#일정') ? '일정'
+                : '입시정보';
+
+      grid.innerHTML += `
+        <div class="feed-card" data-tag="${tag}" onclick="window.open('${post.permalink}','_blank')">
+          <img class="feed-img" src="${imgSrc}" alt="${caption}" loading="lazy">
+          <div class="feed-overlay">
+            <div class="feed-overlay-tag">${tag}</div>
+            <div class="feed-overlay-text">${caption}</div>
+            <div class="feed-overlay-date">${date}</div>
+            <div class="feed-overlay-link">인스타그램에서 보기 →</div>
+          </div>
+        </div>`;
+    });
+  } catch(e) {
+    console.error('Instagram API error:', e);
+  }
+}
+
+// 필터
+function filterFeed(tag, btn) {
+  document.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const cards = document.querySelectorAll('.feed-card');
+  let count = 0;
+  cards.forEach(c => {
+    const show = tag === 'all' || c.dataset.tag === tag;
+    c.style.display = show ? '' : 'none';
+    if (show) count++;
+  });
+  document.getElementById('feedCount').textContent = count;
+}
+
+// 토큰 입력 프롬프트
+function promptToken() {
+  const token = prompt('Meta Graph API 액세스 토큰을 입력하세요:');
+  const uid   = prompt('인스타그램 User ID를 입력하세요:');
+  if (token && uid) {
+    alert('토큰을 HTML 파일의 IG_ACCESS_TOKEN과 IG_USER_ID에 입력해 주세요.\n개발자에게 전달하시면 바로 적용됩니다.');
+  }
+}
+
+// 더보기 (플레이스홀더 모드용)
+function loadMore() {
+  if (!IS_TOKEN_SET) {
+    alert('인스타그램 연동 후 더 많은 게시물이 표시됩니다.');
+    return;
+  }
+}
+</script>
+
+</body>
+</html>

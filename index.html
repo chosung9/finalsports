@@ -586,7 +586,7 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
   border-top: 0.5px solid var(--border);
   border-left: 0.5px solid var(--border);
 }
-.feed-item {
+.feed-item { cursor:pointer;
   padding: 30px 28px;
   border-right: 0.5px solid var(--border);
   border-bottom: 0.5px solid var(--border);
@@ -842,9 +842,9 @@ footer {
 
     <!-- 지점소개 -->
     <li>
-      <a href="#campus">지점소개 <span class="arr">▼</span></a>
+      <a href="campus.html">지점소개 <span class="arr">▼</span></a>
       <div class="nav-dropdown">
-        <a href="https://www.finalsports.co.kr/40">캠퍼스현황</a>
+        <a href="campus.html">캠퍼스현황</a>
       </div>
     </li>
 
@@ -869,8 +869,8 @@ footer {
     <li>
       <a href="#contact">파트너모집 <span class="arr">▼</span></a>
       <div class="nav-dropdown">
-        <a href="https://www.finalsports.co.kr/41">가맹점문의</a>
-        <a href="https://www.finalsports.co.kr/41">협력사문의</a>
+        <a href="partner.html#franchise-form">가맹점문의</a>
+        <a href="partner.html#franchise-form">협력사문의</a>
       </div>
     </li>
 
@@ -1041,7 +1041,7 @@ footer {
             <div class="cdp-name" id="cdpName"></div>
             <div class="cdp-meta" id="cdpMeta"></div>
             <div class="cdp-actions">
-              <button class="cdp-btn-primary" id="cdpBtnConsult" onclick="location.href='https://pf.kakao.com/_zylwxj/chat'">카카오톡 상담</button>
+              <button class="cdp-btn-primary" id="cdpBtnConsult" onclick="window.open('https://ig.me/m/final._.time','_blank')">상담 문의</button>
               <button class="cdp-btn-ghost" id="cdpBtnMore" onclick="location.href='https://www.finalsports.co.kr/40'">지점 상세보기</button>
             </div>
           </div>
@@ -1443,41 +1443,100 @@ function loadLeafletFallback() {
       <div class="sec-label">F INFORMATION</div>
       <div class="sec-title-ko">최신 입시 정보</div>
     </div>
-    <button class="btn-outline" onclick="location.href='https://www.finalsports.co.kr/34'">더 보기 →</button>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="font-size:11px;color:var(--white-25);">📷 @final_univ</span>
+      <button class="btn-outline" onclick="location.href='info.html'">더 보기 →</button>
+    </div>
   </div>
-  <div class="feed-grid">
-    <div class="feed-item" onclick="location.href='https://www.finalsports.co.kr/36'">
+
+  <!-- 피드 그리드 — 인스타 연동 or 플레이스홀더 -->
+  <div class="feed-grid" id="mainFeedGrid">
+    <!-- 플레이스홀더 6개 (토큰 연동 전) -->
+    <div class="feed-item" data-tag="입시요강" onclick="location.href='info.html'">
       <div class="feed-tag">입시요강</div>
       <div class="feed-title">2027학년도 수시전형 입시일정 완벽 정리</div>
       <div class="feed-meta">2026.06</div>
     </div>
-    <div class="feed-item" onclick="location.href='https://www.finalsports.co.kr/36'">
-      <div class="feed-tag">입시요강</div>
-      <div class="feed-title">2027학년도 정시전형 입시일정 및 주요 일정 안내</div>
-      <div class="feed-meta">2026.06</div>
-    </div>
-    <div class="feed-item" onclick="location.href='https://www.finalsports.co.kr/37'">
-      <div class="feed-tag">배치표</div>
-      <div class="feed-title">2026학년도 정시모집 가·나·다군 최종 경쟁률 TOP 10</div>
+    <div class="feed-item" data-tag="합격자" onclick="location.href='info.html'">
+      <div class="feed-tag">합격자</div>
+      <div class="feed-title">2026학년도 최종 합격자 현황 공개</div>
       <div class="feed-meta">2026.05</div>
     </div>
-    <div class="feed-item" onclick="location.href='https://www.finalsports.co.kr/31'">
-      <div class="feed-tag">합격자</div>
-      <div class="feed-title">IN서울 체육대학 2026 경쟁률 분석 및 대입 전략</div>
+    <div class="feed-item" data-tag="실기" onclick="location.href='info.html'">
+      <div class="feed-tag">실기정보</div>
+      <div class="feed-title">2027 전국 실기평가 종목별 기준 및 배점 공개</div>
+      <div class="feed-meta">2026.05</div>
+    </div>
+    <div class="feed-item" data-tag="일정" onclick="location.href='info.html'">
+      <div class="feed-tag">입시일정</div>
+      <div class="feed-title">2027학년도 체대입시 연간 일정 한눈에 보기</div>
       <div class="feed-meta">2026.04</div>
     </div>
-    <div class="feed-item" onclick="location.href='https://www.finalsports.co.kr/32'">
-      <div class="feed-tag">실기테스트</div>
-      <div class="feed-title">전국 실기테스트 일정 및 신청 안내</div>
+    <div class="feed-item" data-tag="꿀팁" onclick="location.href='info.html'">
+      <div class="feed-tag">입시꿀팁</div>
+      <div class="feed-title">파이널이 공개하는 체대입시 성공 전략 TOP 5</div>
       <div class="feed-meta">2026.04</div>
     </div>
-    <div class="feed-item" onclick="location.href='https://www.finalsports.co.kr/33'">
-      <div class="feed-tag">연간일정</div>
-      <div class="feed-title">2026년 체대입시 연간 일정표 — 한눈에 확인하세요</div>
+    <div class="feed-item" data-tag="입시요강" onclick="location.href='info.html'">
+      <div class="feed-tag">입시요강</div>
+      <div class="feed-title">2027 정시전형 주요 체육대학 전형 방법 분석</div>
       <div class="feed-meta">2026.03</div>
     </div>
   </div>
 </section>
+
+<script>
+// ════════════════════════════════════════════
+// 메인 홈 — @final_univ 인스타 피드 연동
+// info.html 과 동일한 토큰 사용
+// ★ 토큰 받으면 아래 두 줄만 교체
+// ════════════════════════════════════════════
+const MAIN_IG_TOKEN   = 'YOUR_ACCESS_TOKEN'; // ← @final_univ 토큰
+const MAIN_IG_USER_ID = 'YOUR_IG_USER_ID';   // ← @final_univ 유저 ID
+const MAIN_IG_READY   = MAIN_IG_TOKEN !== 'YOUR_ACCESS_TOKEN';
+
+if (MAIN_IG_READY) loadMainFeed();
+
+async function loadMainFeed() {
+  try {
+    const res = await fetch(
+      `https://graph.instagram.com/${MAIN_IG_USER_ID}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=6&access_token=${MAIN_IG_TOKEN}`
+    );
+    const data = await res.json();
+    if (!data.data) return;
+
+    const grid = document.getElementById('mainFeedGrid');
+    grid.innerHTML = '';
+
+    data.data.forEach(post => {
+      const caption = post.caption ? post.caption.substring(0, 55) + '...' : '';
+      const date = new Date(post.timestamp)
+        .toLocaleDateString('ko-KR', {year:'numeric', month:'2-digit'})
+        .replace('. ', '.').replace('.', '');
+      const cap = post.caption || '';
+      const tag = cap.includes('#입시요강') ? '입시요강'
+                : cap.includes('#합격') ? '합격자'
+                : cap.includes('#실기') ? '실기정보'
+                : cap.includes('#일정') ? '입시일정'
+                : '입시정보';
+
+      const imgSrc = post.media_type === 'VIDEO' ? post.thumbnail_url : post.media_url;
+
+      grid.innerHTML += `
+        <div class="feed-item" onclick="window.open('${post.permalink}','_blank')" style="cursor:pointer;">
+          ${imgSrc ? `<div style="width:100%;aspect-ratio:1;overflow:hidden;margin-bottom:12px;background:var(--gray-dark);">
+            <img src="${imgSrc}" alt="${tag}" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy">
+          </div>` : ''}
+          <div class="feed-tag">${tag}</div>
+          <div class="feed-title">${caption}</div>
+          <div class="feed-meta">${date}</div>
+        </div>`;
+    });
+  } catch(e) {
+    console.error('Main feed error:', e);
+  }
+}
+</script>
 
 <!-- ──────────────────── CTA ──────────────────── -->
 <section class="cta-sec" id="contact">
@@ -1491,8 +1550,8 @@ function loadLeafletFallback() {
     <div class="cta-phone">031-266-8864</div>
     <div class="cta-hours">평일 08:30 — 17:30 &nbsp;|&nbsp; 토·일·공휴일 휴무</div>
     <div class="cta-btns">
-      <button class="btn-primary" onclick="location.href='https://pf.kakao.com/_zylwxj/chat'">카카오톡 상담</button>
-      <button class="btn-ghost" onclick="location.href='https://www.finalsports.co.kr/41'">가맹점 문의</button>
+      <button class="btn-primary" onclick="window.open('https://ig.me/m/final._.time','_blank')">상담 문의</button>
+      <button class="btn-ghost" onclick="location.href='partner.html#franchise-form'">가맹점 문의</button>
     </div>
   </div>
 </section>
@@ -1517,7 +1576,7 @@ function loadLeafletFallback() {
         <a href="https://www.finalsports.co.kr/39">파이널 소개</a>
         <a href="https://www.finalsports.co.kr/40">캠퍼스 현황</a>
         <a href="https://www.finalsports.co.kr/36">체육대학 입시요강</a>
-        <a href="https://www.finalsports.co.kr/41">가맹점 문의</a>
+        <a href="partner.html#franchise-form">가맹점 문의</a>
       </div>
       <div class="footer-sns">
         <a href="https://pf.kakao.com/_JGrXn">KAKAO</a>

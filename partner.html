@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>파트너모집 — FINAL SPORTS ACADEMY</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Bebas+Neue&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --red:#cb1f2f; --red-deep:#9e1824; --red-faint:rgba(203,31,47,0.06);
+  --black:#0b0d0c; --gray-panel:#161818; --gray-card:#111313; --gray-dark:#363838;
+  --white:#fff; --white-80:rgba(255,255,255,0.80); --white-50:rgba(255,255,255,0.50);
+  --white-25:rgba(255,255,255,0.25);
+  --border:rgba(255,255,255,0.07); --border-red:rgba(203,31,47,0.25);
+  --sans:'Noto Sans KR',sans-serif; --display:'Bebas Neue','Noto Sans KR',sans-serif;
+}
+html { scroll-behavior:smooth; }
+body { font-family:var(--sans); background:var(--black); color:var(--white); overflow-x:hidden; }
+::-webkit-scrollbar { width:3px; }
+::-webkit-scrollbar-track { background:var(--black); }
+::-webkit-scrollbar-thumb { background:var(--red-deep); }
+a { text-decoration:none; color:inherit; }
+
+/* ── NAV ── */
+.nav {
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 64px; height:68px;
+  background:rgba(11,13,12,0.95); backdrop-filter:blur(20px);
+  border-bottom:0.5px solid var(--border);
+}
+.nav-logo img { height:36px; width:auto; display:block; }
+.nav-links { display:flex; gap:0; list-style:none; height:68px; }
+.nav-links > li { position:relative; display:flex; align-items:center; }
+.nav-links > li > a {
+  font-size:12px; color:var(--white-50); padding:0 20px; height:68px;
+  display:flex; align-items:center; gap:4px; position:relative; white-space:nowrap; transition:color 0.2s;
+}
+.nav-links > li > a::after {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:2px;
+  background:var(--red); transform:scaleX(0); transition:transform 0.25s; transform-origin:center;
+}
+.nav-links > li:hover > a { color:var(--white); }
+.nav-links > li:hover > a::after { transform:scaleX(1); }
+.nav-links > li > a .arr { font-size:8px; color:var(--white-25); transition:transform 0.2s,color 0.2s; }
+.nav-links > li:hover > a .arr { transform:rotate(180deg); color:var(--red); }
+.nav-dropdown {
+  position:absolute; top:68px; left:0; min-width:140px;
+  background:rgba(11,13,12,0.97); border:0.5px solid rgba(255,255,255,0.08); border-top:2px solid var(--red);
+  backdrop-filter:blur(16px); opacity:0; visibility:hidden; transform:translateY(-8px);
+  transition:opacity 0.25s,transform 0.25s,visibility 0.25s; z-index:200; padding:8px 0;
+}
+.nav-links > li:hover .nav-dropdown { opacity:1; visibility:visible; transform:translateY(0); }
+.nav-dropdown a {
+  display:block; padding:10px 20px; font-size:12px; color:var(--white-50);
+  transition:color 0.15s,background 0.15s,padding-left 0.15s; white-space:nowrap;
+}
+.nav-dropdown a:hover { color:var(--white); background:rgba(203,31,47,0.08); padding-left:24px; }
+.nav-right { display:flex; align-items:center; gap:20px; }
+.nav-tel { font-size:12px; color:var(--white-25); }
+.nav-cta {
+  background:var(--red); color:var(--white); font-family:var(--sans);
+  font-size:12px; font-weight:700; padding:9px 22px; border:none; cursor:pointer;
+}
+.nav-cta:hover { background:var(--red-deep); }
+
+/* ── PAGE HERO ── */
+.page-hero {
+  padding:140px 64px 72px; background:var(--gray-panel);
+  border-bottom:2px solid var(--red); position:relative; overflow:hidden;
+}
+.page-hero::before {
+  content:''; position:absolute; inset:0;
+  background:repeating-linear-gradient(-55deg,transparent,transparent 2px,rgba(203,31,47,0.03) 2px,rgba(203,31,47,0.03) 3px);
+}
+.page-hero-bg {
+  position:absolute; right:-20px; bottom:-30px; font-family:var(--display);
+  font-size:240px; line-height:1; letter-spacing:-8px; color:rgba(255,255,255,0.025);
+  pointer-events:none; user-select:none;
+}
+.page-hero-content { position:relative; }
+.breadcrumb { display:flex; align-items:center; gap:8px; font-size:11px; color:var(--white-25); margin-bottom:20px; }
+.breadcrumb .sep { color:var(--red); }
+.breadcrumb .current { color:var(--red); }
+.page-title { font-family:var(--display); font-size:clamp(48px,7vw,88px); line-height:0.95; letter-spacing:1px; margin-bottom:6px; }
+.page-title-ko { font-size:clamp(18px,2.5vw,28px); font-weight:700; letter-spacing:-1px; color:var(--white-50); }
+
+/* ── 서브탭 ── */
+.sub-tabs { display:flex; border-bottom:0.5px solid var(--border); background:var(--gray-panel); padding:0 64px; }
+.sub-tab {
+  font-size:13px; color:var(--white-25); padding:16px 24px; cursor:pointer;
+  border:none; background:transparent; border-bottom:2px solid transparent;
+  transition:all 0.2s; font-family:var(--sans); white-space:nowrap;
+}
+.sub-tab:hover { color:var(--white-80); }
+.sub-tab.active { color:var(--white); border-bottom-color:var(--red); font-weight:500; }
+
+/* ══ 가맹점 모집 지도 섹션 ══ */
+.recruit-map-section { background:var(--black); padding:64px 64px 0; }
+.recruit-map-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:32px; flex-wrap:wrap; gap:16px; }
+.sec-label { font-size:9px; font-weight:500; letter-spacing:4px; color:var(--red); margin-bottom:8px; }
+.recruit-map-header h2 { font-size:22px; font-weight:700; letter-spacing:-0.5px; }
+
+/* 지역 검색 */
+.region-search-wrap {
+  display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+}
+.region-search {
+  display:flex; gap:0; border:0.5px solid var(--border);
+}
+.region-search input {
+  background:var(--gray-card); border:none; color:var(--white);
+  font-family:var(--sans); font-size:12px; padding:9px 16px; outline:none; width:200px;
+  transition:background 0.2s;
+}
+.region-search input:focus { background:#1a1c1c; }
+.region-search input::placeholder { color:var(--white-25); }
+.region-search-btn {
+  background:var(--red); border:none; color:var(--white);
+  font-family:var(--sans); font-size:12px; font-weight:700;
+  padding:9px 18px; cursor:pointer; transition:background 0.2s; white-space:nowrap;
+}
+.region-search-btn:hover { background:var(--red-deep); }
+.region-unit-btns { display:flex; gap:4px; }
+.unit-btn {
+  font-family:var(--sans); font-size:11px; color:var(--white-25);
+  padding:7px 14px; border:0.5px solid var(--border); background:transparent;
+  cursor:pointer; transition:all 0.2s;
+}
+.unit-btn.active { background:var(--gray-dark); color:var(--white-80); border-color:rgba(255,255,255,0.2); }
+.unit-btn:hover { color:var(--white-80); }
+
+/* 지도+리스트 레이아웃 */
+.recruit-map-wrap {
+  display:grid; grid-template-columns:1fr 320px;
+  height:580px; border-top:0.5px solid var(--border);
+  position:relative;
+}
+.recruit-map-frame { position:relative; overflow:hidden; background:#111; }
+#recruitMap { width:100%; height:100%; display:block; }
+
+/* 지도 위 추가 핀 안내 */
+.map-add-btn {
+  position:absolute; top:12px; left:12px; z-index:10;
+  font-family:var(--sans); font-size:11px; font-weight:700;
+  padding:8px 16px; background:var(--red); color:var(--white);
+  border:none; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.5);
+  transition:background 0.2s;
+}
+.map-add-btn:hover { background:var(--red-deep); }
+
+/* 검색 자동완성 드롭다운 */
+.autocomplete {
+  position:absolute; top:100%; left:0; right:0; z-index:500;
+  background:rgba(11,13,12,0.98); border:0.5px solid var(--border);
+  border-top:none; max-height:200px; overflow-y:auto; display:none;
+}
+.autocomplete-item {
+  padding:10px 16px; font-size:12px; color:var(--white-50); cursor:pointer; transition:all 0.15s;
+}
+.autocomplete-item:hover { background:rgba(203,31,47,0.1); color:var(--white); padding-left:20px; }
+.autocomplete-item .region-type { font-size:9px; color:var(--red); margin-left:8px; letter-spacing:1px; }
+.region-search { position:relative; }
+
+/* 스크롤 리스트 패널 */
+.recruit-list-panel {
+  background:var(--gray-card); border-left:0.5px solid var(--border);
+  display:flex; flex-direction:column; overflow:hidden;
+}
+.recruit-list-head {
+  padding:18px 20px 14px; border-bottom:0.5px solid var(--border); flex-shrink:0;
+}
+.recruit-list-head-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+.recruit-list-title { font-size:11px; font-weight:500; letter-spacing:1px; color:var(--white); }
+.recruit-list-count {
+  font-family:'Oswald',sans-serif; font-size:22px; color:var(--red); font-weight:600;
+}
+.recruit-list-sub { font-size:10px; color:var(--white-25); }
+
+/* 무한 스크롤 애니메이션 */
+.recruit-list-scroll-wrap {
+  flex:1; overflow:hidden; position:relative;
+}
+.recruit-list-scroll-wrap::before,
+.recruit-list-scroll-wrap::after {
+  content:''; position:absolute; left:0; right:0; z-index:2; pointer-events:none;
+}
+.recruit-list-scroll-wrap::before {
+  top:0; height:32px;
+  background:linear-gradient(to bottom, var(--gray-card), transparent);
+}
+.recruit-list-scroll-wrap::after {
+  bottom:0; height:32px;
+  background:linear-gradient(to top, var(--gray-card), transparent);
+}
+.recruit-list-inner {
+  display:flex; flex-direction:column;
+  animation: scrollUp 30s linear infinite;
+}
+.recruit-list-inner:hover { animation-play-state:paused; }
+@keyframes scrollUp {
+  0%   { transform:translateY(0); }
+  100% { transform:translateY(-50%); }
+}
+.recruit-list-item {
+  padding:13px 20px; border-bottom:0.5px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  cursor:pointer; transition:background 0.2s; flex-shrink:0;
+}
+.recruit-list-item:hover { background:rgba(203,31,47,0.06); }
+.recruit-list-item.highlighted { background:rgba(203,31,47,0.1); }
+.rli-left { display:flex; align-items:center; gap:10px; }
+.rli-dot {
+  width:7px; height:7px; border-radius:50%; background:var(--red); flex-shrink:0;
+  box-shadow:0 0 6px rgba(203,31,47,0.6); animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { box-shadow:0 0 4px rgba(203,31,47,0.4); }
+  50% { box-shadow:0 0 10px rgba(203,31,47,0.9); }
+}
+.rli-info { display:flex; flex-direction:column; gap:2px; }
+.rli-region { font-size:8px; letter-spacing:1.5px; color:rgba(203,31,47,0.7); }
+.rli-name { font-size:13px; font-weight:500; }
+.rli-badge {
+  font-size:8px; letter-spacing:1px; color:var(--red);
+  border:0.5px solid var(--border-red); padding:2px 7px; white-space:nowrap;
+}
+
+/* 지역 추가/삭제 컨트롤 */
+.recruit-list-footer {
+  padding:12px 20px; border-top:0.5px solid var(--border); flex-shrink:0;
+  display:flex; gap:8px;
+}
+.list-foot-btn {
+  flex:1; font-family:var(--sans); font-size:11px;
+  padding:8px; border:0.5px solid var(--border); background:transparent;
+  color:var(--white-25); cursor:pointer; transition:all 0.2s;
+}
+.list-foot-btn:hover { color:var(--white-80); border-color:rgba(255,255,255,0.3); }
+.list-foot-btn.danger:hover { color:#ff6b6b; border-color:#ff6b6b; }
+
+/* ── 협력사 문의 섹션 ── */
+.partner-section { padding:80px 64px; background:var(--gray-panel); display:none; }
+
+/* ── 가맹 안내 섹션 ── */
+.franchise-info { padding:64px 64px 80px; background:var(--black); }
+.fi-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+  background:var(--border); margin-top:44px;
+}
+.fi-card {
+  background:var(--gray-card); padding:40px 32px;
+  position:relative; overflow:hidden; transition:background 0.3s;
+}
+.fi-card:hover { background:#181a1a; }
+.fi-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:var(--red); transform:scaleX(0); transition:transform 0.4s; transform-origin:left;
+}
+.fi-card:hover::before { transform:scaleX(1); }
+.fi-num { font-family:'Oswald',sans-serif; font-size:48px; color:rgba(203,31,47,0.1); margin-bottom:16px; }
+.fi-title { font-size:17px; font-weight:700; margin-bottom:10px; }
+.fi-body { font-size:13px; color:var(--white-50); line-height:1.8; }
+
+/* ── 문의 CTA ── */
+.inquiry-cta {
+  background:var(--red); padding:64px;
+  display:grid; grid-template-columns:1fr auto; gap:32px; align-items:center;
+}
+.inquiry-cta h2 { font-family:var(--display); font-size:clamp(32px,4vw,52px); letter-spacing:1px; line-height:1; }
+.inquiry-cta p { font-size:14px; color:rgba(255,255,255,0.8); margin-top:10px; line-height:1.7; }
+.inquiry-btns { display:flex; flex-direction:column; gap:10px; align-items:flex-end; }
+.cta-btn-white {
+  font-family:var(--sans); font-size:13px; font-weight:700;
+  padding:13px 28px; background:var(--white); color:var(--red);
+  border:none; cursor:pointer; white-space:nowrap; transition:opacity 0.2s;
+}
+.cta-btn-white:hover { opacity:0.9; }
+.cta-btn-outline {
+  font-family:var(--sans); font-size:13px;
+  padding:12px 28px; background:transparent; color:var(--white);
+  border:1.5px solid rgba(255,255,255,0.5); cursor:pointer; transition:border-color 0.2s;
+}
+.cta-btn-outline:hover { border-color:var(--white); }
+
+
+/* ── 관리자 전용 UI ── */
+.admin-ctrl { display:none; }
+body.admin-mode .admin-ctrl { display:flex; }
+body.admin-mode .admin-ctrl-block { display:block; }
+.admin-ctrl-block { display:none; }
+
+/* 관리자 로그인 버튼 (지도 우측 상단) */
+.admin-login-btn {
+  position:absolute; top:12px; right:12px; z-index:20;
+  font-family:var(--sans); font-size:11px; font-weight:500;
+  padding:7px 14px; background:rgba(11,13,12,0.85);
+  color:var(--white-25); border:0.5px solid var(--border);
+  cursor:pointer; transition:all 0.2s; backdrop-filter:blur(8px);
+}
+.admin-login-btn:hover { color:var(--white-80); border-color:rgba(255,255,255,0.25); }
+body.admin-mode .admin-login-btn {
+  color:var(--red); border-color:var(--border-red);
+  background:rgba(203,31,47,0.08);
+}
+
+
+/* ── 가맹문의 신청 폼 ── */
+.franchise-form-section {
+  background: var(--gray-panel);
+  border-top: 0.5px solid var(--border);
+  padding: 80px 64px;
+}
+.franchise-form-inner { max-width: 860px; margin: 0 auto; }
+.franchise-form-header { margin-bottom: 48px; }
+
+/* 개인정보 스크롤 박스 */
+.privacy-box-wrap { margin-bottom: 40px; }
+.privacy-scroll-box {
+  height: 180px; overflow-y: auto;
+  background: var(--black);
+  border: 0.5px solid var(--border);
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+.privacy-scroll-box::-webkit-scrollbar { width: 4px; }
+.privacy-scroll-box::-webkit-scrollbar-track { background: var(--black); }
+.privacy-scroll-box::-webkit-scrollbar-thumb { background: var(--gray-dark); }
+.privacy-text {
+  font-size: 12px; color: var(--white-25); line-height: 1.9;
+  white-space: pre-wrap; font-family: var(--sans);
+}
+.privacy-agree-label {
+  display: flex; align-items: center; gap: 12px;
+  cursor: pointer; user-select: none;
+  font-size: 14px; color: var(--white-50);
+  transition: color 0.2s;
+}
+.privacy-agree-label:hover { color: var(--white-80); }
+.privacy-agree-label input[type="checkbox"] { display: none; }
+.custom-check {
+  width: 18px; height: 18px; flex-shrink: 0;
+  border: 1.5px solid var(--border);
+  background: var(--black);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; position: relative;
+}
+.custom-check.checked {
+  background: var(--red); border-color: var(--red);
+}
+.custom-check.checked::after {
+  content: '';
+  position: absolute;
+  width: 5px; height: 9px;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+/* 폼 필드 */
+.form-fields { display: flex; flex-direction: column; gap: 28px; }
+.form-field { display: flex; flex-direction: column; gap: 10px; }
+.form-field-label {
+  font-size: 13px; font-weight: 500; color: var(--white-80);
+  display: flex; align-items: center; gap: 6px;
+}
+.required { color: var(--red); font-size: 8px; }
+.form-input {
+  background: var(--black);
+  border: 0.5px solid var(--border);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  color: var(--white); font-family: var(--sans); font-size: 13px;
+  padding: 12px 16px; outline: none; width: 100%;
+  transition: border-color 0.2s, background 0.2s;
+}
+.form-input:focus {
+  border-color: rgba(203,31,47,0.5);
+  border-bottom-color: var(--red);
+  background: #0f1110;
+}
+.form-input::placeholder { color: var(--white-25); }
+.form-textarea { min-height: 140px; resize: vertical; line-height: 1.7; }
+
+/* 연락처 3분할 */
+.phone-wrap { display: flex; align-items: center; gap: 0; }
+.phone-part { flex: 1; text-align: center; }
+.phone-dash {
+  color: var(--white-25); font-size: 16px;
+  padding: 0 10px; flex-shrink: 0;
+}
+
+/* 제출 버튼 */
+.form-submit-wrap { display: flex; justify-content: center; padding-top: 8px; }
+.form-submit-btn {
+  font-family: var(--sans); font-size: 15px; font-weight: 700;
+  letter-spacing: 4px;
+  padding: 14px 64px;
+  background: var(--gray-dark); color: var(--white);
+  border: none; cursor: pointer;
+  transition: background 0.2s;
+}
+.form-submit-btn:hover { background: var(--red); }
+
+/* 비활성 상태 (동의 전) */
+.form-fields.disabled { opacity: 0.35; pointer-events: none; }
+
+@media(max-width:960px) {
+  .franchise-form-section { padding: 56px 24px; }
+}
+
+/* ── FOOTER ── */
+footer { background:#060808; padding:52px 64px; border-top:0.5px solid var(--border); }
+.footer-inner { display:flex; justify-content:space-between; flex-wrap:wrap; gap:32px; }
+.footer-wordmark { font-family:var(--display); font-size:18px; letter-spacing:2px; }
+.footer-wordmark .red { color:var(--red); }
+.footer-wordmark small { display:block; font-family:var(--sans); font-size:9px; letter-spacing:3px; color:var(--white-25); margin-top:2px; }
+.footer-info { font-size:11px; color:rgba(255,255,255,0.2); line-height:2.2; margin-top:14px; max-width:400px; }
+.footer-nav { display:flex; flex-direction:column; align-items:flex-end; gap:10px; }
+.footer-nav a { font-size:11px; color:var(--white-25); transition:color 0.2s; }
+.footer-nav a:hover { color:var(--white-50); }
+.footer-sns { display:flex; gap:8px; margin-top:14px; justify-content:flex-end; }
+.footer-sns a { font-size:10px; color:var(--white-25); border:0.5px solid var(--border); padding:5px 12px; letter-spacing:1.5px; transition:all 0.2s; }
+.footer-sns a:hover { color:var(--red); border-color:var(--border-red); }
+.footer-bottom { margin-top:40px; padding-top:20px; border-top:0.5px solid var(--border); font-size:10px; color:rgba(255,255,255,0.15); }
+
+@media(max-width:960px) {
+  .nav { padding:0 24px; } .nav-links { display:none; }
+  .page-hero { padding:120px 24px 56px; }
+  .sub-tabs { padding:0 24px; overflow-x:auto; }
+  .recruit-map-section { padding:40px 24px 0; }
+  .recruit-map-wrap { grid-template-columns:1fr; height:auto; }
+  .recruit-map-frame { height:360px; }
+  .recruit-list-panel { max-height:280px; border-left:none; border-top:0.5px solid var(--border); }
+  .franchise-info { padding:56px 24px; }
+  .fi-grid { grid-template-columns:1fr; }
+  .inquiry-cta { grid-template-columns:1fr; padding:48px 24px; }
+  .inquiry-btns { align-items:flex-start; }
+  footer { padding:40px 24px; }
+  .footer-nav { align-items:flex-start; } .footer-sns { justify-content:flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhIAAAEiCAYAAACsrzuPAAAtjUlEQVR4nO3deVxU5f4H8O9hWAaQRUARcU1Cs8xyydxJ06ysq1S3zA3brmubaEGLYTcttabSsnsvXrcWMcPq1q1fxagkKmkkWqZGuSKgKDCIMCJzfn94K8fZzhzOOc9zZj7v18vXvc2ZOec7K5/zbEcQRZEAAAAA5AhgXQAAAADoF4IEAAAAyIYgAQAAALIhSAAAAIBsCBIAAAAgG4IEAAAAyIYgAQAAALIhSAAAAIBsCBIAAAAgG4IEAAAAyIYgAQAAALIhSAAAAIBsCBIAAAAgG4IEAAAAyIYgAQAAALIhSAAAAIBsCBIAAAAgG4IEAAAAyIYgAQAAALIhSAAAAIBsCBIAAAAgG4IEAAAAyIYgAQAAALIhSAAAAIBsCBIAAAAgG4IEAAAAyBbIugBv/Prrr+KOHTtYl+ETwsLCaMyYMYIgCF4/dvv27eIPP/wg67gTJ04UIiIiPN7vq6+/Fk+dPCnrGOBIEAQaPXq0EBkZyboU8GM//fSTuHv3btZlEBFRYmIipaSkeP8DCA50EyQOHjwoJicnU5cuXViX4hN27dpFckLE559/Lt5+++3Uv39/WcctLS0VIyIiPB74neXLKTc3V9YxwCXRYrEgTFzi3ffeEz///HPWZbj13LPPUvfu3X3iD97mLVtoxvTprMsgIqLJaWmUkpLCugyfoIsg8XuIAGXs27eP+vTp4/UP04aPPhLvvusuNUoCjURGRiJMXGLC+PE0Yfx41mW4tXjJEurevTvrMgBc4n6MBEKEsg4dOiTr7GbNmjUIET7if2GCdRnMlVdUsC5Bkjnp6axLAHCL6yCBEKGssrIy6ty5s9ch4u233xYnTZqkRknACMIE0SazWWRdg1R6CT3gn7gNEggRyjpz5oyQkJDgdYhYtGiROJ2TPk1Q1qTJk/06THyTl8e6BMn0FHrA/3AZJBAilHPX3XdTbW2tEBMT49XjRFGk5+fNE+fOnatSZcDaxxs3+m2YsFqttCI7m3UZkukp9ID/4S5IIEQoZ3JaGr337ruSplteqqmpiebMnSvOz8pSqTLghb+GiR2Fhbo6w1+RnU1Wq5V1GQBOcRUkECKUM2PmTMr+178Eo9Ho1eMaGxvp0UcfFZcsXqxSZcAbfwwTeTo8w9db+AH/wU2QQIhQTkZGBi19800hKCjIq8c1NDTQI488Ir711lsqVQa8+j1M1NbWsi5FE3psbdNj+AH/wEWQQIhQzsKFC2nBggVCQIB3b+25c+cobcoUceXKlSpVBrz7eONGmjhpks+HiZKSEl2e2esx/IB/YB4kECKUs3z5csrIyPB62euamhq6f/x4cd0HH6hUGeiFP4QJs9nMugTZ9BqCwLcxDRIIEcp59733aNq0aV5P7zxz5gxFRUWJH2/cqEZZoEO+Hib0PANCzyEIfBezIIEQoZxPPv2UJowf73WIKK+ooJiYGJzhgANfHTNhsVhofU4O6zJk03MIAt/FJEggRCjHbDbTX+680+sQcezYMbFNfDxCBLi0MTfX58JEfn6+rj/z63NyyJ9m14A+aB4kECKUU1hYSMOGDfM6RJSUlIjt27dXoyTwMb4WJnxh5oPewxD4Hk2DBEKEcvbu3Uv9+vXzOkTs27dPTEpKUqMk8FG+EiZsNhuZTCbWZTSbL4Qh8C2aBQmECOWUlJRQjx49vA4RRUVFIi5HDHL8HibOnj3LuhTZiouLfeJM3mQykc1mY10GwB80CRIIEco5fvw4JSUleR0itm/fLvbq1UuNksBPbMzNpYmTJuk2TPjSQEVfCUXgG1QPEggRyjl16pTQrl07r0NEXl6e2L9/fzVKAj+j5zAxJz2ddQmK8aVQBPqnapBAiFDGmLFjqaamRmjVqpXXj62rq6Phw4erUBX4Kz2GifKKCtYlKMqXQhHon6pBYuHChWru3i+MnzCBPnj/fSEqKkrW45uamhSuCOBimHjNZNJN8/oms1k3tUrla+EI9EvVIGETfe67q6mp06bRyn//WwgNDWVdCoCDhvp61iVI5otdAb4YjkCfmF9rA5xLnzOH3lq2TAgODmZdCoCuWa1WWpGdzboMxfliOAJ9QpDg0PwXX6TFixYJBoOBdSkAurejsNAnz9xXZGeT1WplXQYAggRv3ly6lJ5/7jmvr+AJAM758gJOvhqSQF8QJDiyZs0aenTWLCQIAAXNz8piXYJqfDkkgX4gSHBi48aNNGnSJIQIAAWVlJT49Bm7L4ck0A8ECQ58/c03NHbsWIQIAIWZzWbWJajO18MS8A9BgrFt27bRiJtvRogAUIE/zGzwh7AEfEOQYKi4uJgGDBiAEAGgAovFQutzcliXoTp/CEvANwQJRg4ePEg9e/ZEiABQSX5+vl80+a/PySGLxcK6DPBjCBIMHD16lJKTkxEiAFTkTzMa/CU0AZ8QJDRWUVEhdOjQASECQEU2m41MJhPrMjTjT6EJ+BPIugCtPPjQQ9S7Vy9mxxcEgcaNGyfEx8czqwHkYf3ZudT06dNZl6ALxcXF4vXXX8+6DM2YTCay2WwUEIBzQ9Ce3wSJoUOH0qSJE9ESAF7j6bOTmZkpLliwgHUZ3PsmL4/8KUgQ/RGeuPicgn9BfAUAnzMnPZ11CZrD7A1gBUECAHxKeUUF6xKY8MfwBHxAkAAAn7LJbPbbGQz+GqKALQQJAPAp/tzE788hCthBkAAAn2G1WmlFdjbrMpjx5xAF7CBIAIDP2FFY6Ndn5Cuys8lqtbIuA/wMggQA+AwszIQwBdpDkAAAnzE/K4t1CcwhTIHWECQAwCeUlJTgTJwQpkB7CBIA4BPMZjPrEriBUAVaQpAAAJ+AGQt/QqgCLSFIAIDuWSwWWp+Tw7oMbiBUgZYQJABA9/Lz89GUf4n1OTlksVhYlwF+AkECAHQPMxUcIVyBVhAkAEDXbDYbmUwm1mVwB+EKtIIgAQC6VlxcjDNvJ0wmE9lsNtZlgB9AkAAAXcPAQtcQskALCBIAoGtz0tNZl8AthCzQAoIEAOhWeUUF6xK4hpAFWkCQAADd2mQ2o+neA4QtUJvfBIlJEycSEYm+8m/ipEn4AQW/h6Z7zxC2QG1+EyR8zdo1a1iXAMCU1WqlFdnZrMuwM336dNYlOEDYArUhSACALu0oLOTuTHvkyJE0c9Ys1mXYWZGdTVarlXUZ4MMQJABAl3hccCklJUW4efhw1mU44DF0ge9AkAAAXZqflcW6BDupqakUHR1NKSkpAutaLsdj6ALfgSABALpTUlLC3Rn28JtvJiKi6OhoSk1NZVyNPd5CF/gWBAkA0B2z2cy6BAfDhw378///L1TwhMfwBb4BQQIAdIfHmQjdunX7o0vj0lDBCx7DF/gGBAkA0BWLxULrc3JYl2EnMzPT7r8vDRW84DF8gW9AkAAAXcnPz+euiX64k5kal4cL1tbn5JDFYmFdBvggBAkA0BUeZyAMHDjQoQXCWbhgjccQBvqHIAEAumGz2chkMrEuw87ktDQyGo0OtzsLF6zxGMJA/xAkAEA3iouLuTujdtXyYDQaaXJamrbFeGAymchms7EuA3wMggQA6AaPAwZHjhjhsuWBx+4NHsMY6BuCBADoxpz0dNYlOGjTpo3LbTxOA+UxjIG+IUgAgC6UV1SwLsHB4iVL3G5PTEzkbpwEj2EM9A1BAgB0YZPZzF2TvJQLdC1cuFCDSrxTVlbG3WsJ+oUgAQC6wGOTfM+ePT22OPC4XPbX33zDugTwIQgSAMA9q9VKK7KzWZdh54knnqCAAM8/ob179eKuewPTQEFJCBIAwL0dhYXcNcVLnZFhMBho5qxZKlfjndWrVlFDQwPrMsBHIEgAAPd4PIMeMmSI5JYGKWMptFZQUMBdOAN9QpAAAO7Nz8piXYKdv957L0VGRkq+f0pKCro3wGchSAAA10pKSrg7c/a2hSE6OppSU1NVqkaeBQsWsC4BfASCBABwzWw2sy7BwTAZC03xOHtj//793IU00B8ECQDgGo/TPpOSkrzuquBxlcs8DkMa6A+CBABwy2Kx0PqcHNZl2HnhhRdkPa5bt278jZPAehKgAAQJAOBWfn4+d03vI0eOlP3YzMxMBStpvtzcXKqurmZdBugcggQAcIvHmQV9+/aV3bLA49VAN2/ezF1YA31BkAAALtlsNjKZTKzLsDN12jQKCgqS/fiBAwdy173B4xgU0Be/CRJr1q4lIhJ87B+AzyouLubuTLm5LQpGo5Emp6UpU4xCli1dSk1NTazLAB3zmyABAPrC45nyTQosLMVj98b3RUXchTbQDwQJAODSnPR01iU4iIuLa/Y+uJwGitkb0AwIEgDAnfKKCtYlOHjjjTcU2U9iYiJ33ZIZGRmsSwAdQ5AAAO5sMpu5a2qXs5qlKwsXLlRsX0opLS3l7jUHfUCQAADu8Dg+4pprrlGsJYHH5bKxyiXIhSABAFyxWq20IjubdRl25sydS4KgXI9E7169uOve4HHNDtAHBAkA4MqOwkLumti9vdqnJwaDgWbOmqXoPptr9apV1NDQwLoM0CEECQDgCo9nxoMGDVK8BUHpcKKEgoIC7kIc8A9BAgC4Mj8ri3UJdianpVF4eLji+01RYE0KpfEY4oB/CBIAwI2SkhLuzojVWkAqOjqaUlNTVdm3XAsWLGBdAugQggQAcMPM4cwBNReQ4nH2xv79+7kLc8A3BAkA4AaP0z7VXECKy1UuOQxzwDcECQDggsViofU5OazLsKP2wlHdunXjb5wElssGLyFIAAAX8vPzuWtS16LrITMzU/VjeCM3N5eqq6tZlwE6giABAFzgccaAFgtH8Xg10M2bN3MX6oBfCBIAwJzNZiOTycS6DDszZ80ig8Gg+nEGDhzIXfcGj2NVgF8IEgDAXHFxMXdnwFotGGU0GmlyWpomx5Jq2dKl1NTUxLoM0AkECQBgjsczYC0XjOKxe+P7oiLuwh3wCUECAJibk57OugQ7qampFB0drdnxuJwGitkbIBGCBAAwVV5RwboEB1ovFKXmWhVyZWRksC4BdAJBAgCY2mQ2c9eEPnLECM2PqfaaFXKUlpZy994AfxAkAIApHsdHXHnllZq3EPC4XDZWuQQpECQAgBmr1UorsrNZl2Hn+XnzmBxXizUrvMXj2h7An0DWBQCA/9pRWCgOHTKEdRl25M6guHDhAm3fvr1ZXQGvmUy0MTe3ObtQ1OpVq6ihoYGMRiPrUhS3etUqIiJ03VzmzTffpEcffdSrUIsgAQDM5OXlEW9B4sZ+/WS1DJw7d44GDx7crGM39/FqKCgoEIcPH85dawmo4+GHH/b6vUbXBgAwMz8ri3UJdh586CEKCQlhXQZX0L3hP/bt20ehoaFePw5BAgCYKCkp4a5ZWavVLPVkwYIFrEsADaxcuZK6d+8uq+UJQQIAmDBzOCPgpmHD0ITvxP79+7kLfaCcKVOmUFpamuzPPoIEADDB47TPNvHxrEvgEqaB+rbXXntNEAT5GRpBAgA0Z7FYaH1ODusy7CxesoR1CdzCctm+a9u2bdSyZctm7QNBAgA0l5+fz11TOcZHuJabm0vV1dWsywCFvfLKKzRgwIBmd+chSACA5nicCdCzZ0+Mj3Bj8+bN3IU/kG/M2LE0e/ZsRT7zCBIAoCmbzUYmk4l1GXZmz55NAQH4OXSHxzEtIN/SN9+kwEBllpLCNwcANFVcXMzdme3IkSNZl8C9ZUuXUlNTE+syQAH/+ewzat++vWItcAgSAKApHs9sBw0ahG4NCb4vKuIuBIJ35sydS3eMHq3o5x1BAgA0NSc9nXUJdsaPH0/h4eGsy9AFzN7Qv/lZWYqHZgQJANBMeUUF6xIcyL1Ilz/KyMhgXQI0g9wlsD1BkAAAzWwym7lrGh+GIOGV0tJS7t5D8GzVqlWyl8D2BEECADTD4/iITh07YnyEF7DKpf5MmTKFJk+erNrnHEECADRhtVppRXY26zLszH/xRdYl6A6Pa4CAe81dAtsTBAkA0MSOwkLumsSxmqX3Vq9aRQ0NDazLAIm2b9/e7CWwPUGQAABN8Hgm27dvX3RryFBQUMBdKARHixYtov79+6v+GUeQAABNzM/KYl2CnanTplFQUBDrMnSJx1AI9saMHUtPPvmkJkEZQQIAVFdSUsLdGSymfcq3YMEC1iWAB0ouge0JggQAqM7M4Uj/m1JS0K3RDPv37+cuHMJFnym8BLYnCBIAoDrepn2mpqZSXFwc6zJ0DdNA+TT3qadotMJLYHuCIAEAqrJYLLQ+J4d1GXaG33wz6xJ0D8tl8ynrhRc0b2lDkAAAVeXn53PXBD582DDWJehebm4uVVdXsy4DLqHWEtieIEgAgKp4HOHfrVs3jI9QwObNm7kLif5KzSWwPUGQAADV2Gw2MplMrMuwk5mZyboEn8Hb2Bd/9cADD6i6BLYnCBIAoJri4mLuzlgx7VM5y5YupaamJtZl+L1XX31V1SWwPUGQAADV8HjGOnDgQHRrKOj7oiLuwqI/0WIJbE8QJABANXPS01mXYGdyWhoZjUbWZfgUzN5gR6slsD3RZtkrAPA75RUV1CY+nnUZdtCtobyMjAzWJfilMWPH0kcbNjAPEUR+1CLR89prWZcA4Fc2mc3cNXlj2qc6SktLuXuvfd2ypUvJYDCwLoOI/CRIHDh4kHr27MlFcgPwFzyOj0hMTMTvgAqwyqW2PvvsM2rXrh03n2Wf79qorKwUuiYnsy6DmcDAQBp3//0Ot3/w/vsMqpEuvEUL1iX8ISQ4mHUJfzAyWGzGFXe1WK1WWpGdrWE1ni1cuBDN8CrJy8ujSRMnerxfSEiIBtX4tsxnnqEFL73ETYggIhJEUb0WqclpaeLqVatU2787M2bMoFdffVXAwCptWCwWstlsdrfV1taKl9+WmJgoaHVFOmBnS36+OHTIENZl2Dl8+DB16tRJtR/ghoYGes1k8ssm/lCjkZ544gmu/riBdnzyF33xkiW0bNkypvNq/U1kZKTDbdHR0XgD/FReXh7xEiSyV6ygtMmThU6dOql6HKPRSJkZGfjMg9/xuTESubm5NCc9HSECgKH5WVmsS6Bp06ZReUWF8NCDD6IVDEBFPhUkvtu5k1JTU5EgABgqKSlh3ryf/+23tHz5coG36acAvshngsThI0fohr59ESIAGDMzHMH/+uuvk9VqFYYMHozfAgCN6D5I3DduHFVXVwudOnbEDwcAB1hM+5w0eTIdPnKEHn/8cQEzAwC0peuOwzlz59LaNWuEoKAg1qUAAF2cvbM+J0fTY/73v/+lNatX40QCgBHdtki88847tHjRIoQIAI7k5+drNj7i7y+9RHV1dcJtt92GEAHAkC6DxJdffklTp07FjwcAZ/I06Na46667aP+BA/TsM88I4eHhqh8PANzTXdfGnj17aNSoUQgRAJyx2WxkMplUPcaHGzbQhg0bML0bgCO6apEoKyuja6+9Fr8gABwqLi5WrVvj6aefpurqauGeu+9GiADgjC6CxJQpU6iurk5ISEjALwgAp9SarbF79256+eWXhejoaFX2DwDNw32QyMrKouzsbPSFAnBuTnq6ovtbuXIlNTU1Cddddx1OIAA4xnWQWPvuuzRv3jyBl2uuA4Bz5RUViu1r1qOPUkVFhTBlyhR89wF0gNsgsSU/nyZOmIAzEQAd2GQ2KzI+oqCggJa++aYQj6WtAXSDyyBx4OBBGjpkCEIEgE40d3zEsrfeovPnzwsDBw7E9x5AZ7gLEpWVlULX5GT8mADohNVqpRXZ2bIeO2XKFDp27BjNnDFDCA4OVrgyANACN0FixowZ1NDQIMTFxbEuBQC8sKOwUFa3xldff00rV64U2rdvjxMHAB3jIkgsXrKEli1bJhiNRtalAICXvF3NcuHChVRfXy+MHDECAQLABzAPErm5uTQnPR2LzADo1PysLEn3++u999Ivv/xCGRkZQmhoqMpVAYBWmC6R/d3OnZSamooEAaBTJSUlYlJSksf75ebmUs66dThhAPBBzFokDh85Qjf07YtfFQAdM5vNbrc/+9xzVFNTI6SmpiJEAPgozYPEfePGUXV1tdCpY0f8qgDonLtpn3v27KG/v/iiEBUVpWFFAKA1TYPEnLlzae2aNVgzH8AHWCwWWp+T43D72nffJZvNJuACewD+QbMg8c4779DiRYuEoKAgrQ4JACrKz8+3m/b5+OOPU2VlpTBxwgQhIID5OG4A0Igm3/Yvv/ySpk6dirMTAB9y6bTPwsJCev3117EODIAfUjVIxMfH0549e2jUqFEIEQA+xGazkclkouXLl1NjY6PQr18/fMcB/JQgiopca8epxsZGQlcGgO+pra0li8UiJiYmIkAA+DlVgwQAAAD4NoyIAgAAANkQJAAAAEA2BAkAAACQDUECAAAAZEOQAAAAANkQJAAAAEA2BAkAAACQDUECAAAAZAtkXYBeiTYbnfw/s1izew811lhk7SOwRThFdEum+NGjBIMxxOX9zuzYKZZ9/LncUu0EBAdTWOcO1OaOW4WQuFiP92+srqETG/8jnjt0lGznz8s6psEYQuFJV1DCX24XAiNauLxfze694vF1H8k6xqUEQaCQ1q0oduhAiu7V0+nKi+cOHxUPvfPvZh/Llc5TH6CwTh2cHrvut8PiyS++ofoTZSQ2NXm9b8FgIGNCG4q/bQSFX9FJ9ZUl60vLxN+W/kPSfRPvTaXo672/6md10W6xctNWsp6q9Lq+34W0iqPYQTdSy359ZL0mB196VWysrfV4v6iePajduLskH6N2/0Hx6Kr35ZTkQAgIIGObeIobPpQir+4mqQYlfqsud/XLLzgcW8rzjBs6iOJvvVnya1fy2lui9eQpl9uDoqMo+ekn7PZXtvEz8UzhLqf3DwgKpCufflIIDA+TdPwLdefol4WvibYLF5xuj7quB7W7T/pnwVchSMhwvqqa9s19XqzZvbfZ+yr/5L90fN1HYo/XF1JoO+fLDTccP0GVeVuafaxLHVuzTuy+YB7F9O/r8ktQVbhL3PfMi3RBoR+f4+9vEK9Z8neK6N7V+fMsr1D0eR5//0Nqc+etYnLmbEEwGOy2NVbXKP6aXqrdfXc5vb00J1csMb1F1GRr9jGOvbuOujw+XVT7h+zUN5slv1aBYWEUff21kvctNjXRL6+8LpZt/ExueXZK131Ebe64VUx+xvE9d6fu10Ni2cfSarDs3kuJ944lQeIVTs9XnlH++7t2HcXdNFjs+vxTQmCLcNfHVvC3yhMpz7PhWCnF33qzpP1ZT1VS6bqPiNysvhwS39rhtpjB/YXflv1TvGBxHgoNoaFicuZsSd+Z395YLp78vzyn2wxhoXTFrL9J2Y3PQ9eGDAeyXlb0i1l/5BjtfSyDbI2Niu3Tk6azdfTTnOfo3NHjTr+l1srT9OPsZxULEURE509V0t7HnlLsrEiK8k+/oGNr13GxDnx10W6xZMlSRUIEERE12ejXV5fRmW2Fqj6/U3mbJd/39NbtXrWyHF3zgWIh4nfl//mCDv9jpVevyalvNku+7/nTZ6j2p/3MP1OVm76lfU+/4LaO/fMWahIipDp7sITqS8skvXaVm7eK7kKEKyFxsXTl3Mdcbi/b+BlVfVfkccdVO4vcfja7PD6dQhMT/L41gghBwmsN5RV0pqBQ8f3WHz1GVdt3avrjZLNaqdxFl0nF51+JNqtV8WM2VtfQya/Mmj7P4+99qOXhXFKrjuPrclXZLxFRfekJ8ezPByXfv7Gqmix790l+f0+s/1hOWR6VfvixV4HGmyBBRFS5ZauXFamjqnAXVRXucvp615eeEKu2f6d1SR5Vbv5W2v02SbufM61vGS7EDRvicvvBlxZT07l6l9ub6uvp4Euvutzesv8N1GbM7QgR/4Mg4aXafQdU+yNYd+iIWrt2c8zDTm+v/eln1Y557jfnx1RLY3UNna+q1vSYzpxT6f1Va79ERKe+8b5JXuofivOnz9D5ytNe71+KprN1ZJW477pfD4nnDh/1av+Vm/kIEkRElVsKnN5+9kCJxpVII6Wbp9FSSzVFxc06TnLGk0JQTEun2xpOlNNvS//h8rf80NvZYkPpCafbAiMjqOtzcwRBQI74HYKEl+QOOJSExZVYXRxTzefJ4oqzarSueOv8mWp1dqzi6+myW0MQKKRNvNNNrv6wXU71rjyJr4u71ghj2zZOb68/cozOHTnKvHuDiMjVWABVf6uawfLjzx4H1Z7+dpsoZyDypYKioyg540mX209s+ISqi3Y7vIc1e34SS3M2unzclXMfo5BWcc2qzddgsKWC+n36ARnCwz3G1MI77xOb6s4pcswBeZ9KisU/Z84Xq1yMZPZGy3596KoFz0s65t7HnhJrf1SmZUPK86wq3CX+nDlf0v4ir+kuDMj71O19XL1mUl6DwDBpo8KJiDo+OIkS77/b4/MrfX+DeGTFGsn7bS533RoRVyVTRPdudGLDJw7bGo6foLrfDovNmVHS442XKeKa7h4fX/vjPnHvY0/LPQwRuQ8SHR+aTAfmv+J02+n8bRQ2sUOzjn3dv96k4FaeZ08RER14cTHVfL+7Wcf7ndTfDVWIIlVu3iom3jPGZQ3N6da4VFzKICH+tpFixX+/crr9wPzF1OeDbDKEhhIRkc16/uL77SKExg0fSq1vGY6miMsgSCgoMKKFENjC9fTGPyn3OQyKjJB0PyFQ+gh2T/uRfEwvRs17IuWYv/8YSCHlebh6zbx5DaQIMIZI2l+AmynCanDXrdGy/w0U3rmj0yBBdHEMQfgVnWQf2xAWJu099yKwOeOuW6NF1yspdsgAgQwBorMBspWbtlL7ifc16/ghbVoLRhctO5czGEMUawFR8vMrR+WmfEq8Z4zTbU319VS1Y6dix+oye6ZQtatIPH/SsRWkofQEHXo7W0yaPUsgIjr8r1Vi/ZFjTvcTFNvSYaopXIQgwUCnv6WR7bxjs250r54MqgG9iO59HXWe+YjD7VLnxHvL3WyNuJsGU2i7REEIChJFJ10Up7dso45TJqhSl5LctUbE3TSYgqIiKbr39VT93fcO2y0/7qPzZ6oo2EU/PLhW/X0xNVbXUFB0lMO2M9t3ijarct0yQZER1PXZubT30blOt5fmbKRWw1PEgJBgOvZujsv9dM1Md1ovIEgw0W6c52ZsgMtF9uguRPborsmx6kvLXHZrBMfFUovkJEEQBIq89mqnze21P13sB1e7LzkoOorihg91us1gNHp8/Ck3A/9iBva7+L/9b3AaJEgU6XT+NjEBo/c9Cu3YnuzO9G02qswvEBPuvM3htXPWrRHSJp6s5RWyjx/Tv6+QMGa087VCRJEOzH+FAoKDXU7Njh896mLrFDiFIKGgXfc/JAqC9PGrQqCBQju0o1bDhlL86FswCthPHVu7jso2fuZVs3VQdCRF9bqO2o2/R9IKpd5yd6beavhQ+v2zGtP/Bpf99qfzt4lt77pT1Q91WKcOwtUvvyDrsXW/HhJdzXgxJraliG7JAhFRTP++9Nsby53er3LLVkoYc7us47NU+Jf7ZXeTtL37Tmo/8T6v3teY/jdQ6WVdBpXmfEq48za722wXLtDpb7c7Pn5gPyr7yP2YJk+6PDFdqPpul9hwotxhW/2xUpePC4lvTUmzZ+LH2Q0ECS8FBLp+yaxl3ifm+qPH6czWHVS1s0i8an4mPqw+zBAeSk11dQ63X7DUuhx570rDiTKq3XeAyv/zhXj9imUU1rG9op8dt90al7QAxAzsR4eW/dPp/So3f0tt77pTybIU5T4s/bkGQXiXzkJIfGvRWnHS4X5V331PTefqyRAmfXwODxpOlMl+rJwF5WIG9ru4SuUlqr4rogtnz9Kl48qqd/4gXv4dCe3QjqSOI3HHEBZKXec9RcVTn/RqplPXeU+Ru9VDAUHCa2FdOquy35NffE3xt40QY250vWS1MwXD7pD0jXC3+IoeSHmertbD50Vou0RyNuCrOS7UWOi3pf+ga5b8XbF9uu3WiI2hqJ7X/PEZbZF0hcs/stXfF9OFs3Xc/gi769ZoNTzF7r9jBt3o9IxYPN9IZ3bsFFsNG4KTADfCOnUQQju2txvIKDY20umtO8T4UX9ee6NyU77DY+OGDlKsjuhe1wmJ96aKl4caVxLvTaWWfXvhvfUA60h4KbxzRyGy5zWq7Ltqh/fTMy/UnpX0r7lzslmT8hxt9Q2sy3QrYexoVfZ7Ztt3iq7J4HYA4rAhDteYiBl0o9P7io2NdGb7d1ystXA5t90abds4XA8mdlB/l/s6LXHdDH8XlzLY4bZK85/BQbw4bsLxccMcH9ccnWc8LIR2aO/xfqEd2lHnmQ8jREiAICHDVS89J4Rf2UXx/Z4/rc4qf+64WlTIlxjCQikkjv0CMvGjbhY6PDCBSOLFnqQSGxsVXXDLXbdGyxv7UKOl1u6fu4t08fpH1l1YihnQz+E5tuiaJAhBQU7v7+31RfxVXMpAh9uqCneReOHia1dT/KPYeLrKbntwXCxFXH2Von/MDcYQ6pb1tPvvYUAAdXshQ9KAXUDXhizG+NbU+91/CjU/7BHPHXU+59idY2vWUcNxJ8uvMjh3k3olPj1rc+etiq2j0Vydpz0oJIy5Xaz+vphsjd5Ncav98Wcq//QLlSq7yF23BhHRT7OfJfLik3p66w6yXbjgdmwRC+66NU5s+IRObPhE8nO8YKmlmh/2iNF9rtfN2euVma5XfPSkRXKSrMdFXH2VEBwXK166LHrTuXqqLtottryht+Bs6ey4lEGkxiD0yGu6C+0n3iceW+38sucdJo2jyB6eF0SDi/j6duuIEBBA0b2vE6J7X+f1Yys+/0p0GiQ0dsVjUymqZw+f/rK06JZMnf42havnaExoI7QZ7XzpZXcqQkNFtYOEtxev8qSpro5qvt8ttuzXR5X3wLJ3n7j3saecbuvzwb+FkPhWDre769aQq3LLVoruc72i+1RT27F3aP6dEASB4lIGOSxidjp/G7W8obfzbo2blO3WuFTsoBvJVZBodcsw1Y7rixAkvHR01Xti1XdFDrdHXnMVdZ7+kOZfTmPbBK/uHxASTGGdOlDC2Dsopr93AztZcvY8RZvN9dzygAC6YubDlPjXVCEgJFjl6jyr+/WQWPLqMqfbrvr7swIvixp5c8lwqSq3FFDLfn0U3y8RkdjURBdqzzrfJjpfE0DpsER08Y9h0uxZiu/X18QOHegYJL7dTgljR4uXz3oLjIygqF49dfMb5c8QJLxUV3KIqnc6BomAYOf9p2rr98n7fvFFc/U8d099QnS6joHNRoawMOIhRBBdHCzq7HNDxM/FlTx1a8h1eksBJc15VJUmajncdWvI1XCinM4eLBFbJCfx8SQ5Fd3nesEQHm43xbPhRBmVrne8SFbsoP7cdYmBcxhsCbqWlD7L5aCp35b9k86fPqNxRfqlRmsEEZH15Ck6u/8gF7M31OjW+J2zpnmwFxAYSLGDHWf5OOuyi0tRbtonqAtxTyE1u3+k7yf+TdKP5bkjzi8SpAe8Pc8WSVcICWNHi87m+DedraNfX39bvOrFZ7k+S/zx8QzR1YyAS12weL8QkDfcNflfvfhFcjbe4FIVX3xDpR9scLqtcksBRVzVVXItB15cTIawUI+fM2/XR3H3HNuNv4da3zLc7eMbyipo31PznG47vbmAOj002at6pL73RO5XX/SW1O+wK73X/kP2dypu6CA6+WWe3W3iZWvABISEUMv+N3D9vYU/IUh4y0XzbFNdHZ3d38xmYYWnBTaLi1oUeZ4K6/S3KcLJ/8sTm846rhp58ss8anPHbWLLGxgvKhPg+vB1vx7SsBDn3HVrhHZoR3Epgzy+fgHBwaKrIHF6SwF1nvqA3W3ulpOvlzEbSgp33RoJqXdSWId2bp9nxFVdKSQh3qE/n4jo7IFfqKG8wqtVGJV474Ug5z/jl6/3cSmW3+GYAf1cXuztz/vcQAaNr3YL8nH0l0sfjIneDW70at/xrVXbt7dCVXyewbExyu6vZTR1emSKy+2/vPwaKXk1QTmMbRNUCzIBoUYyGJu3RLO7bo1WLi6KdbnwLp0FY2Jbp9vqSn6j+tITdmfBQbEtKSBEnT8WgsFAQZGR9jW46dYIT+7iMUT8Lm6I43oIvzu9pUDzLpzIa692eruxrfczg7RgCAullv16u70PujX0BUHCS61vGe6yVaJZAgIo/vaRyu9XpvjRo9TZcUAAtR5xk+K7bXvPX4TQjs5Xq6s/VkpHV73HtI8+JC5WtemBrW++qdnrZLhdzVJikCAiihvq5o9s/ja7/w4IDKRWI1Ik79sbsUMGOFz/wu21NYZJf46xbp5jpcYLcIW0bkXxt45w+oMUcVVXSSs4suBu2WvBYKCYQf3RraEjCBJeCu/cUeg842HF99vx4UkU1qkDN1+eiK5XCu0n36/4fq+Y+bAqzzMgMJCSnpzhcvvR1R/QuSPHmIaJ5MzZFNQyWtF9hnZsT51nPdKs19Ndt4YxsS1FdL1S8v5jhw5wua1y81aH2654dKoQ2j5R6u4lCUmIp6TZsxxqdn9tDelBIur6a4XAiBZOt9UUFbucjqq04LhYuuaNl12uvigYDNTthacpIJS/1RljhwwQXJ2QRfW+joIiIzSuCJoDYyRk6DB5nBDWuYN4/L0Pqe6XX+XvSBCoRdckajfuHood7DqBC8FB5OqHS01XzHxYiLy6m3j8/Q+b15f7v+fZftI4cndRsoCg5j3PmAH9hLibBovVu35wuv3Q29l09StZkvdnCA11Wo8hVF43Qmj7RKH3+9l0dMVasTK/oFnXBgmMiqRWw1OoQ9r9QnMvinVmW6HL1731KPeDDy8X1bOHEJIQ73S8St2vhxyu9hjcMpp6rX5HOLrqPfHk15vI2eOkMrQIp7iUwdTxwYlCUJR9t8a5o8fF85WnnT7P0A7tvQq3AYGBFHfTYKrc9K3T7VU7i+wu4iUEGhT9/gZGtKC4YUOp/YS/Cp66CSN7dBf6vJctHv7Xaqr6bheJ55W7Jsvl3D3Py8fDBMe0pJb9elPtT/sd7tv65hSH2wJCgp3uuzmffcHgpl6exqvpgCB6cTlVAAAAgEshdgEAAIBsCBIAAAAgG4IEAAAAyIYgAQAAALIhSAAAAIBsCBIAAAAgG4IEAAAAyIYgAQAAALIhSAAAAIBsCBIAAAAgG4IEAAAAyIYgAQAAALIhSAAAAIBsCBIAAAAgG4IEAAAAyIYgAQAAALIhSAAAAIBsCBIAAAAgG4IEAAAAyIYgAQAAALIhSAAAAIBsCBIAAAAgG4IEAAAAyIYgAQAAALIhSAAAAIBsCBIAAAAgG4IEAAAAyIYgAQAAALIhSAAAAIBsCBIAAAAgG4IEAAAAyIYgAQAAALIhSAAAAIBsCBIAAAAgG4IEAAAAyIYgAQAAALIhSAAAAIBsCBIAAAAgG4IEAAAAyIYgAQAAALIhSAAAAIBsCBIAAAAgG4IEAAAAyIYgAQAAALIhSAAAAIBsCBIAAAAgG4IEAAAAyIYgAQAAALIhSAAAAIBsCBIAAAAgG4IEAAAAyIYgAQAAALIhSAAAAIBsCBIAAAAgG4IEAAAAyIYgAQAAALL9P1x7EnAODUuwAAAAAElFTkSuQmCC" alt="FINAL SPORTS ACADEMY">
+  </a>
+  <ul class="nav-links">
+    <li><a href="about.html">파이널체대입시 <span class="arr">▼</span></a>
+      <div class="nav-dropdown">
+        <a href="about.html">파이널소개</a><a href="history.html">파이널연혁</a><a href="ai.html">파이널AI</a>
+      </div></li>
+    <li><a href="campus.html">지점소개 <span class="arr">▼</span></a>
+      <div class="nav-dropdown"><a href="campus.html">캠퍼스현황</a></div></li>
+    <li><a href="info.html">입시정보 <span class="arr">▼</span></a>
+      <div class="nav-dropdown"><a href="info.html">최신입시</a></div></li>
+    <li><a href="community.html">커뮤니티 <span class="arr">▼</span></a>
+      <div class="nav-dropdown">
+        <a href="community.html">파이널갤러리</a>
+        <a href="community.html?tab=news">파이널소식</a>
+      </div></li>
+    <li><a href="partner.html">파트너모집 <span class="arr">▼</span></a>
+      <div class="nav-dropdown">
+        <a href="partner.html#franchise-form">가맹점문의</a>
+        <a href="partner.html?tab=partner">협력사문의</a>
+      </div></li>
+  </ul>
+  <div class="nav-right">
+    <span class="nav-tel">031-266-8864</span>
+    <button class="nav-cta" onclick="window.open('https://ig.me/m/final._.time','_blank')">무료 상담</button>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-bg">PARTNER</div>
+  <div class="page-hero-content">
+    <div class="breadcrumb">
+      <a href="index.html">HOME</a><span class="sep">/</span>
+      <span class="current">파트너모집</span>
+    </div>
+    <div class="page-title">PARTNER</div>
+    <div class="page-title-ko">파트너 모집</div>
+  </div>
+</div>
+
+<!-- 서브탭 -->
+<div class="sub-tabs">
+  <button class="sub-tab active" id="tab-franchise" onclick="switchTab('franchise')">가맹점문의</button>
+  <button class="sub-tab" id="tab-partner" onclick="switchTab('partner')">협력사문의</button>
+</div>
+
+<!-- ══ 가맹점 지도 섹션 ══ -->
+<div id="section-franchise">
+  <section class="recruit-map-section">
+    <div class="recruit-map-header">
+      <div>
+        <div class="sec-label">RECRUIT AREA</div>
+        <h2>가맹점 모집 지역</h2>
+      </div>
+      <div class="region-search-wrap admin-ctrl" style="display:none;">
+        <div class="region-unit-btns">
+          <button class="unit-btn active" id="unitSi" onclick="setUnit('si',this)">시 단위</button>
+          <button class="unit-btn" id="unitGu" onclick="setUnit('gu',this)">구 단위</button>
+        </div>
+        <div class="region-search" style="position:relative;">
+          <div style="display:flex;">
+            <input type="text" id="regionInput" placeholder="지역 검색 (예: 강남, 수원)" autocomplete="off"
+              oninput="onRegionInput()" onkeydown="onRegionKeydown(event)">
+            <button class="region-search-btn" onclick="addRegionFromInput()">+ 추가</button>
+          </div>
+          <div class="autocomplete" id="autocomplete"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="recruit-map-wrap">
+      <!-- 지도 -->
+      <div class="recruit-map-frame">
+        <div id="recruitMap"></div>
+        <button class="map-add-btn admin-ctrl" style="display:none;" onclick="document.getElementById('regionInput').focus()">
+          ＋ 모집 지역 추가
+        </button>
+        <button class="admin-login-btn" id="adminLoginBtn" onclick="toggleAdminMode()">
+          🔒 관리자
+        </button>
+      </div>
+
+      <!-- 스크롤 리스트 패널 -->
+      <div class="recruit-list-panel">
+        <div class="recruit-list-head">
+          <div class="recruit-list-head-top">
+            <span class="recruit-list-title">모집중인 지역</span>
+            <span class="recruit-list-count" id="recruitCount">0</span>
+          </div>
+          <div class="recruit-list-sub">클릭하면 지도에서 확인합니다</div>
+        </div>
+        <div class="recruit-list-scroll-wrap">
+          <div class="recruit-list-inner" id="recruitListInner"></div>
+        </div>
+        <div class="recruit-list-footer admin-ctrl" style="display:none;">
+          <button class="list-foot-btn danger" onclick="clearLastRegion()">마지막 삭제</button>
+          <button class="list-foot-btn danger" onclick="clearAllRegions()">전체 초기화</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 가맹 안내 -->
+  <section class="franchise-info">
+    <div class="sec-label">FRANCHISE GUIDE</div>
+    <div style="font-family:var(--display);font-size:clamp(28px,4vw,44px);letter-spacing:1px;margin-bottom:6px;">FRANCHISE INFO</div>
+    <div style="font-size:clamp(20px,2.5vw,28px);font-weight:700;letter-spacing:-1px;color:var(--white-50);">가맹점 안내</div>
+    <div style="width:32px;height:2px;background:var(--red);margin:14px 0 0;"></div>
+    <div class="fi-grid">
+      <div class="fi-card">
+        <div class="fi-num">01</div>
+        <div class="fi-title">브랜드 경쟁력</div>
+        <div class="fi-body">체대입시 브랜드 선호도 1위 파이널체대입시의 강력한 브랜드 파워로 빠른 시장 진입이 가능합니다. 전국 30개 캠퍼스 네트워크의 일원이 되세요.</div>
+      </div>
+      <div class="fi-card">
+        <div class="fi-num">02</div>
+        <div class="fi-title">체계적인 교육 지원</div>
+        <div class="fi-body">검증된 커리큘럼과 강사 교육 시스템을 제공합니다. 정기 세미나, 입시 연구 프로그램, 파이널AI 분석 시스템을 공유받습니다.</div>
+      </div>
+      <div class="fi-card">
+        <div class="fi-num">03</div>
+        <div class="fi-title">마케팅 통합 지원</div>
+        <div class="fi-body">본사 차원의 디지털 마케팅과 브랜드 홍보를 지원합니다. SNS, 유튜브, 포털 광고 등 통합 마케팅으로 신규 원생 모집을 돕습니다.</div>
+      </div>
+    </div>
+  </section>
+
+
+<!-- ── 가맹문의 신청 폼 ── -->
+<section class="franchise-form-section" id="franchise-form">
+  <div class="franchise-form-inner">
+    <div class="franchise-form-header">
+      <div class="sec-label">APPLICATION</div>
+      <div style="font-family:var(--display);font-size:clamp(28px,4vw,44px);letter-spacing:1px;margin-bottom:6px;">FRANCHISE APPLY</div>
+      <div style="font-size:clamp(18px,2.2vw,26px);font-weight:700;letter-spacing:-1px;color:var(--white-50);">가맹점 문의 신청</div>
+      <div style="width:32px;height:2px;background:var(--red);margin:14px 0 0;"></div>
+    </div>
+
+    <div class="franchise-form-body">
+      <!-- 개인정보처리방침 박스 -->
+      <div class="privacy-box-wrap">
+        <div class="privacy-scroll-box" id="privacyBox">
+          <pre class="privacy-text">회사명(이하 '회사'라 한다)는 개인정보 보호법 제30조에 따라 정보 주체의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이 개인정보 처리지침을 수립, 공개합니다.
+
+제1조 (개인정보의 처리목적)
+회사는 다음의 목적을 위하여 개인정보를 처리합니다. 처리하고 있는 개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며, 이용 목적이 변경되는 경우에는 개인정보보호법 제18조에 따라 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.
+
+1. 홈페이지 회원 가입 및 관리
+회원 가입 의사 확인, 회원제 서비스 제공에 따른 본인 식별·인증, 회원자격 유지·관리, 서비스 부정 이용 방지, 각종 고지·통지, 고충 처리 등을 목적으로 개인정보를 처리합니다.
+
+2. 재화 또는 서비스 제공
+물품 배송, 서비스 제공, 계약서 및 청구서 발송, 콘텐츠 제공, 맞춤서비스 제공, 본인인증, 요금 결제 및 정산 등을 목적으로 개인정보를 처리합니다.
+
+3. 고충 처리
+민원인의 신원 확인, 민원사항 확인, 사실조사를 위한 연락·통지, 처리 결과 통보 등의 목적으로 개인정보를 처리합니다.
+
+제2조 (개인정보의 처리 및 보유기간)
+① 회사는 법령에 따른 개인정보 보유·이용 기간 또는 정보주체로부터 개인정보를 수집 시에 동의 받은 개인정보 보유·이용 기간 내에서 개인정보를 처리·보유합니다.
+② 각각의 개인정보 처리 및 보유 기간은 다음과 같습니다.
+1. 홈페이지 회원 가입 및 관리 : 사업자/단체 홈페이지 탈퇴 시까지
+2. 재화 또는 서비스 제공 : 재화·서비스 공급완료 및 요금결제·정산 완료 시까지
+
+제3조 (개인정보의 제3자 제공)
+회사는 정보주체의 개인정보를 제1조에서 명시한 범위 내에서만 처리하며, 정보주체의 동의, 법률의 특별한 규정 등 개인정보 보호법 제17조 및 제18조에 해당하는 경우에만 개인정보를 제3자에게 제공합니다.
+
+제4조 (개인정보처리의 위탁)
+회사는 원활한 개인정보 업무처리를 위하여 필요한 경우 개인정보 처리업무를 위탁할 수 있으며, 위탁계약 체결 시 관련 법령에 따라 안전하게 관리합니다.
+
+제5조 (정보주체의 권리와 행사 방법)
+정보주체는 회사에 대해 언제든지 개인정보 열람, 정정, 삭제, 처리정지 요구 등의 권리를 행사할 수 있습니다.
+
+제6조 (개인정보의 파기)
+회사는 개인정보 보유 기간의 경과, 처리목적 달성 등 개인정보가 불필요하게 되었을 때에는 지체없이 해당 개인정보를 파기합니다.
+
+제7조 (개인정보 보호책임자)
+개인정보 처리에 관한 문의사항은 아래 연락처로 문의하시기 바랍니다.
+- 담당자: 한현호 대표
+- 연락처: 031-266-8864 / young3843@naver.com
+
+제8조 (개인정보 처리방침 시행)
+이 개인정보 처리방침은 2026년 1월 1일부터 적용됩니다.</pre>
+        </div>
+        <label class="privacy-agree-label" id="agreeLabel">
+          <input type="checkbox" id="agreeCheck" onchange="toggleAgree()">
+          <span class="custom-check" id="customCheck"></span>
+          <span>개인정보 수집 및 이용에 동의합니다.</span>
+        </label>
+      </div>
+
+      <!-- 폼 필드 -->
+      <div class="form-fields" id="formFields">
+        <div class="form-field">
+          <div class="form-field-label">희망 지역 <span class="required">●</span></div>
+          <input class="form-input" type="text" id="f-region" placeholder="예) 경기 수원시, 서울 강남구">
+        </div>
+        <div class="form-field">
+          <div class="form-field-label">이름 <span class="required">●</span></div>
+          <input class="form-input" type="text" id="f-name" placeholder="성함을 입력해 주세요">
+        </div>
+        <div class="form-field">
+          <div class="form-field-label">연락처 <span class="required">●</span></div>
+          <div class="phone-wrap">
+            <input class="form-input phone-part" type="text" id="f-tel1" maxlength="3" placeholder="010" oninput="autoTab(this,'f-tel2')">
+            <span class="phone-dash">-</span>
+            <input class="form-input phone-part" type="text" id="f-tel2" maxlength="4" placeholder="0000" oninput="autoTab(this,'f-tel3')">
+            <span class="phone-dash">-</span>
+            <input class="form-input phone-part" type="text" id="f-tel3" maxlength="4" placeholder="0000">
+          </div>
+        </div>
+        <div class="form-field">
+          <div class="form-field-label">내용</div>
+          <textarea class="form-input form-textarea" id="f-content" placeholder="문의 내용을 자유롭게 입력해 주세요"></textarea>
+        </div>
+        <div class="form-submit-wrap">
+          <button class="form-submit-btn" onclick="submitFranchise()">작 성</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- CTA -->
+  <div class="inquiry-cta">
+    <div>
+      <h2>JOIN<br>FINAL.</h2>
+      <p>파이널체대입시 가맹점 문의는 아래 버튼을 통해<br>언제든지 연락 주세요.</p>
+    </div>
+    <div class="inquiry-btns">
+      <button class="cta-btn-white" onclick="window.open('https://ig.me/m/final._.time','_blank')">상담 문의</button>
+      <button class="cta-btn-outline" onclick="switchTab('partner')">협력사 문의</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 협력사 문의 ══ -->
+<div id="section-partner" style="display:none;">
+  <section style="padding:80px 64px;background:var(--black);">
+    <div class="sec-label">PARTNERSHIP</div>
+    <div style="font-family:var(--display);font-size:clamp(28px,4vw,44px);letter-spacing:1px;margin-bottom:6px;">COOPERATION</div>
+    <div style="font-size:clamp(20px,2.5vw,28px);font-weight:700;letter-spacing:-1px;color:var(--white-50);margin-bottom:44px;">협력사 문의</div>
+
+    <!-- 문의 폼 -->
+    <div style="max-width:640px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+        <div>
+          <div style="font-size:9px;letter-spacing:3px;color:var(--red);margin-bottom:8px;">회사명</div>
+          <input id="c-company" type="text" placeholder="회사명을 입력하세요" style="width:100%;background:var(--gray-card);border:0.5px solid var(--border);color:var(--white);font-family:var(--sans);font-size:13px;padding:12px 14px;outline:none;">
+        </div>
+        <div>
+          <div style="font-size:9px;letter-spacing:3px;color:var(--red);margin-bottom:8px;">담당자명</div>
+          <input id="c-name" type="text" placeholder="담당자 이름" style="width:100%;background:var(--gray-card);border:0.5px solid var(--border);color:var(--white);font-family:var(--sans);font-size:13px;padding:12px 14px;outline:none;">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+        <div>
+          <div style="font-size:9px;letter-spacing:3px;color:var(--red);margin-bottom:8px;">연락처</div>
+          <input id="c-tel" type="text" placeholder="010-0000-0000" style="width:100%;background:var(--gray-card);border:0.5px solid var(--border);color:var(--white);font-family:var(--sans);font-size:13px;padding:12px 14px;outline:none;">
+        </div>
+        <div>
+          <div style="font-size:9px;letter-spacing:3px;color:var(--red);margin-bottom:8px;">이메일</div>
+          <input id="c-email" type="email" placeholder="email@example.com" style="width:100%;background:var(--gray-card);border:0.5px solid var(--border);color:var(--white);font-family:var(--sans);font-size:13px;padding:12px 14px;outline:none;">
+        </div>
+      </div>
+      <div style="margin-bottom:16px;">
+        <div style="font-size:9px;letter-spacing:3px;color:var(--red);margin-bottom:8px;">협력 분야</div>
+        <select id="c-type" style="width:100%;background:var(--gray-card);border:0.5px solid var(--border);color:var(--white);font-family:var(--sans);font-size:13px;padding:12px 14px;outline:none;cursor:pointer;">
+          <option value="">협력 분야를 선택하세요</option>
+          <option>스포츠 용품/브랜드</option>
+          <option>교육 콘텐츠</option>
+          <option>IT/플랫폼</option>
+          <option>마케팅/광고</option>
+          <option>기타</option>
+        </select>
+      </div>
+      <div style="margin-bottom:24px;">
+        <div style="font-size:9px;letter-spacing:3px;color:var(--red);margin-bottom:8px;">문의내용</div>
+        <textarea id="c-msg" placeholder="협력 제안 내용을 입력하세요" style="width:100%;min-height:160px;background:var(--gray-card);border:0.5px solid var(--border);color:var(--white);font-family:var(--sans);font-size:13px;padding:12px 14px;outline:none;resize:vertical;line-height:1.7;"></textarea>
+      </div>
+      <button onclick="submitPartner()" style="width:100%;font-family:var(--sans);font-size:14px;font-weight:700;padding:15px;background:var(--red);color:var(--white);border:none;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#9e1824'" onmouseout="this.style.background='var(--red)'">
+        문의 보내기
+      </button>
+    </div>
+  </section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-wordmark">FINAL <span class="red">SPORTS ACADEMY</span>
+        <small>파이널체대입시 — FOR THE FINAL TIME</small></div>
+      <div class="footer-info">
+        주식회사 에프티 &nbsp;|&nbsp; 대표: 한현호 &nbsp;|&nbsp; 031-266-8864<br>
+        young3843@naver.com<br>경기도 성남시 분당구 수내로 201 삼부근린상가 B1
+      </div>
+    </div>
+    <div>
+      <div class="footer-nav">
+        <a href="about.html">파이널소개</a><a href="campus.html">캠퍼스현황</a>
+        <a href="info.html">최신입시</a><a href="partner.html#franchise-form">가맹점문의</a>
+      </div>
+      <div class="footer-sns">
+        <a href="https://pf.kakao.com/_JGrXn">KAKAO</a>
+        <a href="https://www.instagram.com/final._.time">INSTA</a>
+        <a href="https://www.youtube.com/@maxcaptainspo">YOUTUBE</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">COPYRIGHTⓒ 2026 FINAL SPORTS ACADEMY. ALL RIGHTS RESERVED.</div>
+</footer>
+
+<script>
+// ══════════════════════════════════════════
+// 지역 데이터 (시/구 단위)
+// ══════════════════════════════════════════
+const SI_REGIONS = [
+  // 서울
+  "서울 종로구","서울 중구","서울 용산구","서울 성동구","서울 광진구","서울 동대문구",
+  "서울 중랑구","서울 성북구","서울 강북구","서울 도봉구","서울 노원구","서울 은평구",
+  "서울 서대문구","서울 마포구","서울 양천구","서울 강서구","서울 구로구","서울 금천구",
+  "서울 영등포구","서울 동작구","서울 관악구","서울 서초구","서울 강남구","서울 송파구","서울 강동구",
+  // 경기
+  "경기 수원시","경기 성남시","경기 의정부시","경기 안양시","경기 부천시","경기 광명시",
+  "경기 평택시","경기 동두천시","경기 안산시","경기 고양시","경기 과천시","경기 구리시",
+  "경기 남양주시","경기 오산시","경기 시흥시","경기 군포시","경기 의왕시","경기 하남시",
+  "경기 용인시","경기 파주시","경기 이천시","경기 안성시","경기 김포시","경기 화성시",
+  "경기 광주시","경기 양주시","경기 포천시","경기 여주시","경기 양평군","경기 가평군",
+  // 인천
+  "인천 중구","인천 동구","인천 미추홀구","인천 연수구","인천 남동구","인천 부평구",
+  "인천 계양구","인천 서구","인천 강화군","인천 옹진군",
+  // 강원
+  "강원 춘천시","강원 원주시","강원 강릉시","강원 동해시","강원 태백시","강원 속초시","강원 삼척시",
+  // 충청
+  "충북 청주시","충북 충주시","충북 제천시",
+  "충남 천안시","충남 공주시","충남 보령시","충남 아산시","충남 서산시","충남 논산시","충남 계룡시","충남 당진시",
+  "세종시",
+  // 전라
+  "전북 전주시","전북 군산시","전북 익산시","전북 정읍시","전북 남원시","전북 김제시",
+  "전남 목포시","전남 여수시","전남 순천시","전남 나주시","전남 광양시",
+  "광주 동구","광주 서구","광주 남구","광주 북구","광주 광산구",
+  // 경상
+  "경북 포항시","경북 경주시","경북 김천시","경북 안동시","경북 구미시","경북 영주시","경북 영천시","경북 상주시","경북 문경시","경북 경산시",
+  "경남 창원시","경남 진주시","경남 통영시","경남 사천시","경남 김해시","경남 밀양시","경남 거제시","경남 양산시",
+  "부산 중구","부산 서구","부산 동구","부산 영도구","부산 부산진구","부산 동래구","부산 남구","부산 북구",
+  "부산 해운대구","부산 사하구","부산 금정구","부산 강서구","부산 연제구","부산 수영구","부산 사상구",
+  "대구 중구","대구 동구","대구 서구","대구 남구","대구 북구","대구 수성구","대구 달서구",
+  "울산 중구","울산 남구","울산 동구","울산 북구","울산 울주군",
+  // 제주
+  "제주 제주시","제주 서귀포시"
+];
+
+// 현재 단위
+let currentUnit = 'si';
+function setUnit(unit, btn) {
+  currentUnit = unit;
+  document.querySelectorAll('.unit-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('regionInput').placeholder = unit === 'si' ? '시/구 단위로 검색 (예: 강남구, 수원시)' : '구 단위로 검색 (예: 강남구, 분당구)';
+}
+
+// 자동완성
+function onRegionInput() {
+  const val = document.getElementById('regionInput').value.trim();
+  const ac = document.getElementById('autocomplete');
+  if (!val) { ac.style.display='none'; return; }
+  const filtered = SI_REGIONS.filter(r => r.includes(val)).slice(0, 8);
+  if (!filtered.length) { ac.style.display='none'; return; }
+  ac.innerHTML = filtered.map(r => {
+    const parts = r.split(' ');
+    const type = parts[parts.length-1].includes('구') ? '구' : '시';
+    return `<div class="autocomplete-item" onclick="selectRegion('${r}')">
+      ${r} <span class="region-type">${type.toUpperCase()}</span>
+    </div>`;
+  }).join('');
+  ac.style.display = 'block';
+}
+
+function onRegionKeydown(e) {
+  if (e.key === 'Enter') addRegionFromInput();
+  if (e.key === 'Escape') document.getElementById('autocomplete').style.display='none';
+}
+
+function selectRegion(r) {
+  document.getElementById('regionInput').value = r;
+  document.getElementById('autocomplete').style.display = 'none';
+  addRegionFromInput();
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.region-search')) {
+    document.getElementById('autocomplete').style.display = 'none';
+  }
+});
+
+// ══════════════════════════════════════════
+// 모집 지역 관리
+// ══════════════════════════════════════════
+let recruitRegions = JSON.parse(localStorage.getItem('recruitRegions') || '[]');
+
+// 초기 샘플 데이터
+if (recruitRegions.length === 0) {
+  recruitRegions = [
+    {name:"서울 강동구", lat:37.5301, lng:127.1238, type:"구"},
+    {name:"서울 강북구", lat:37.6397, lng:127.0256, type:"구"},
+    {name:"경기 수원시", lat:37.2636, lng:127.0286, type:"시"},
+    {name:"경기 고양시", lat:37.6576, lng:126.8320, type:"시"},
+    {name:"경기 화성시", lat:37.1996, lng:126.8315, type:"시"},
+    {name:"인천 연수구", lat:37.4106, lng:126.6780, type:"구"},
+    {name:"강원 원주시", lat:37.3422, lng:127.9201, type:"시"},
+    {name:"충남 천안시", lat:36.8151, lng:127.1139, type:"시"},
+    {name:"경남 창원시", lat:35.2279, lng:128.6811, type:"시"},
+    {name:"전북 전주시", lat:35.8241, lng:127.1480, type:"시"},
+    {name:"대구 달서구", lat:35.8295, lng:128.5326, type:"구"},
+    {name:"부산 해운대구", lat:35.1631, lng:129.1635, type:"구"},
+  ];
+  saveRegions();
+}
+
+function saveRegions() { localStorage.setItem('recruitRegions', JSON.stringify(recruitRegions)); }
+
+// 좌표 검색 (Nominatim)
+async function getCoords(name) {
+  try {
+    const q = encodeURIComponent(name + ' 대한민국');
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${q}&format=json&limit=1`);
+    const data = await res.json();
+    if (data.length) return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+  } catch(e) {}
+  return null;
+}
+
+async function addRegionFromInput() {
+  const val = document.getElementById('regionInput').value.trim();
+  if (!val) return;
+  document.getElementById('autocomplete').style.display = 'none';
+
+  // 중복 체크
+  if (recruitRegions.find(r => r.name === val)) {
+    alert('이미 추가된 지역입니다.');
+    return;
+  }
+
+  const btn = document.querySelector('.region-search-btn');
+  btn.textContent = '검색중...'; btn.disabled = true;
+
+  const coords = await getCoords(val);
+  btn.textContent = '+ 추가'; btn.disabled = false;
+
+  if (!coords) { alert('좌표를 찾을 수 없습니다. 지역명을 다시 확인해주세요.'); return; }
+
+  const type = val.includes('구') ? '구' : '시';
+  const region = { name:val, lat:coords.lat, lng:coords.lng, type };
+  recruitRegions.push(region);
+  saveRegions();
+
+  document.getElementById('regionInput').value = '';
+  renderRecruitList();
+  addMarkerToMap(region, recruitRegions.length - 1);
+  updateCount();
+}
+
+function clearLastRegion() {
+  if (!recruitRegions.length) return;
+  if (!confirm(`"${recruitRegions[recruitRegions.length-1].name}"을 삭제하시겠습니까?`)) return;
+  recruitRegions.pop();
+  saveRegions();
+  renderAll();
+}
+
+function clearAllRegions() {
+  if (!confirm('모집 지역을 전체 초기화하시겠습니까?')) return;
+  recruitRegions = [];
+  saveRegions();
+  renderAll();
+}
+
+function updateCount() {
+  document.getElementById('recruitCount').textContent = recruitRegions.length;
+}
+
+// ── 스크롤 리스트 렌더링
+function renderRecruitList() {
+  const inner = document.getElementById('recruitListInner');
+  if (!recruitRegions.length) {
+    inner.innerHTML = '<div style="padding:40px 20px;text-align:center;font-size:12px;color:var(--white-25);">모집 지역을 추가해주세요</div>';
+    updateCount();
+    return;
+  }
+  // 두 배 복제 (무한 스크롤용)
+  const items = recruitRegions.map((r, i) => `
+    <div class="recruit-list-item" onclick="focusMapRegion(${i})">
+      <div class="rli-left">
+        <div class="rli-dot"></div>
+        <div class="rli-info">
+          <div class="rli-region">${r.name.split(' ')[0].toUpperCase()}</div>
+          <div class="rli-name">${r.name.split(' ').slice(1).join(' ')}</div>
+        </div>
+      </div>
+      <div class="rli-badge">모집중</div>
+    </div>`).join('');
+  inner.innerHTML = items + items; // 두 번 반복 → 끊김 없는 스크롤
+  updateCount();
+
+  // 애니메이션 속도 — 항목 수에 따라 조정
+  const duration = Math.max(15, recruitRegions.length * 2.5);
+  inner.style.animationDuration = duration + 's';
+}
+
+// ══════════════════════════════════════════
+// 지도 (Leaflet 다크 테마)
+// ══════════════════════════════════════════
+let recruitMap = null;
+let recruitMarkers = [];
+
+function initRecruitMap() {
+  recruitMap = L.map('recruitMap', { zoomControl:true }).setView([36.5, 127.8], 7);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution:'© OpenStreetMap © CARTO', maxZoom:18
+  }).addTo(recruitMap);
+
+  renderAll();
+}
+
+const redIcon = () => L.divIcon({
+  className:'',
+  html:`<svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" viewBox="0 0 26 34">
+    <path d="M13 0C5.82 0 0 5.82 0 13c0 10 13 21 13 21S26 23 26 13C26 5.82 20.18 0 13 0z" fill="#cb1f2f"/>
+    <circle cx="13" cy="13" r="6" fill="white"/>
+    <circle cx="13" cy="13" r="3" fill="#cb1f2f"/>
+  </svg>`,
+  iconSize:[22,30], iconAnchor:[11,30], popupAnchor:[0,-34]
+});
+
+function addMarkerToMap(r, idx) {
+  if (!recruitMap) return;
+  const m = L.marker([r.lat, r.lng], {icon:redIcon()})
+    .addTo(recruitMap)
+    .bindPopup(`<div style="font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:600;color:#0b0d0c;">
+      ${r.name}<br><span style="font-size:10px;color:#cb1f2f;font-weight:400;">모집중</span>
+    </div>`, {closeButton:false});
+  recruitMarkers.push(m);
+}
+
+function renderAll() {
+  if (recruitMap) {
+    recruitMarkers.forEach(m => m.remove());
+    recruitMarkers = [];
+    recruitRegions.forEach((r, i) => addMarkerToMap(r, i));
+  }
+  renderRecruitList();
+}
+
+function focusMapRegion(i) {
+  const r = recruitRegions[i];
+  if (!recruitMap || !r) return;
+  recruitMap.flyTo([r.lat, r.lng], 13, {duration:0.8});
+  recruitMarkers[i]?.openPopup();
+  // 리스트 하이라이트
+  document.querySelectorAll('.recruit-list-item').forEach((el,j) => {
+    el.classList.toggle('highlighted', j===i || j===i+recruitRegions.length);
+  });
+}
+
+// Leaflet 로드
+(function() {
+  const css = document.createElement('link');
+  css.rel='stylesheet'; css.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+  document.head.appendChild(css);
+  const s = document.createElement('script');
+  s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  s.onload = initRecruitMap;
+  document.head.appendChild(s);
+})();
+
+// ══════════════════════════════════════════
+// 탭 전환
+// ══════════════════════════════════════════
+function switchTab(tab) {
+  document.getElementById('section-franchise').style.display = tab==='franchise' ? '' : 'none';
+  document.getElementById('section-partner').style.display   = tab==='partner'   ? '' : 'none';
+  document.getElementById('tab-franchise').classList.toggle('active', tab==='franchise');
+  document.getElementById('tab-partner').classList.toggle('active', tab==='partner');
+  if (tab==='franchise' && recruitMap) { setTimeout(()=>recruitMap.invalidateSize(),200); }
+}
+
+
+// URL 앵커 처리 — #franchise-form 이면 탭 전환 후 스크롤
+(function() {
+  if (location.hash === '#franchise-form') {
+    switchTab('franchise');
+    setTimeout(() => {
+      const el = document.getElementById('franchise-form');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 300);
+  }
+  // partner 탭
+  const urlTab = new URLSearchParams(location.search).get('tab');
+  if (urlTab === 'partner') switchTab('partner');
+})();
+
+
+// 협력사 폼
+async function submitPartner() {
+  const company = document.getElementById('c-company').value.trim();
+  const name    = document.getElementById('c-name').value.trim();
+  const tel     = document.getElementById('c-tel').value.trim();
+  const email   = document.getElementById('c-email').value.trim();
+  const type    = document.getElementById('c-type').value;
+  const msg     = document.getElementById('c-msg').value.trim();
+
+  if (!company || !name || !tel) { alert('필수 항목(회사명, 담당자명, 연락처)을 입력해주세요.'); return; }
+
+  const btn = document.querySelector('#section-partner button[onclick="submitPartner()"]');
+  if (btn) { btn.textContent = '전송 중...'; btn.disabled = true; btn.style.opacity = '0.6'; }
+
+  try {
+    const res = await fetch('https://formspree.io/f/xbdeqgyo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        '문의유형':   '[협력사 문의]',
+        '회사명':    company,
+        '담당자명':  name,
+        '연락처':    tel,
+        '이메일':    email || '(미입력)',
+        '협력분야':  type || '(미선택)',
+        '문의내용':  msg || '(내용 없음)',
+        '_subject': `[파이널체대입시] 협력사 문의 — ${company} / ${name}`,
+      })
+    });
+
+    if (res.ok) {
+      if (btn) {
+        btn.textContent = '✓ 전송 완료';
+        btn.style.background = '#1a7a3a';
+        setTimeout(() => {
+          btn.textContent = '문의 보내기';
+          btn.disabled = false;
+          btn.style.opacity = '1';
+          btn.style.background = '';
+        }, 3000);
+      }
+      ['c-company','c-name','c-tel','c-email','c-msg'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+      document.getElementById('c-type').value = '';
+      alert('문의가 접수되었습니다!\n담당자가 빠른 시일 내 연락드리겠습니다.\n\n파이널체대입시 031-266-8864');
+    } else {
+      throw new Error('서버 오류');
+    }
+  } catch(e) {
+    if (btn) { btn.textContent = '문의 보내기'; btn.disabled = false; btn.style.opacity = '1'; }
+    alert('전송 중 오류가 발생했습니다.\n잠시 후 다시 시도하거나 전화로 문의해 주세요.\n031-266-8864');
+  }
+}
+
+// ══════════════════════════════════════════
+// 관리자 모드
+// ══════════════════════════════════════════
+let isAdmin = false;
+const ADMIN_PW = 'final2026'; // ← 비밀번호 변경 가능
+
+function toggleAdminMode() {
+  if (isAdmin) {
+    // 로그아웃
+    isAdmin = false;
+    document.body.classList.remove('admin-mode');
+    document.querySelectorAll('.admin-ctrl').forEach(el => el.style.display = 'none');
+    document.getElementById('adminLoginBtn').textContent = '🔒 관리자';
+  } else {
+    // 로그인
+    const pw = prompt('관리자 비밀번호를 입력하세요:');
+    if (pw === null) return;
+    if (pw !== ADMIN_PW) {
+      alert('비밀번호가 올바르지 않습니다.');
+      return;
+    }
+    isAdmin = true;
+    document.body.classList.add('admin-mode');
+    // admin-ctrl 요소 flex/block으로 표시
+    document.querySelectorAll('.admin-ctrl').forEach(el => {
+      el.style.display = el.tagName === 'DIV' ? 'flex' : 'flex';
+    });
+    document.getElementById('adminLoginBtn').textContent = '🔓 관리자 ✓';
+  }
+}
+
+
+// ── 가맹문의 폼 ──
+function toggleAgree() {
+  const checked = document.getElementById('agreeCheck').checked;
+  const box = document.getElementById('customCheck');
+  const fields = document.getElementById('formFields');
+  if (checked) {
+    box.classList.add('checked');
+    fields.classList.remove('disabled');
+  } else {
+    box.classList.remove('checked');
+    fields.classList.add('disabled');
+  }
+}
+
+// 연락처 자동 탭 이동
+function autoTab(el, nextId) {
+  if (el.value.length >= el.maxLength) {
+    document.getElementById(nextId)?.focus();
+  }
+}
+
+async function submitFranchise() {
+  if (!document.getElementById('agreeCheck').checked) {
+    alert('개인정보 수집 및 이용에 동의해 주세요.');
+    return;
+  }
+  const region  = document.getElementById('f-region').value.trim();
+  const name    = document.getElementById('f-name').value.trim();
+  const tel1    = document.getElementById('f-tel1').value.trim();
+  const tel2    = document.getElementById('f-tel2').value.trim();
+  const tel3    = document.getElementById('f-tel3').value.trim();
+  const content = document.getElementById('f-content').value.trim();
+
+  if (!region) { alert('희망 지역을 입력해 주세요.'); document.getElementById('f-region').focus(); return; }
+  if (!name)   { alert('이름을 입력해 주세요.'); document.getElementById('f-name').focus(); return; }
+  if (!tel1 || !tel2 || !tel3) { alert('연락처를 입력해 주세요.'); return; }
+
+  // 버튼 로딩 상태
+  const btn = document.querySelector('.form-submit-btn');
+  btn.textContent = '전송 중...';
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+
+  try {
+    const res = await fetch('https://formspree.io/f/xbdeqgyo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        '희망지역': region,
+        '이름':    name,
+        '연락처':  `${tel1}-${tel2}-${tel3}`,
+        '문의내용': content || '(내용 없음)',
+        '_subject': `[파이널체대입시] 가맹점 문의 — ${name} / ${region}`,
+      })
+    });
+
+    if (res.ok) {
+      // 성공
+      btn.textContent = '✓ 전송 완료';
+      btn.style.background = '#1a7a3a';
+      setTimeout(() => {
+        btn.textContent = '작 성';
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.style.background = '';
+      }, 3000);
+
+      // 폼 초기화
+      ['f-region','f-name','f-tel1','f-tel2','f-tel3','f-content'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+      document.getElementById('agreeCheck').checked = false;
+      document.getElementById('customCheck').classList.remove('checked');
+      document.getElementById('formFields').classList.add('disabled');
+
+      alert('문의가 접수되었습니다!\n담당자가 빠른 시일 내 연락드리겠습니다.\n\n파이널체대입시 031-266-8864');
+    } else {
+      throw new Error('서버 오류');
+    }
+  } catch(e) {
+    btn.textContent = '작 성';
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    alert('전송 중 오류가 발생했습니다.\n잠시 후 다시 시도하거나 전화로 문의해 주세요.\n031-266-8864');
+  }
+}
+
+// 초기 상태 — 동의 전 비활성
+document.getElementById('formFields').classList.add('disabled');
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>커뮤니티 — FINAL SPORTS ACADEMY</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --red:#cb1f2f; --red-deep:#9e1824; --red-faint:rgba(203,31,47,0.06);
+  --black:#0b0d0c; --gray-panel:#161818; --gray-card:#111313; --gray-dark:#363838;
+  --white:#fff; --white-80:rgba(255,255,255,0.80); --white-50:rgba(255,255,255,0.50);
+  --white-25:rgba(255,255,255,0.25);
+  --border:rgba(255,255,255,0.07); --border-red:rgba(203,31,47,0.25);
+  --sans:'Noto Sans KR',sans-serif; --display:'Bebas Neue','Noto Sans KR',sans-serif;
+}
+html { scroll-behavior:smooth; }
+body { font-family:var(--sans); background:var(--black); color:var(--white); overflow-x:hidden; }
+::-webkit-scrollbar { width:3px; }
+::-webkit-scrollbar-track { background:var(--black); }
+::-webkit-scrollbar-thumb { background:var(--red-deep); }
+a { text-decoration:none; color:inherit; }
+.nav {
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 64px; height:68px;
+  background:rgba(11,13,12,0.95); backdrop-filter:blur(20px);
+  border-bottom:0.5px solid var(--border);
+}
+.nav-logo img { height:36px; width:auto; display:block; }
+.nav-links { display:flex; gap:0; list-style:none; height:68px; }
+.nav-links > li { position:relative; display:flex; align-items:center; }
+.nav-links > li > a {
+  font-size:12px; color:var(--white-50); padding:0 20px; height:68px;
+  display:flex; align-items:center; gap:4px; position:relative; white-space:nowrap; transition:color 0.2s;
+}
+.nav-links > li > a::after {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:2px;
+  background:var(--red); transform:scaleX(0); transition:transform 0.25s; transform-origin:center;
+}
+.nav-links > li:hover > a { color:var(--white); }
+.nav-links > li:hover > a::after { transform:scaleX(1); }
+.nav-links > li > a .arr { font-size:8px; color:var(--white-25); transition:transform 0.2s,color 0.2s; }
+.nav-links > li:hover > a .arr { transform:rotate(180deg); color:var(--red); }
+.nav-dropdown {
+  position:absolute; top:68px; left:0; min-width:140px;
+  background:rgba(11,13,12,0.97); border:0.5px solid rgba(255,255,255,0.08); border-top:2px solid var(--red);
+  backdrop-filter:blur(16px); opacity:0; visibility:hidden; transform:translateY(-8px);
+  transition:opacity 0.25s,transform 0.25s,visibility 0.25s; z-index:200; padding:8px 0;
+}
+.nav-links > li:hover .nav-dropdown { opacity:1; visibility:visible; transform:translateY(0); }
+.nav-dropdown a {
+  display:block; padding:10px 20px; font-size:12px; color:var(--white-50);
+  transition:color 0.15s,background 0.15s,padding-left 0.15s; white-space:nowrap;
+}
+.nav-dropdown a:hover { color:var(--white); background:rgba(203,31,47,0.08); padding-left:24px; }
+.nav-right { display:flex; align-items:center; gap:20px; }
+.nav-tel { font-size:12px; color:var(--white-25); }
+.nav-cta {
+  background:var(--red); color:var(--white); font-family:var(--sans);
+  font-size:12px; font-weight:700; padding:9px 22px; border:none; cursor:pointer; transition:background 0.2s;
+}
+.nav-cta:hover { background:var(--red-deep); }
+.page-hero {
+  padding:140px 64px 72px; background:var(--gray-panel);
+  border-bottom:2px solid var(--red); position:relative; overflow:hidden;
+}
+.page-hero::before {
+  content:''; position:absolute; inset:0;
+  background:repeating-linear-gradient(-55deg,transparent,transparent 2px,rgba(203,31,47,0.03) 2px,rgba(203,31,47,0.03) 3px);
+}
+.page-hero-bg {
+  position:absolute; right:-20px; bottom:-30px; font-family:var(--display);
+  font-size:260px; line-height:1; letter-spacing:-8px; color:rgba(255,255,255,0.025);
+  pointer-events:none; user-select:none;
+}
+.page-hero-content { position:relative; }
+.breadcrumb { display:flex; align-items:center; gap:8px; font-size:11px; color:var(--white-25); letter-spacing:1px; margin-bottom:20px; }
+.breadcrumb .sep { color:var(--red); }
+.breadcrumb .current { color:var(--red); }
+.page-title { font-family:var(--display); font-size:clamp(48px,7vw,88px); line-height:0.95; letter-spacing:1px; margin-bottom:6px; }
+.page-title-ko { font-size:clamp(18px,2.5vw,28px); font-weight:700; letter-spacing:-1px; color:var(--white-50); }
+.sub-tabs { display:flex; border-bottom:0.5px solid var(--border); background:var(--gray-panel); padding:0 64px; }
+.sub-tab {
+  font-size:13px; color:var(--white-25); padding:16px 24px; cursor:pointer;
+  border:none; background:transparent; border-bottom:2px solid transparent;
+  transition:all 0.2s; font-family:var(--sans); white-space:nowrap;
+}
+.sub-tab:hover { color:var(--white-80); }
+.sub-tab.active { color:var(--white); border-bottom-color:var(--red); font-weight:500; }
+footer { background:#060808; padding:52px 64px; border-top:0.5px solid var(--border); }
+.footer-inner { display:flex; justify-content:space-between; flex-wrap:wrap; gap:32px; }
+.footer-wordmark { font-family:var(--display); font-size:18px; letter-spacing:2px; }
+.footer-wordmark .red { color:var(--red); }
+.footer-wordmark small { display:block; font-family:var(--sans); font-size:9px; letter-spacing:3px; color:var(--white-25); margin-top:2px; }
+.footer-info { font-size:11px; color:rgba(255,255,255,0.2); line-height:2.2; margin-top:14px; max-width:400px; }
+.footer-nav { display:flex; flex-direction:column; align-items:flex-end; gap:10px; }
+.footer-nav a { font-size:11px; color:var(--white-25); transition:color 0.2s; }
+.footer-nav a:hover { color:var(--white-50); }
+.footer-sns { display:flex; gap:8px; margin-top:14px; justify-content:flex-end; }
+.footer-sns a { font-size:10px; color:var(--white-25); border:0.5px solid var(--border); padding:5px 12px; letter-spacing:1.5px; transition:all 0.2s; }
+.footer-sns a:hover { color:var(--red); border-color:var(--border-red); }
+.footer-bottom { margin-top:40px; padding-top:20px; border-top:0.5px solid var(--border); font-size:10px; color:rgba(255,255,255,0.15); }
+@media(max-width:960px) {
+  .nav { padding:0 24px; } .nav-links { display:none; }
+  .page-hero { padding:120px 24px 56px; }
+  .sub-tabs { padding:0 24px; overflow-x:auto; }
+  footer { padding:40px 24px; }
+  .footer-nav { align-items:flex-start; } .footer-sns { justify-content:flex-start; }
+}
+
+
+/* ── 갤러리 (인스타 피드) ── */
+.gallery-section { padding:56px 64px; background:var(--black); }
+.gallery-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:36px; }
+.sec-label { font-size:9px; font-weight:500; letter-spacing:4px; color:var(--red); margin-bottom:8px; }
+.gallery-header h2 { font-size:22px; font-weight:700; letter-spacing:-0.5px; }
+.insta-account { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--white-25); }
+.insta-account a { color:var(--red); }
+.gallery-grid {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border);
+}
+.gallery-card {
+  aspect-ratio:1; position:relative; overflow:hidden;
+  cursor:pointer; background:var(--gray-card);
+}
+.gallery-card img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.5s; }
+.gallery-card:hover img { transform:scale(1.06); }
+.gallery-placeholder {
+  width:100%; height:100%;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+  background:linear-gradient(135deg,#161818,#1a1c1c);
+}
+.gallery-placeholder-icon { font-size:28px; opacity:0.2; }
+.gallery-placeholder-text { font-size:9px; letter-spacing:2px; color:var(--white-25); }
+.gallery-overlay {
+  position:absolute; inset:0; background:rgba(11,13,12,0.8);
+  opacity:0; transition:opacity 0.3s;
+  display:flex; flex-direction:column; justify-content:flex-end; padding:18px;
+}
+.gallery-card:hover .gallery-overlay { opacity:1; }
+.gallery-overlay-caption { font-size:12px; color:var(--white-80); line-height:1.5; }
+.gallery-overlay-date { font-size:10px; color:var(--white-25); margin-top:6px; }
+.gallery-overlay-link { font-size:10px; color:var(--red); margin-top:8px; letter-spacing:1px; }
+.connect-banner {
+  margin:0 64px 48px; padding:18px 28px;
+  background:rgba(203,31,47,0.06); border:0.5px solid rgba(203,31,47,0.2);
+  display:flex; align-items:center; justify-content:space-between; gap:20px;
+}
+.connect-banner p { font-size:13px; color:var(--white-50); }
+.connect-banner p strong { color:var(--white); }
+.connect-banner-btn {
+  font-family:var(--sans); font-size:11px; font-weight:700;
+  padding:8px 20px; background:var(--red); color:var(--white);
+  border:none; cursor:pointer; white-space:nowrap; flex-shrink:0;
+}
+
+/* ── 파이널소식 게시판 ── */
+.board-section { padding:56px 64px; background:var(--black); display:none; }
+.board-toolbar {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:24px; flex-wrap:wrap; gap:12px;
+}
+.board-search {
+  display:flex; gap:0; border:0.5px solid var(--border);
+}
+.board-search input {
+  background:var(--gray-card); border:none; color:var(--white);
+  font-family:var(--sans); font-size:12px; padding:9px 16px; outline:none; width:220px;
+}
+.board-search input::placeholder { color:var(--white-25); }
+.board-search button {
+  background:var(--red); border:none; color:var(--white);
+  font-size:13px; padding:9px 14px; cursor:pointer;
+}
+.write-btn {
+  font-family:var(--sans); font-size:12px; font-weight:700;
+  padding:9px 22px; background:var(--red); color:var(--white);
+  border:none; cursor:pointer; transition:background 0.2s;
+}
+.write-btn:hover { background:var(--red-deep); }
+/* 관리자 아닐 때 숨김 */
+.admin-only { display:none; }
+.admin-mode .admin-only { display:inline-flex; }
+
+/* 게시글 테이블 */
+.board-table { width:100%; border-collapse:collapse; }
+.board-table th {
+  font-size:10px; letter-spacing:2px; color:var(--white-25); font-weight:500;
+  padding:12px 16px; border-bottom:0.5px solid var(--border); text-align:left;
+}
+.board-table td {
+  padding:16px 16px; border-bottom:0.5px solid var(--border);
+  font-size:13px; color:var(--white-80); vertical-align:middle;
+}
+.board-table tr:hover td { background:rgba(255,255,255,0.02); cursor:pointer; }
+.board-table .num { width:60px; color:var(--white-25); font-size:12px; text-align:center; }
+.board-table .tag-cell { width:90px; }
+.board-table .date-cell { width:100px; color:var(--white-25); font-size:11px; }
+.board-table .views-cell { width:70px; color:var(--white-25); font-size:11px; text-align:center; }
+.board-table .title-link { cursor:pointer; transition:color 0.2s; }
+.board-table .title-link:hover { color:var(--red); }
+.board-tag {
+  display:inline-block; font-size:8px; letter-spacing:1.5px;
+  color:var(--red); border:0.5px solid var(--border-red); padding:2px 7px;
+}
+.board-notice { background:rgba(203,31,47,0.04); }
+.board-notice .num { color:var(--red); font-weight:700; font-size:11px; }
+.board-pagination {
+  display:flex; justify-content:center; gap:4px; margin-top:36px;
+}
+.page-btn {
+  width:32px; height:32px; display:flex; align-items:center; justify-content:center;
+  font-size:12px; color:var(--white-25); border:0.5px solid var(--border);
+  background:transparent; cursor:pointer; transition:all 0.2s; font-family:var(--sans);
+}
+.page-btn:hover, .page-btn.active { background:var(--red); color:var(--white); border-color:var(--red); }
+
+/* ── 글쓰기 모달 ── */
+.modal-backdrop {
+  position:fixed; inset:0; background:rgba(0,0,0,0.85);
+  z-index:2000; display:none; align-items:center; justify-content:center;
+}
+.modal-backdrop.open { display:flex; }
+.modal {
+  background:var(--gray-panel); border:0.5px solid var(--border); border-top:2px solid var(--red);
+  width:min(720px, 95vw); max-height:90vh; overflow-y:auto;
+  padding:36px 40px; position:relative;
+}
+.modal-title { font-size:18px; font-weight:700; letter-spacing:-0.5px; margin-bottom:28px; }
+.modal-close {
+  position:absolute; top:16px; right:16px;
+  background:transparent; border:0.5px solid var(--border);
+  color:var(--white-50); width:32px; height:32px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:16px; transition:all 0.2s;
+}
+.modal-close:hover { background:var(--red); color:var(--white); border-color:var(--red); }
+.form-row { margin-bottom:16px; display:flex; flex-direction:column; gap:6px; }
+.form-label { font-size:10px; letter-spacing:2px; color:var(--red); }
+.form-input, .form-select, .form-textarea {
+  background:var(--black); border:0.5px solid var(--border); color:var(--white);
+  font-family:var(--sans); font-size:13px; padding:11px 14px; outline:none; width:100%;
+  transition:border-color 0.2s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color:rgba(203,31,47,0.5); }
+.form-select { cursor:pointer; }
+.form-select option { background:var(--gray-panel); }
+.form-textarea { min-height:200px; resize:vertical; line-height:1.7; }
+.form-actions { display:flex; justify-content:flex-end; gap:10px; margin-top:24px; }
+.form-btn-cancel {
+  font-family:var(--sans); font-size:13px; padding:11px 24px;
+  background:transparent; color:var(--white-50); border:0.5px solid var(--border); cursor:pointer;
+}
+.form-btn-submit {
+  font-family:var(--sans); font-size:13px; font-weight:700; padding:11px 28px;
+  background:var(--red); color:var(--white); border:none; cursor:pointer; transition:background 0.2s;
+}
+.form-btn-submit:hover { background:var(--red-deep); }
+
+/* ── 게시글 상세 뷰 ── */
+.post-view { display:none; padding:56px 64px; }
+.post-header { border-bottom:0.5px solid var(--border); padding-bottom:24px; margin-bottom:32px; }
+.post-meta { display:flex; gap:16px; align-items:center; margin-bottom:14px; flex-wrap:wrap; }
+.post-tag { font-size:9px; letter-spacing:2px; color:var(--red); border:0.5px solid var(--border-red); padding:3px 10px; }
+.post-date, .post-views { font-size:11px; color:var(--white-25); }
+.post-title { font-size:24px; font-weight:700; letter-spacing:-0.5px; line-height:1.3; }
+.post-body { font-size:14px; color:var(--white-80); line-height:1.9; white-space:pre-wrap; }
+.post-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-top:48px; padding-top:24px; border-top:0.5px solid var(--border); flex-wrap:wrap; gap:12px;
+}
+.post-nav-btn {
+  font-family:var(--sans); font-size:12px; color:var(--white-50);
+  padding:9px 20px; border:0.5px solid var(--border); background:transparent; cursor:pointer; transition:all 0.2s;
+}
+.post-nav-btn:hover { color:var(--white); border-color:rgba(255,255,255,0.3); }
+.post-nav-btn.primary { background:var(--red); color:var(--white); border-color:var(--red); }
+.post-admin-actions { display:none; gap:8px; }
+.admin-mode .post-admin-actions { display:flex; }
+
+@media(max-width:960px) {
+  .gallery-section { padding:40px 24px; }
+  .gallery-grid { grid-template-columns:repeat(2,1fr); }
+  .connect-banner { margin:0 24px 36px; flex-direction:column; }
+  .board-section { padding:40px 24px; }
+  .board-table .views-cell, .board-table .date-cell { display:none; }
+  .post-view { padding:40px 24px; }
+  .modal { padding:28px 24px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="data:image/png;base64,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" alt="FINAL SPORTS ACADEMY">
+  </a>
+  <ul class="nav-links">
+    <li><a href="about.html">파이널체대입시 <span class="arr">▼</span></a>
+      <div class="nav-dropdown">
+        <a href="about.html">파이널소개</a><a href="history.html">파이널연혁</a><a href="ai.html">파이널AI</a>
+      </div></li>
+    <li><a href="campus.html">지점소개 <span class="arr">▼</span></a>
+      <div class="nav-dropdown"><a href="campus.html">캠퍼스현황</a></div></li>
+    <li><a href="info.html">입시정보 <span class="arr">▼</span></a>
+      <div class="nav-dropdown"><a href="info.html">최신입시</a></div></li>
+    <li><a href="community.html">커뮤니티 <span class="arr">▼</span></a>
+      <div class="nav-dropdown">
+        <a href="community.html">파이널갤러리</a>
+        <a href="community.html?tab=news">파이널소식</a>
+      </div></li>
+    <li><a href="partner.html">파트너모집 <span class="arr">▼</span></a>
+      <div class="nav-dropdown">
+        <a href="partner.html#franchise-form">가맹점문의</a><a href="partner.html">협력사문의</a>
+      </div></li>
+  </ul>
+  <div class="nav-right">
+    <span class="nav-tel">031-266-8864</span>
+    <button class="nav-cta" onclick="window.open('https://ig.me/m/final._.time','_blank')">무료 상담</button>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-bg">COMMUNITY</div>
+  <div class="page-hero-content">
+    <div class="breadcrumb">
+      <a href="index.html">HOME</a><span class="sep">/</span>
+      <span class="current">커뮤니티</span>
+    </div>
+    <div class="page-title">COMMUNITY</div>
+    <div class="page-title-ko">파이널 커뮤니티</div>
+  </div>
+</div>
+
+<!-- 서브탭 -->
+<div class="sub-tabs">
+  <button class="sub-tab active" id="tab-gallery" onclick="switchTab('gallery')">파이널갤러리</button>
+  <button class="sub-tab" id="tab-news" onclick="switchTab('news')">파이널소식</button>
+</div>
+
+<!-- ══ 파이널갤러리 ══ -->
+<div id="section-gallery">
+  <div class="connect-banner" id="galleryBanner">
+    <p><strong>📸 @final._.time 갤러리 연동 준비 중</strong><br>
+    Meta 액세스 토큰을 입력하면 파이널 갤러리 피드가 자동으로 표시됩니다.<br>
+    <span style="font-size:11px;color:rgba(203,31,47,0.7);">연동 계정: @final._.time</span></p>
+    <button class="connect-banner-btn" onclick="alert('HTML 파일의 GALLERY_TOKEN을 교체해 주세요.')">토큰 입력</button>
+  </div>
+
+  <section class="gallery-section">
+    <div class="gallery-header">
+      <div>
+        <div class="sec-label">INSTAGRAM</div>
+        <h2>파이널 갤러리</h2>
+      </div>
+      <div class="insta-account">
+        <span>📷</span>
+        <a href="https://www.instagram.com/final._.time" target="_blank">@final._.time</a>
+      </div>
+    </div>
+    <div class="gallery-grid" id="galleryGrid">
+      <!-- 플레이스홀더 12장 -->
+      
+      <div class="gallery-card">
+        <div class="gallery-placeholder">
+          <div class="gallery-placeholder-icon">📸</div>
+          <div class="gallery-placeholder-text">PHOTO 01</div>
+        </div>
+        <div class="gallery-overlay">
+          <div class="gallery-overlay-caption">파이널체대입시 공식 인스타그램</div>
+          <div class="gallery-overlay-date">@final._.time</div>
+          <div class="gallery-overlay-link">인스타그램에서 보기 →</div>
+        </div>
+      </div>
+      <div class="gallery-card">
+        <div class="gallery-placeholder">
+          <div class="gallery-placeholder-icon">🏃</div>
+          <div class="gallery-placeholder-text">PHOTO 02</div>
+        </div>
+        <div class="gallery-overlay">
+          <div class="gallery-overlay-caption">파이널체대입시 공식 인스타그램</div>
+          <div class="gallery-overlay-date">@final._.time</div>
+          <div class="gallery-overlay-link">인스타그램에서 보기 →</div>
+        </div>
+      </div>
+      <div class="gallery-card">
+        <div class="gallery-placeholder">
+          <div class="gallery-placeholder-icon">🏆</div>
+          <div class="gallery-placeholder-text">PHOTO 03</div>
+        </div>
+        <div class="gallery-overlay">
+          <div class="gallery-overlay-caption">파이널체대입시 공식 인스타그램</div>
+          <div class="gallery-overlay-date">@final._.time</div>
+          <div class="gallery-overlay-link">인스타그램에서 보기 →</div>
+        </div>
+      </div>
+      <div class="gallery-card">
+        <div class="gallery-placeholder">
+          <div class="gallery-placeholder-icon">📸</div>
+          <div class="gallery-placeholder-text">PHOTO 04</div>
+        </div>
+        <div class="gallery-overlay">
+          <div class="gallery-overlay-caption">파이널체대입시 공식 인스타그램</div>
+          <div class="gallery-overlay-date">@final._.time</div>
+          <div class="gallery-overlay-link">인스타그램에서 보기 →</div>
+        </div>
+      </div>
+      <div class="gallery-card">
+        <div class="gallery-placeholder">
+          <div class="gallery-placeholder-icon">🏃</div>
+          <div class="gallery-placeholder-text">PHOTO 05</div>
+        </div>
+        <div class="gallery-overlay">
+          <div class="gallery-overlay-caption">파이널체대입시 공식 인스타그램</div>
+          <div class="gallery-overlay-date">@final._.time</div>
+          <div class="gallery-overlay-link">인스타그램에서 보기 →</div>
+        </div>
+      </div>
+      <div class="gallery-card">
+        <div class="gallery-placeholder">
+          <div class="gallery-placeholder-icon">🏆</div>
+          <div class="gallery-placeholder-text">PHOTO 06</div>
+        </div>
+        <div class="gallery-overlay">
+          <div class="gallery-overlay-caption">파이널체대입시 공식 인스타그램</div>
+          <div class="gallery-overlay-date">@final._.time</div>
+          <div class="gallery-overlay-link">인스타그램에서 보기 →</div>
+        </div>
+      </div>
+      <div class="gallery-card">
+        <div class="gallery-placeholder">
+          <div class="gallery-placeholder-icon">📸</div>
+          <div class="gallery-placeholder-text">PHOTO 07</div>
+        </div>
+        <div class="gallery-overlay">
+          <div class="gallery-overlay-caption">파이널체대입시 공식 인스타그램</div>
+          <div class="gallery-overlay-date">@final._.time</div>
+          <div class="gallery-overlay-link">인스타그램에서 보기 →</div>
+        </div>
+      </div>
+      <div class="gallery-card">
+        <div class="gallery-placeholder">
+          <div class="gallery-placeholder-icon">🏃</div>
+          <div class="gallery-placeholder-text">PHOTO 08</div>
+        </div>
+        <div class="gallery-overlay">
+          <div class="gallery-overlay-caption">파이널체대입시 공식 인스타그램</div>
+          <div class="gallery-overlay-date">@final._.time</div>
+          <div class="gallery-overlay-link">인스타그램에서 보기 →</div>
+        </div>
+      </div>
+      <div class="gallery-card">
+        <div class="gallery-placeholder">
+          <div class="gallery-placeholder-icon">🏆</div>
+          <div class="gallery-placeholder-text">PHOTO 09</div>
+        </div>
+        <div class="gallery-overlay">
+          <div class="gallery-overlay-caption">파이널체대입시 공식 인스타그램</div>
+          <div class="gallery-overlay-date">@final._.time</div>
+          <div class="gallery-overlay-link">인스타그램에서 보기 →</div>
+        </div>
+      </div>
+      <div class="gallery-card">
+        <div class="gallery-placeholder">
+          <div class="gallery-placeholder-icon">📸</div>
+          <div class="gallery-placeholder-text">PHOTO 10</div>
+        </div>
+        <div class="gallery-overlay">
+          <div class="gallery-overlay-caption">파이널체대입시 공식 인스타그램</div>
+          <div class="gallery-overlay-date">@final._.time</div>
+          <div class="gallery-overlay-link">인스타그램에서 보기 →</div>
+        </div>
+      </div>
+      <div class="gallery-card">
+        <div class="gallery-placeholder">
+          <div class="gallery-placeholder-icon">🏃</div>
+          <div class="gallery-placeholder-text">PHOTO 11</div>
+        </div>
+        <div class="gallery-overlay">
+          <div class="gallery-overlay-caption">파이널체대입시 공식 인스타그램</div>
+          <div class="gallery-overlay-date">@final._.time</div>
+          <div class="gallery-overlay-link">인스타그램에서 보기 →</div>
+        </div>
+      </div>
+      <div class="gallery-card">
+        <div class="gallery-placeholder">
+          <div class="gallery-placeholder-icon">🏆</div>
+          <div class="gallery-placeholder-text">PHOTO 12</div>
+        </div>
+        <div class="gallery-overlay">
+          <div class="gallery-overlay-caption">파이널체대입시 공식 인스타그램</div>
+          <div class="gallery-overlay-date">@final._.time</div>
+          <div class="gallery-overlay-link">인스타그램에서 보기 →</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ══ 파이널소식 게시판 ══ -->
+<div id="section-news" style="display:none;">
+  <section class="board-section" id="boardList" style="display:block;">
+    <div class="board-toolbar">
+      <div class="board-search">
+        <input type="text" id="searchInput" placeholder="검색어를 입력하세요" onkeydown="if(event.key==='Enter')searchPosts()">
+        <button onclick="searchPosts()">🔍</button>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <button class="write-btn admin-only" onclick="openWriteModal()">✏️ 글쓰기</button>
+        <button onclick="toggleAdmin()" id="adminToggleBtn"
+          style="font-family:var(--sans);font-size:11px;padding:9px 16px;background:transparent;color:var(--white-25);border:0.5px solid var(--border);cursor:pointer;">
+          관리자
+        </button>
+      </div>
+    </div>
+
+    <table class="board-table" id="boardTable">
+      <thead>
+        <tr>
+          <th class="num">번호</th>
+          <th class="tag-cell">분류</th>
+          <th>제목</th>
+          <th class="date-cell">날짜</th>
+          <th class="views-cell">조회</th>
+        </tr>
+      </thead>
+      <tbody id="boardBody"></tbody>
+    </table>
+
+    <div class="board-pagination" id="pagination"></div>
+  </section>
+
+  <!-- 게시글 상세 뷰 -->
+  <div class="post-view" id="postView">
+    <div class="post-header">
+      <div class="post-meta">
+        <span class="post-tag" id="postTag"></span>
+        <span class="post-date" id="postDate"></span>
+        <span class="post-views" id="postViews"></span>
+      </div>
+      <div class="post-title" id="postTitle"></div>
+    </div>
+    <div class="post-body" id="postBody"></div>
+    <div class="post-nav">
+      <button class="post-nav-btn" onclick="backToList()">← 목록으로</button>
+      <div class="post-admin-actions">
+        <button class="post-nav-btn" id="editBtn" onclick="openEditModal()">수정</button>
+        <button class="post-nav-btn" style="color:#ff6b6b;border-color:#ff6b6b;" onclick="deletePost()">삭제</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 글쓰기/수정 모달 -->
+<div class="modal-backdrop" id="writeModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeWriteModal()">✕</button>
+    <div class="modal-title" id="modalTitle">새 글 작성</div>
+    <div class="form-row">
+      <div class="form-label">분류</div>
+      <select class="form-select" id="postTagInput">
+        <option value="공지">공지</option>
+        <option value="소식">소식</option>
+        <option value="이벤트">이벤트</option>
+        <option value="합격후기">합격후기</option>
+        <option value="기타">기타</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <div class="form-label">제목</div>
+      <input class="form-input" type="text" id="postTitleInput" placeholder="제목을 입력하세요">
+    </div>
+    <div class="form-row">
+      <div class="form-label">내용</div>
+      <textarea class="form-textarea" id="postBodyInput" placeholder="내용을 입력하세요"></textarea>
+    </div>
+    <div class="form-actions">
+      <button class="form-btn-cancel" onclick="closeWriteModal()">취소</button>
+      <button class="form-btn-submit" onclick="submitPost()">등록하기</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-wordmark">FINAL <span class="red">SPORTS ACADEMY</span>
+        <small>파이널체대입시 — FOR THE FINAL TIME</small></div>
+      <div class="footer-info">
+        주식회사 에프티 &nbsp;|&nbsp; 대표: 한현호 &nbsp;|&nbsp; 031-266-8864<br>
+        young3843@naver.com<br>경기도 성남시 분당구 수내로 201 삼부근린상가 B1
+      </div>
+    </div>
+    <div>
+      <div class="footer-nav">
+        <a href="about.html">파이널소개</a><a href="campus.html">캠퍼스현황</a>
+        <a href="info.html">최신입시</a><a href="partner.html#franchise-form">가맹점문의</a>
+      </div>
+      <div class="footer-sns">
+        <a href="https://pf.kakao.com/_JGrXn">KAKAO</a>
+        <a href="https://www.instagram.com/final._.time">INSTA</a>
+        <a href="https://www.youtube.com/@maxcaptainspo">YOUTUBE</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">COPYRIGHTⓒ 2026 FINAL SPORTS ACADEMY. ALL RIGHTS RESERVED.</div>
+</footer>
+
+<script>
+// ════════════════════════════════════
+// 인스타그램 갤러리 연동
+// ★ 토큰 받으면 아래 두 줄만 교체
+// ════════════════════════════════════
+const GALLERY_TOKEN   = 'YOUR_ACCESS_TOKEN';  // ← 교체
+const GALLERY_USER_ID = 'YOUR_IG_USER_ID';    // ← 교체
+const GALLERY_CONNECTED = GALLERY_TOKEN !== 'YOUR_ACCESS_TOKEN';
+
+if (GALLERY_CONNECTED) {
+  document.getElementById('galleryBanner').style.display = 'none';
+  loadGallery();
+}
+
+async function loadGallery() {
+  try {
+    const res = await fetch(
+      `https://graph.instagram.com/${GALLERY_USER_ID}/media?fields=id,media_type,media_url,thumbnail_url,caption,permalink,timestamp&limit=12&access_token=${GALLERY_TOKEN}`
+    );
+    const data = await res.json();
+    if (!data.data) return;
+    const grid = document.getElementById('galleryGrid');
+    grid.innerHTML = '';
+    data.data.forEach(post => {
+      const src = post.media_type === 'VIDEO' ? post.thumbnail_url : post.media_url;
+      const cap = post.caption ? post.caption.substring(0,60) + '...' : '';
+      const date = new Date(post.timestamp).toLocaleDateString('ko-KR',{year:'numeric',month:'2-digit'}).replace('. ','.');
+      grid.innerHTML += `
+        <div class="gallery-card" onclick="window.open('${post.permalink}','_blank')">
+          <img src="${src}" alt="${cap}" loading="lazy">
+          <div class="gallery-overlay">
+            <div class="gallery-overlay-caption">${cap}</div>
+            <div class="gallery-overlay-date">${date}</div>
+            <div class="gallery-overlay-link">인스타그램에서 보기 →</div>
+          </div>
+        </div>`;
+    });
+  } catch(e) { console.error('Gallery error:', e); }
+}
+
+// ════════════════════════════════════
+// 탭 전환
+// ════════════════════════════════════
+function switchTab(tab) {
+  document.getElementById('section-gallery').style.display = tab === 'gallery' ? '' : 'none';
+  document.getElementById('section-news').style.display    = tab === 'news'    ? '' : 'none';
+  document.getElementById('tab-gallery').classList.toggle('active', tab === 'gallery');
+  document.getElementById('tab-news').classList.toggle('active', tab === 'news');
+  if (tab === 'news') renderBoard();
+}
+
+// URL 파라미터로 탭 초기화
+const urlTab = new URLSearchParams(location.search).get('tab');
+if (urlTab === 'news') switchTab('news');
+
+// ════════════════════════════════════
+// 게시판 로직 (localStorage 기반)
+// ════════════════════════════════════
+let posts = JSON.parse(localStorage.getItem('finalPosts') || '[]');
+let currentPage = 1;
+const PER_PAGE = 10;
+let editingId = null;
+let currentPostId = null;
+
+// 기본 공지글
+if (posts.length === 0) {
+  posts = [
+    { id:3, tag:'공지', title:'파이널체대입시 홈페이지 오픈 안내', body:'안녕하세요. 파이널체대입시 공식 홈페이지가 오픈되었습니다.\n\n앞으로 최신 입시정보와 각종 소식을 이곳에서 전달드리겠습니다.\n많은 관심 부탁드립니다.', date:'2026-06-14', views:128, notice:true },
+    { id:2, tag:'소식', title:'2027학년도 체대입시 전략 설명회 개최', body:'파이널체대입시에서 2027학년도 체대입시 전략 설명회를 개최합니다.\n\n일시: 2026년 7월 7일 (월) 오후 2시\n장소: 수원대학교 체육관\n\n많은 참여 바랍니다.', date:'2026-06-10', views:94, notice:false },
+    { id:1, tag:'이벤트', title:'파이널붐 행사 참가자 모집', body:'파이널체대입시 연례 행사 파이널붐에 참가하실 분들을 모집합니다.\n\n자세한 내용은 카카오톡 채널을 통해 문의해 주세요.', date:'2026-06-05', views:212, notice:false },
+  ];
+  savePosts();
+}
+
+function savePosts() { localStorage.setItem('finalPosts', JSON.stringify(posts)); }
+
+let searchKeyword = '';
+
+function renderBoard() {
+  const filtered = posts.filter(p =>
+    !searchKeyword || p.title.includes(searchKeyword) || p.body.includes(searchKeyword)
+  );
+  const notices  = filtered.filter(p => p.notice);
+  const normals  = filtered.filter(p => !p.notice);
+  const totalNormal = normals.length;
+  const totalPages  = Math.ceil(totalNormal / PER_PAGE);
+  const pageItems   = normals.slice((currentPage-1)*PER_PAGE, currentPage*PER_PAGE);
+  const items = [...notices, ...pageItems];
+
+  const tbody = document.getElementById('boardBody');
+  tbody.innerHTML = items.map((p, i) => `
+    <tr class="${p.notice ? 'board-notice' : ''}" onclick="viewPost(${p.id})">
+      <td class="num">${p.notice ? '📌' : totalNormal - ((currentPage-1)*PER_PAGE + (i - notices.length))}</td>
+      <td class="tag-cell"><span class="board-tag">${p.tag}</span></td>
+      <td><span class="title-link">${p.title}</span></td>
+      <td class="date-cell">${p.date}</td>
+      <td class="views-cell">${p.views}</td>
+    </tr>`).join('');
+
+  // 페이지네이션
+  const pg = document.getElementById('pagination');
+  pg.innerHTML = '';
+  for (let i=1; i<=totalPages; i++) {
+    pg.innerHTML += `<button class="page-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
+  }
+}
+
+function goPage(n) { currentPage = n; renderBoard(); window.scrollTo(0,300); }
+function searchPosts() { searchKeyword = document.getElementById('searchInput').value; currentPage=1; renderBoard(); }
+
+function viewPost(id) {
+  const p = posts.find(x => x.id === id);
+  if (!p) return;
+  p.views++;
+  savePosts();
+  currentPostId = id;
+  document.getElementById('postTag').textContent = p.tag;
+  document.getElementById('postDate').textContent = p.date;
+  document.getElementById('postViews').textContent = `조회 ${p.views}`;
+  document.getElementById('postTitle').textContent = p.title;
+  document.getElementById('postBody').textContent = p.body;
+  document.getElementById('boardList').style.display = 'none';
+  document.getElementById('postView').style.display = 'block';
+  window.scrollTo(0,200);
+}
+
+function backToList() {
+  document.getElementById('boardList').style.display = 'block';
+  document.getElementById('postView').style.display = 'none';
+  renderBoard();
+}
+
+// ── 글쓰기 ──
+function openWriteModal() {
+  editingId = null;
+  document.getElementById('modalTitle').textContent = '새 글 작성';
+  document.getElementById('postTagInput').value = '소식';
+  document.getElementById('postTitleInput').value = '';
+  document.getElementById('postBodyInput').value = '';
+  document.getElementById('writeModal').classList.add('open');
+}
+
+function openEditModal() {
+  const p = posts.find(x => x.id === currentPostId);
+  if (!p) return;
+  editingId = p.id;
+  document.getElementById('modalTitle').textContent = '글 수정';
+  document.getElementById('postTagInput').value = p.tag;
+  document.getElementById('postTitleInput').value = p.title;
+  document.getElementById('postBodyInput').value = p.body;
+  document.getElementById('writeModal').classList.add('open');
+}
+
+function closeWriteModal() { document.getElementById('writeModal').classList.remove('open'); }
+
+function submitPost() {
+  const tag   = document.getElementById('postTagInput').value;
+  const title = document.getElementById('postTitleInput').value.trim();
+  const body  = document.getElementById('postBodyInput').value.trim();
+  if (!title || !body) { alert('제목과 내용을 입력하세요.'); return; }
+  const today = new Date().toISOString().slice(0,10);
+  if (editingId) {
+    const p = posts.find(x => x.id === editingId);
+    p.tag = tag; p.title = title; p.body = body;
+    savePosts();
+    closeWriteModal();
+    viewPost(editingId);
+  } else {
+    const newPost = { id: Date.now(), tag, title, body, date: today, views: 0, notice: tag==='공지' };
+    posts.unshift(newPost);
+    savePosts();
+    closeWriteModal();
+    renderBoard();
+  }
+}
+
+function deletePost() {
+  if (!confirm('게시글을 삭제하시겠습니까?')) return;
+  posts = posts.filter(p => p.id !== currentPostId);
+  savePosts();
+  backToList();
+}
+
+// ── 관리자 모드 ──
+let isAdmin = false;
+const ADMIN_PW = 'final2026'; // ← 비밀번호 변경 가능
+
+function toggleAdmin() {
+  if (isAdmin) {
+    isAdmin = false;
+    document.body.classList.remove('admin-mode');
+    document.getElementById('adminToggleBtn').textContent = '관리자';
+    document.getElementById('adminToggleBtn').style.color = 'var(--white-25)';
+  } else {
+    const pw = prompt('관리자 비밀번호를 입력하세요:');
+    if (pw === ADMIN_PW) {
+      isAdmin = true;
+      document.body.classList.add('admin-mode');
+      document.getElementById('adminToggleBtn').textContent = '관리자 ✓';
+      document.getElementById('adminToggleBtn').style.color = 'var(--red)';
+    } else if (pw !== null) {
+      alert('비밀번호가 올바르지 않습니다.');
+    }
+  }
+}
+
+// 모달 바깥 클릭 시 닫기
+document.getElementById('writeModal').addEventListener('click', function(e) {
+  if (e.target === this) closeWriteModal();
+});
+</script>
+</body>
+</html>
