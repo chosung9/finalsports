@@ -8,6 +8,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Bebas+Neue&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { width:100%; max-width:100vw; overflow-x:hidden; }
+body { width:100%; max-width:100vw; overflow-x:hidden; position:relative; }
+img, video, iframe { max-width:100%; height:auto; }
+.nav, section, footer, header, div { max-width:100vw; }
 :root {
   --red:#cb1f2f; --red-deep:#9e1824; --red-dim:rgba(203,31,47,0.12); --red-faint:rgba(203,31,47,0.06);
   --black:#0b0d0c; --gray-dark:#363838; --gray-mid:#1e2020; --gray-panel:#161818; --gray-card:#111313;
@@ -27,7 +31,7 @@ a { text-decoration:none; color:inherit; }
 .nav {
   position:fixed; top:0; left:0; right:0; z-index:1000;
   display:flex; align-items:center; justify-content:space-between;
-  padding:0 64px; height:68px;
+  padding:0 max(20px, min(64px, 5vw)); height:68px;
   background:rgba(11,13,12,0.95);
   backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
   border-bottom:0.5px solid var(--border);
@@ -78,7 +82,7 @@ a { text-decoration:none; color:inherit; }
 
 /* ── PAGE HERO (서브페이지용) ── */
 .page-hero {
-  padding:140px 64px 72px;
+  padding:140px max(20px, min(64px, 5vw)) 72px;
   background:var(--gray-panel);
   border-bottom:2px solid var(--red);
   position:relative; overflow:hidden;
@@ -114,7 +118,7 @@ a { text-decoration:none; color:inherit; }
 .sub-tabs {
   display:flex; gap:0;
   border-bottom:0.5px solid var(--border);
-  background:var(--gray-panel); padding:0 64px;
+  background:var(--gray-panel); padding:0 max(20px, min(64px, 5vw));
 }
 .sub-tab {
   font-size:13px; font-weight:400; color:var(--white-25);
@@ -126,7 +130,7 @@ a { text-decoration:none; color:inherit; }
 .sub-tab.active { color:var(--white); border-bottom-color:var(--red); font-weight:500; }
 
 /* ── SECTION BASE ── */
-.sec { padding:80px 64px; }
+.sec { padding:80px max(20px, min(64px, 5vw)); }
 .sec-label { font-size:9px; font-weight:500; letter-spacing:4px; color:var(--red); margin-bottom:12px; }
 .sec-title {
   font-family:var(--display); font-size:clamp(28px,4vw,44px);
@@ -141,7 +145,7 @@ a { text-decoration:none; color:inherit; }
 
 /* ── FOOTER ── */
 footer {
-  background:#060808; padding:52px 64px;
+  background:#060808; padding:52px max(20px, min(64px, 5vw));
   border-top:0.5px solid var(--border);
 }
 .footer-inner {
@@ -201,7 +205,7 @@ footer {
 .intro-card-list li { display:flex; gap:10px; font-size:13px; color:var(--white-50); line-height:1.6; }
 .intro-card-list li::before { content:'—'; color:var(--red); flex-shrink:0; }
 .vision-band {
-  background:var(--red); padding:56px 64px;
+  background:var(--red); padding:56px max(20px, min(64px, 5vw));
   display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center;
 }
 .vision-band h2 {
