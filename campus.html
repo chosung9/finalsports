@@ -126,6 +126,13 @@ a { text-decoration:none; color:inherit; }
 .campus-map-panel-head p {
   font-size: 11px; color: var(--white-25); margin-top: 4px; letter-spacing: 0.3px;
 }
+
+@keyframes campusScrollUp {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+#campusListWrap:hover .campus-list-scroll { animation-play-state: paused; }
+
 .campus-list-scroll {
   overflow-y: auto; flex: 1;
 }
@@ -497,7 +504,14 @@ footer { background:#060808; padding:52px 64px; border-top:0.5px solid var(--bor
       <div class="sec-label" style="margin-bottom:4px;">26 CAMPUSES</div>
       <p>클릭하면 지도에서 위치를 확인합니다</p>
     </div>
-    <div class="campus-list-scroll" id="campusList"></div>
+    <div id="regionTabs" style="display:flex;flex-wrap:wrap;gap:1px;background:var(--border);border-bottom:0.5px solid var(--border);flex-shrink:0;"></div>
+    <div style="flex:1;overflow:hidden;position:relative;">
+      <div style="position:absolute;top:0;left:0;right:0;height:28px;background:linear-gradient(to bottom,var(--gray-card),transparent);z-index:2;pointer-events:none;"></div>
+      <div style="position:absolute;bottom:0;left:0;right:0;height:28px;background:linear-gradient(to top,var(--gray-card),transparent);z-index:2;pointer-events:none;"></div>
+      <div id="campusListWrap" style="height:100%;overflow:hidden;">
+        <div class="campus-list-scroll" id="campusList" style="display:flex;flex-direction:column;"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -748,7 +762,7 @@ function buildList(filterRegion) {
   const list = document.getElementById("campusList");
   const filtered = CAMPUSES.map((c,i)=>({...c,i}))
     .filter(c => activeRegion === "전체" || c.region === activeRegion);
-  list.innerHTML = filtered.map(c => `
+  const items = filtered.map(c => `
     <div class="campus-list-item" data-idx="${c.i}" onclick="selectCampus(${c.i}, markers[${c.i}] ? markers[${c.i}].iw : null)">
       <div class="cli-left">
         <div class="cli-dot"></div>
@@ -760,6 +774,11 @@ function buildList(filterRegion) {
       <span class="cli-arr">↗</span>
     </div>
   `).join("");
+  // 두 배 복제로 끊김 없는 무한 스크롤
+  list.innerHTML = items + items;
+  // 속도 조정
+  const duration = Math.max(20, filtered.length * 1.8);
+  list.style.animationDuration = duration + 's';
 
   // 지역 탭 그리기
   const regions = ["전체","서울","경기","강원","충청","전라","경남"];
@@ -1098,7 +1117,7 @@ function buildList(filterRegion) {
   const list = document.getElementById("campusList");
   const filtered = CAMPUSES.map((c,i)=>({...c,i}))
     .filter(c => activeRegion === "전체" || c.region === activeRegion);
-  list.innerHTML = filtered.map(c => `
+  const items = filtered.map(c => `
     <div class="campus-list-item" data-idx="${c.i}" onclick="selectCampus(${c.i}, markers[${c.i}] ? markers[${c.i}].iw : null)">
       <div class="cli-left">
         <div class="cli-dot"></div>
@@ -1110,6 +1129,11 @@ function buildList(filterRegion) {
       <span class="cli-arr">↗</span>
     </div>
   `).join("");
+  // 두 배 복제로 끊김 없는 무한 스크롤
+  list.innerHTML = items + items;
+  // 속도 조정
+  const duration = Math.max(20, filtered.length * 1.8);
+  list.style.animationDuration = duration + 's';
 
   // 지역 탭 그리기
   const regions = ["전체","서울","경기","강원","충청","전라","경남"];

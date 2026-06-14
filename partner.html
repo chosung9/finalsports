@@ -411,6 +411,38 @@ body.admin-mode .admin-login-btn {
   .franchise-form-section { padding: 56px 24px; }
 }
 
+
+/* 관리자 모드 리스트 아이템 */
+body.admin-mode .recruit-list-item {
+  cursor: grab;
+  position: relative;
+}
+body.admin-mode .recruit-list-item:active { cursor: grabbing; }
+body.admin-mode .recruit-list-item .rli-delete {
+  display: flex;
+}
+.rli-delete {
+  display: none;
+  align-items: center; justify-content: center;
+  width: 22px; height: 22px; flex-shrink: 0;
+  background: rgba(203,31,47,0.15);
+  color: var(--red); font-size: 12px;
+  border: 0.5px solid var(--border-red);
+  cursor: pointer; transition: all 0.2s;
+  border-radius: 2px;
+}
+.rli-delete:hover { background: var(--red); color: #fff; }
+/* 드래그 중 */
+.recruit-list-item.dragging {
+  opacity: 0.4;
+  background: rgba(203,31,47,0.06) !important;
+}
+.recruit-list-item.drag-over {
+  border-top: 2px solid var(--red);
+}
+/* 관리자 모드에서 스크롤 애니메이션 정지 */
+body.admin-mode .recruit-list-inner { animation-play-state: paused !important; }
+
 /* ── FOOTER ── */
 footer { background:#060808; padding:52px 64px; border-top:0.5px solid var(--border); }
 .footer-inner { display:flex; justify-content:space-between; flex-wrap:wrap; gap:32px; }
@@ -937,9 +969,17 @@ function renderRecruitList() {
     updateCount();
     return;
   }
-  // 두 배 복제 (무한 스크롤용)
-  const items = recruitRegions.map((r, i) => `
-    <div class="recruit-list-item" onclick="focusMapRegion(${i})">
+
+  const makeItem = (r, i, isClone) => `
+    <div class="recruit-list-item"
+      data-idx="${i}"
+      draggable="${isAdmin && !isClone ? 'true' : 'false'}"
+      onclick="handleItemClick(event, ${i})"
+      ondragstart="onDragStart(event, ${i})"
+      ondragover="onDragOver(event)"
+      ondrop="onDrop(event, ${i})"
+      ondragleave="onDragLeave(event)"
+      ondragend="onDragEnd(event)">
       <div class="rli-left">
         <div class="rli-dot"></div>
         <div class="rli-info">
@@ -947,14 +987,66 @@ function renderRecruitList() {
           <div class="rli-name">${r.name.split(' ').slice(1).join(' ')}</div>
         </div>
       </div>
-      <div class="rli-badge">모집중</div>
-    </div>`).join('');
-  inner.innerHTML = items + items; // 두 번 반복 → 끊김 없는 스크롤
+      ${isAdmin && !isClone
+        ? `<div class="rli-delete" onclick="event.stopPropagation();deleteRegionByIdx(${i})" title="삭제">✕</div>`
+        : `<div class="rli-badge">모집중</div>`}
+    </div>`;
+
+  const items = recruitRegions.map((r, i) => makeItem(r, i, false)).join('');
+  // 관리자 모드에선 복제 없이 단일 목록 (드래그 편의)
+  inner.innerHTML = isAdmin ? items : items + items;
   updateCount();
 
-  // 애니메이션 속도 — 항목 수에 따라 조정
   const duration = Math.max(15, recruitRegions.length * 2.5);
   inner.style.animationDuration = duration + 's';
+}
+
+// 아이템 클릭 — 관리자 모드면 그냥 지도 포커스
+function handleItemClick(e, i) {
+  if (e.target.classList.contains('rli-delete')) return;
+  focusMapRegion(i);
+}
+
+// 인덱스로 삭제
+function deleteRegionByIdx(i) {
+  if (!confirm(`"${recruitRegions[i].name}"을 삭제하시겠습니까?`)) return;
+  recruitRegions.splice(i, 1);
+  saveRegions();
+  renderAll();
+}
+
+// ── 드래그 앤 드롭 ──
+let dragSrcIdx = null;
+
+function onDragStart(e, i) {
+  if (!isAdmin) { e.preventDefault(); return; }
+  dragSrcIdx = i;
+  e.currentTarget.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+function onDragOver(e) {
+  if (!isAdmin) return;
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  e.currentTarget.classList.add('drag-over');
+}
+function onDragLeave(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+function onDrop(e, targetIdx) {
+  if (!isAdmin || dragSrcIdx === null || dragSrcIdx === targetIdx) return;
+  e.currentTarget.classList.remove('drag-over');
+  // 순서 변경
+  const moved = recruitRegions.splice(dragSrcIdx, 1)[0];
+  recruitRegions.splice(targetIdx, 0, moved);
+  dragSrcIdx = null;
+  saveRegions();
+  renderAll();
+}
+function onDragEnd(e) {
+  e.currentTarget.classList.remove('dragging');
+  document.querySelectorAll('.recruit-list-item').forEach(el => el.classList.remove('drag-over'));
+  dragSrcIdx = null;
 }
 
 // ══════════════════════════════════════════
@@ -1118,6 +1210,7 @@ function toggleAdminMode() {
     document.body.classList.remove('admin-mode');
     document.querySelectorAll('.admin-ctrl').forEach(el => el.style.display = 'none');
     document.getElementById('adminLoginBtn').textContent = '🔒 관리자';
+    renderRecruitList(); // 일반 모드로 재렌더
   } else {
     // 로그인
     const pw = prompt('관리자 비밀번호를 입력하세요:');
@@ -1128,11 +1221,11 @@ function toggleAdminMode() {
     }
     isAdmin = true;
     document.body.classList.add('admin-mode');
-    // admin-ctrl 요소 flex/block으로 표시
     document.querySelectorAll('.admin-ctrl').forEach(el => {
       el.style.display = el.tagName === 'DIV' ? 'flex' : 'flex';
     });
     document.getElementById('adminLoginBtn').textContent = '🔓 관리자 ✓';
+    renderRecruitList(); // 관리자 모드로 재렌더 (삭제버튼 표시)
   }
 }
 
