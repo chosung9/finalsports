@@ -467,7 +467,12 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
 
 .campus-list-scroll {
   overflow-y: auto; flex: 1;
+  animation: campusScrollUp 40s linear infinite;
+  will-change: transform;
 }
+/* 수정 모드: 자동 스크롤 정지 + 마우스 휠로 리스트 보기 */
+body.fsa-edit #campusListWrap { overflow-y: auto !important; }
+body.fsa-edit .campus-list-scroll { animation: none !important; transform: none !important; }
 .campus-list-scroll::-webkit-scrollbar { width: 2px; }
 .campus-list-scroll::-webkit-scrollbar-thumb { background: var(--border-red); }
 .campus-list-item {
@@ -2012,6 +2017,7 @@ function toggleMute() {
   <div class="stat"><b id="stMonth">0</b><span>이번 달 방문</span></div>
   <div class="spacer"></div>
   <button class="editToggle" id="fsaEditToggle">✏️ 수정 모드</button>
+  <button class="editToggle" id="fsaVideoBtn" style="display:none;">🎬 메인 영상</button>
   <a class="adlink" href="admin.html">📊 관리자 페이지</a>
   <button class="logout" id="fsaLogout">로그아웃</button>
 </div>
@@ -2107,6 +2113,24 @@ function editableList(){
   return _list;
 }
 
+/* 메인 히어로 유튜브 영상 */
+function parseYouTubeId(url){
+  if(!url) return null; url=url.trim();
+  if(/^[A-Za-z0-9_-]{11}$/.test(url)) return url;
+  let m;
+  if((m=url.match(/[?&]v=([A-Za-z0-9_-]{11})/))) return m[1];
+  if((m=url.match(/youtu\.be\/([A-Za-z0-9_-]{11})/))) return m[1];
+  if((m=url.match(/\/embed\/([A-Za-z0-9_-]{11})/))) return m[1];
+  if((m=url.match(/\/shorts\/([A-Za-z0-9_-]{11})/))) return m[1];
+  if((m=url.match(/([A-Za-z0-9_-]{11})/))) return m[1];
+  return null;
+}
+function applyHeroVideo(id){
+  const ifr=document.getElementById('heroYT');
+  if(!ifr||!id) return;
+  ifr.src='https://www.youtube.com/embed/'+id+'?autoplay=1&mute=1&loop=1&playlist='+id+'&controls=0&showinfo=0&rel=0&disablekb=1&playsinline=1&enablejsapi=1';
+}
+
 /* 3) 저장된 내용 적용 (모든 방문자) */
 async function applyContent(){
   try{
@@ -2114,6 +2138,7 @@ async function applyContent(){
     if(!snap.exists()) return;
     const data=snap.data();
     editableList().forEach(({el,key})=>{ if(data[key]!=null) el.innerHTML=data[key]; });
+    if(data.hero_video) applyHeroVideo(data.hero_video);
   }catch(e){ console.warn('내용 불러오기 실패',e); }
 }
 
@@ -2136,8 +2161,9 @@ async function doLogin(){
 /* 5) 로그인 상태 → 관리자 바 */
 const bar=document.getElementById('fsaAdminBar');
 onAuthStateChanged(auth, user=>{
-  if(user){ bar.classList.add('show'); loginBtn.style.display='none'; loadStats(); }
-  else { bar.classList.remove('show'); loginBtn.style.display=''; exitEdit(); }
+  const vb=document.getElementById('fsaVideoBtn');
+  if(user){ bar.classList.add('show'); loginBtn.style.display='none'; if(vb) vb.style.display=document.getElementById('heroYT')?'':'none'; loadStats(); }
+  else { bar.classList.remove('show'); loginBtn.style.display=''; if(vb) vb.style.display='none'; exitEdit(); }
 });
 document.getElementById('fsaLogout').addEventListener('click', ()=> signOut(auth));
 
@@ -2163,6 +2189,17 @@ async function loadStats(){
 let editing=false;
 const editBtn=document.getElementById('fsaEditToggle');
 editBtn.addEventListener('click', ()=> editing? saveEdits(): enterEdit());
+
+const fsaVideoBtn=document.getElementById('fsaVideoBtn');
+if(fsaVideoBtn) fsaVideoBtn.addEventListener('click', async ()=>{
+  const url=prompt('메인 영상으로 쓸 유튜브 주소를 붙여넣으세요\n예) https://youtu.be/abc123');
+  if(!url) return;
+  const id=parseYouTubeId(url);
+  if(!id){ toast('유튜브 주소를 인식하지 못했어요'); return; }
+  applyHeroVideo(id);
+  try{ await setDoc(contentRef,{hero_video:id},{merge:true}); toast('메인 영상이 변경되었습니다 ✓'); }
+  catch(e){ toast('저장 실패 — 로그인/권한 확인'); console.warn(e); }
+});
 function enterEdit(){
   editing=true; document.body.classList.add('fsa-edit');
   editableList().forEach(({el})=> el.setAttribute('contenteditable','true'));
