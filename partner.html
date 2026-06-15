@@ -709,6 +709,40 @@ footer { background:#060808; padding:52px 64px; border-top:0.5px solid var(--bor
   .hero-headline { font-size: clamp(36px,9vw,52px); }
 }
 
+
+/* ════════ FSA 관리자 / CMS (공용) ════════ */
+.fsa-fab{position:fixed;left:16px;bottom:16px;z-index:2400;font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:600;letter-spacing:.5px;color:rgba(255,255,255,.55);background:rgba(11,13,12,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:0.5px solid rgba(255,255,255,.18);padding:8px 13px;border-radius:30px;cursor:pointer;transition:all .2s;}
+.fsa-fab:hover{color:#fff;border-color:#cb1f2f;background:rgba(11,13,12,.92);}
+.fsa-modal-ov{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px;font-family:'Noto Sans KR',sans-serif;}
+.fsa-modal-ov.open{display:flex;}
+.fsa-modal{position:relative;width:100%;max-width:360px;background:#111313;border:0.5px solid rgba(255,255,255,.08);border-top:2px solid #cb1f2f;padding:34px 28px 30px;}
+.fsa-modal h3{font-family:'Bebas Neue','Noto Sans KR',sans-serif;font-size:28px;letter-spacing:1.5px;color:#fff;margin:0 0 2px;}
+.fsa-modal .sub{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:24px;letter-spacing:.5px;}
+.fsa-modal label{display:block;font-size:11px;color:rgba(255,255,255,.5);margin:0 0 6px;letter-spacing:.5px;}
+.fsa-modal input{width:100%;padding:11px 13px;margin-bottom:16px;background:#1e2020;border:0.5px solid rgba(255,255,255,.08);color:#fff;font-family:'Noto Sans KR',sans-serif;font-size:14px;border-radius:2px;}
+.fsa-modal input:focus{outline:none;border-color:#cb1f2f;}
+.fsa-modal .err{font-size:11px;color:#ff6b6b;margin-bottom:12px;min-height:14px;line-height:1.4;}
+.fsa-btn-red{width:100%;padding:13px;background:#cb1f2f;color:#fff;border:none;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;cursor:pointer;border-radius:2px;transition:background .2s;}
+.fsa-btn-red:hover{background:#9e1824;}
+.fsa-modal .close{position:absolute;top:14px;right:16px;background:none;border:none;color:rgba(255,255,255,.5);font-size:20px;cursor:pointer;line-height:1;}
+.fsa-modal .close:hover{color:#fff;}
+#fsaAdminBar{position:fixed;left:0;right:0;bottom:0;z-index:2500;display:none;background:rgba(11,13,12,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:2px solid #cb1f2f;padding:10px 18px;align-items:center;gap:14px;flex-wrap:wrap;font-family:'Noto Sans KR',sans-serif;}
+#fsaAdminBar.show{display:flex;}
+#fsaAdminBar .stat{display:flex;flex-direction:column;line-height:1.15;}
+#fsaAdminBar .stat b{font-size:17px;color:#fff;font-weight:700;}
+#fsaAdminBar .stat span{font-size:9px;color:rgba(255,255,255,.5);letter-spacing:.5px;margin-top:2px;}
+#fsaAdminBar .sep{width:0.5px;height:28px;background:rgba(255,255,255,.12);}
+#fsaAdminBar .spacer{flex:1;min-width:8px;}
+#fsaAdminBar a.adlink,#fsaAdminBar button{font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:600;padding:8px 14px;border-radius:2px;cursor:pointer;border:0.5px solid rgba(255,255,255,.25);background:transparent;color:#fff;letter-spacing:.5px;transition:all .2s;text-decoration:none;}
+#fsaAdminBar .editToggle.on{background:#cb1f2f;border-color:#cb1f2f;}
+#fsaAdminBar .logout{color:rgba(255,255,255,.5);}
+#fsaAdminBar .logout:hover{color:#fff;border-color:rgba(255,255,255,.5);}
+@media(max-width:680px){#fsaAdminBar{gap:10px;padding:8px 10px;}#fsaAdminBar .stat b{font-size:14px;}#fsaAdminBar .stat span{font-size:8px;}}
+body.fsa-edit [contenteditable="true"]{outline:1px dashed rgba(203,31,47,.7);outline-offset:3px;cursor:text;transition:background .15s;}
+body.fsa-edit [contenteditable="true"]:hover{background:rgba(203,31,47,.10);}
+body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;background:rgba(203,31,47,.06);}
+#fsaToast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(20px);background:#cb1f2f;color:#fff;padding:11px 22px;border-radius:2px;font-size:13px;font-weight:600;z-index:4000;opacity:0;pointer-events:none;transition:all .3s;letter-spacing:.3px;box-shadow:0 8px 30px rgba(0,0,0,.5);max-width:90vw;text-align:center;font-family:'Noto Sans KR',sans-serif;}
+#fsaToast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
@@ -1571,6 +1605,11 @@ async function submitFranchise() {
   btn.disabled = true;
   btn.style.opacity = '0.6';
 
+  if (window.fsaSaveInquiry) {
+    try { await window.fsaSaveInquiry({ region, name, tel: `${tel1}-${tel2}-${tel3}`, content }); }
+    catch(err){ console.warn('inquiry save', err); }
+  }
+
   try {
     const res = await fetch('https://formspree.io/f/xbdeqgyo', {
       method: 'POST',
@@ -1620,5 +1659,204 @@ document.getElementById('formFields').classList.add('disabled');
 
 </script>
 
+
+<!-- ════════ FSA 관리자 / CMS UI ════════ -->
+<button id="fsaLoginBtn" class="fsa-fab" title="관리자 로그인">🔒 관리자</button>
+<div class="fsa-modal-ov" id="fsaLoginModal">
+  <div class="fsa-modal">
+    <button class="close" id="fsaLoginClose" aria-label="닫기">✕</button>
+    <h3>ADMIN</h3>
+    <div class="sub">관리자 로그인</div>
+    <label>이메일</label>
+    <input type="email" id="fsaEmail" placeholder="admin@example.com" autocomplete="username">
+    <label>비밀번호</label>
+    <input type="password" id="fsaPw" placeholder="비밀번호" autocomplete="current-password">
+    <div class="err" id="fsaErr"></div>
+    <button class="fsa-btn-red" id="fsaLoginSubmit">로그인</button>
+  </div>
+</div>
+<div id="fsaAdminBar">
+  <div class="stat"><b id="stToday">0</b><span>오늘 방문(유입)</span></div>
+  <div class="stat"><b id="stTodayPv">0</b><span>오늘 페이지뷰</span></div>
+  <div class="sep"></div>
+  <div class="stat"><b id="stYest">0</b><span>어제 방문</span></div>
+  <div class="stat"><b id="st7">0</b><span>최근 7일 방문</span></div>
+  <div class="stat"><b id="stMonth">0</b><span>이번 달 방문</span></div>
+  <div class="spacer"></div>
+  <button class="editToggle" id="fsaEditToggle">✏️ 수정 모드</button>
+  <a class="adlink" href="admin.html">📊 관리자 페이지</a>
+  <button class="logout" id="fsaLogout">로그아웃</button>
+</div>
+<div id="fsaToast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc, getDocs, collection, addDoc, serverTimestamp, increment }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCScFQyl5ePnGrL2G-sxCdiNIvhnv5-TIs",
+  authDomain: "final-homepage.firebaseapp.com",
+  projectId: "final-homepage",
+  storageBucket: "final-homepage.firebasestorage.app",
+  messagingSenderId: "740775410303",
+  appId: "1:740775410303:web:1e886fad619b19dc20dd4a"
+};
+const app  = initializeApp(firebaseConfig);
+const db   = getFirestore(app);
+const auth = getAuth(app);
+
+const PAGE_ID    = (location.pathname.split('/').pop() || 'index').replace(/\.html?$/,'') || 'index';
+const contentRef = doc(db, 'siteContent', PAGE_ID);
+const statsCol   = collection(db, 'siteStats');
+
+function dayKey(d){ return (d||new Date()).toLocaleDateString('en-CA',{timeZone:'Asia/Seoul'}); }
+
+/* 폼에서 문의 저장할 때 쓰는 전역 함수 */
+window.fsaSaveInquiry = async (data)=>{
+  await addDoc(collection(db,'inquiries'), {
+    region:(data.region||''), name:(data.name||''), tel:(data.tel||''),
+    content:(data.content||''), page:PAGE_ID, done:false, createdAt:serverTimestamp()
+  });
+};
+
+/* 1) 방문 집계
+   - pv: 페이지가 열릴 때마다 +1 (사이트 전체)
+   - pages[페이지]: 페이지별 +1
+   - visits: 한 세션에 1번만 (주소로 처음 들어올 때) */
+async function countVisit(){
+  const key=dayKey();
+  const ref=doc(statsCol,key);
+  try{
+    await setDoc(ref, { pv:increment(1), pages:{ [PAGE_ID]:increment(1) } }, {merge:true});
+    if(!sessionStorage.getItem('fsa_visit')){
+      await setDoc(ref, { visits:increment(1) }, {merge:true});
+      sessionStorage.setItem('fsa_visit','1');
+    }
+  }catch(e){ console.warn('방문 집계 실패',e); }
+}
+
+/* 2) 수정 가능한 요소 수집 (명시 data-cms + 본문 텍스트 자동 인식) */
+const EXCLUDE='nav,.nav,.mobile-drawer,header,script,style,#fsaAdminBar,#fsaLoginModal,#fsaToast,#fsaLoginBtn,#kakao-map,#campusList,#mainFeedGrid,#regionTabs,.campus-detail-popup,.privacy-scroll-box,.privacy-text,.page-hero-bg,.hero-bg-word,form,a,button,select,option,textarea,input';
+const INLINE=new Set(['SPAN','STRONG','B','I','EM','A','BR','SUP','SUB','MARK','SMALL','U','FONT','WBR']);
+
+function hashStr(s){ let h=5381; for(let i=0;i<s.length;i++){ h=((h<<5)+h+s.charCodeAt(i))>>>0; } return h.toString(36); }
+function pathKey(el){
+  const parts=[]; let n=el;
+  while(n && n.nodeType===1 && n.tagName!=='BODY'){
+    let idx=1, sib=n;
+    while((sib=sib.previousElementSibling)){ if(sib.tagName===n.tagName) idx++; }
+    parts.unshift(n.tagName.toLowerCase()+idx);
+    if(n.id){ parts.unshift('#'+n.id); break; }
+    n=n.parentElement;
+  }
+  return 'a_'+hashStr(parts.join('>'));
+}
+/* 텍스트 잎(leaf): 자체 텍스트가 있고, 자식 요소가 전부 인라인 서식인 요소 */
+function isLeaf(el){
+  const t = el.textContent ? el.textContent.trim() : '';
+  if(t.length < 2) return false;
+  if(/^[\s\/\-|·•>+~,.]+$/.test(t)) return false;   // 구분자/기호만 있는 건 제외
+  for(const ch of el.children){ if(!INLINE.has(ch.tagName)) return false; }
+  return true;
+}
+let _list=null;
+function editableList(){
+  if(_list) return _list;
+  const map=new Map();
+  document.querySelectorAll('[data-cms]').forEach(el=>{ if(el.textContent.trim()) map.set(el, el.getAttribute('data-cms')); });
+  document.querySelectorAll('body *').forEach(el=>{
+    if(map.has(el)) return;
+    if(el.closest(EXCLUDE)) return;
+    if(!isLeaf(el)) return;
+    map.set(el, pathKey(el));
+  });
+  const els=[...map.keys()];
+  const final=els.filter(el=> !els.some(o=> o!==el && el.contains(o)));   // 자식 후보 가진 부모 제외(안전)
+  _list=final.map(el=>({el, key:map.get(el)}));
+  return _list;
+}
+
+/* 3) 저장된 내용 적용 (모든 방문자) */
+async function applyContent(){
+  try{
+    const snap=await getDoc(contentRef);
+    if(!snap.exists()) return;
+    const data=snap.data();
+    editableList().forEach(({el,key})=>{ if(data[key]!=null) el.innerHTML=data[key]; });
+  }catch(e){ console.warn('내용 불러오기 실패',e); }
+}
+
+/* 4) 로그인 모달 */
+const modal=document.getElementById('fsaLoginModal');
+const loginBtn=document.getElementById('fsaLoginBtn');
+loginBtn.addEventListener('click', ()=> modal.classList.add('open'));
+document.getElementById('fsaLoginClose').addEventListener('click', ()=> modal.classList.remove('open'));
+modal.addEventListener('click', e=>{ if(e.target===modal) modal.classList.remove('open'); });
+document.getElementById('fsaLoginSubmit').addEventListener('click', doLogin);
+document.getElementById('fsaPw').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+async function doLogin(){
+  const email=document.getElementById('fsaEmail').value.trim();
+  const pw=document.getElementById('fsaPw').value;
+  const err=document.getElementById('fsaErr'); err.textContent='';
+  try{ await signInWithEmailAndPassword(auth,email,pw); modal.classList.remove('open'); document.getElementById('fsaPw').value=''; }
+  catch(e){ err.textContent='로그인 실패 — 이메일 또는 비밀번호를 확인하세요.'; }
+}
+
+/* 5) 로그인 상태 → 관리자 바 */
+const bar=document.getElementById('fsaAdminBar');
+onAuthStateChanged(auth, user=>{
+  if(user){ bar.classList.add('show'); loginBtn.style.display='none'; loadStats(); }
+  else { bar.classList.remove('show'); loginBtn.style.display=''; exitEdit(); }
+});
+document.getElementById('fsaLogout').addEventListener('click', ()=> signOut(auth));
+
+/* 6) 통계 */
+async function loadStats(){
+  try{
+    const snap=await getDocs(statsCol); const m={};
+    snap.forEach(d=> m[d.id]=d.data());
+    const today=dayKey(); const yd=new Date(); yd.setDate(yd.getDate()-1);
+    const t=m[today]||{}, y=m[dayKey(yd)]||{};
+    document.getElementById('stToday').textContent=(t.visits||0);
+    document.getElementById('stTodayPv').textContent=(t.pv||0);
+    document.getElementById('stYest').textContent=(y.visits||0);
+    let s7=0, sm=0; const ym=today.slice(0,7);
+    for(let i=0;i<7;i++){ const d=new Date(); d.setDate(d.getDate()-i); const k=dayKey(d); if(m[k]) s7+=(m[k].visits||0); }
+    Object.keys(m).forEach(k=>{ if(k.startsWith(ym)) sm+=(m[k].visits||0); });
+    document.getElementById('st7').textContent=s7;
+    document.getElementById('stMonth').textContent=sm;
+  }catch(e){ console.warn('통계 로드 실패',e); }
+}
+
+/* 7) 수정 모드 */
+let editing=false;
+const editBtn=document.getElementById('fsaEditToggle');
+editBtn.addEventListener('click', ()=> editing? saveEdits(): enterEdit());
+function enterEdit(){
+  editing=true; document.body.classList.add('fsa-edit');
+  editableList().forEach(({el})=> el.setAttribute('contenteditable','true'));
+  editBtn.classList.add('on'); editBtn.textContent='💾 저장하기';
+  toast('수정 모드 — 텍스트를 클릭해 고친 뒤 저장하세요');
+}
+function exitEdit(){
+  editing=false; document.body.classList.remove('fsa-edit');
+  editableList().forEach(({el})=> el.removeAttribute('contenteditable'));
+  editBtn.classList.remove('on'); editBtn.textContent='✏️ 수정 모드';
+}
+async function saveEdits(){
+  const payload={};
+  editableList().forEach(({el,key})=> payload[key]=el.innerHTML);
+  try{ await setDoc(contentRef, payload, {merge:true}); toast('저장되었습니다 ✓ 모든 방문자에게 반영됩니다'); exitEdit(); }
+  catch(e){ toast('저장 실패 — 로그인/권한을 확인하세요'); console.warn(e); }
+}
+
+/* 토스트 */
+let tt; function toast(msg){ const el=document.getElementById('fsaToast'); el.textContent=msg; el.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=> el.classList.remove('show'),2800); }
+
+applyContent(); countVisit();
+</script>
 </body>
 </html>
