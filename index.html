@@ -45,7 +45,7 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 max(20px, min(max(20px, min(64px, 5vw)), 5vw)); height: 68px;
+  padding: 0 64px; height: 68px;
   background: rgba(11,13,12,0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -147,10 +147,8 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
 .hero {
   position: relative; min-height: 100vh;
   display: flex; flex-direction: column; justify-content: center;
-  padding: 140px max(20px, min(max(20px, min(64px, 5vw)), 5vw)) 100px;
+  padding: 140px 64px 100px;
   overflow: hidden;
-  box-sizing: border-box;
-  width: 100%;
 }
 
 /* ── 유튜브 풀스크린 배경 영상 ── */
@@ -162,18 +160,12 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
+  /* 16:9 비율 유지하면서 화면 꽉 채우기 */
   width: 100vw;
-  height: 56.25vw;
+  height: 56.25vw; /* 16:9 */
   min-height: 100vh;
-  min-width: 177.78vh;
+  min-width: 177.78vh; /* 16:9 역산 */
   border: none;
-  pointer-events: none;
-}
-/* iframe이 넘쳐도 hero-video-wrap이 막아줌 */
-.hero-video-wrap {
-  position: absolute; inset: 0; z-index: 0;
-  overflow: hidden; pointer-events: none;
-  width: 100%; height: 100%;
 }
 /* 영상 위 어두운 오버레이 */
 .hero-video-overlay {
@@ -195,11 +187,9 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
 
 /* Big decorative type */
 .hero-bg-word {
-  position: absolute; right: 0; bottom: -20px; z-index: 2;
+  position: absolute; right: -8px; bottom: -20px; z-index: 2;
   font-family: var(--display); font-size: 280px; letter-spacing: -8px; line-height: 1;
   color: rgba(255,255,255,0.04); pointer-events: none; user-select: none;
-  max-width: 100%; overflow: hidden;
-  clip-path: inset(0 0 0 0);
 }
 
 /* 패널/슬래시는 영상 모드에선 제거 */
@@ -217,7 +207,7 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
 }
 .hero-mute-btn:hover { background: var(--red); border-color: var(--red); }
 
-.hero-content { position: relative; max-width: 640px; z-index: 5; width: 100%; box-sizing: border-box; }
+.hero-content { position: relative; max-width: 640px; z-index: 5; }
 
 .hero-eyebrow {
   display: inline-flex; align-items: center; gap: 12px;
@@ -295,7 +285,7 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
 /* ══════════════════════════════
    SECTION COMMON
 ══════════════════════════════ */
-.sec { padding: 96px max(20px, min(max(20px, min(64px, 5vw)), 5vw)); }
+.sec { padding: 96px 64px; }
 .sec-label {
   font-size: 9px; font-weight: 500; letter-spacing: 4px; color: var(--red);
   margin-bottom: 14px;
@@ -625,7 +615,7 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
   display: grid; grid-template-columns: 1fr 1fr;
 }
 .cta-left {
-  padding: 80px max(20px, min(max(20px, min(64px, 5vw)), 5vw));
+  padding: 80px 64px;
   border-right: 0.5px solid rgba(255,255,255,0.06);
 }
 .cta-left .eyebrow { font-size: 9px; letter-spacing: 4px; color: var(--red); margin-bottom: 16px; }
@@ -642,7 +632,7 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
 .cta-left p { font-size: 14px; color: var(--white-50); line-height: 1.8; }
 
 .cta-right {
-  padding: 80px max(20px, min(max(20px, min(64px, 5vw)), 5vw));
+  padding: 80px 64px;
   display: flex; flex-direction: column; justify-content: center; gap: 0;
 }
 .cta-phone {
@@ -656,7 +646,7 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
    FOOTER
 ══════════════════════════════ */
 footer {
-  background: #060808; padding: 52px max(20px, min(max(20px, min(64px, 5vw)), 5vw));
+  background: #060808; padding: 52px 64px;
   border-top: 0.5px solid var(--border);
 }
 .footer-inner {
@@ -692,8 +682,14 @@ footer {
 ══════════════════════════════ */
 
 
+@media (max-width: 540px) {
+  .features-grid, .campus-grid, .process-grid { grid-template-columns: 1fr; }
+  .numbers-band, .feed-grid { grid-template-columns: 1fr; }
+  .process-step::after { display: none; }
+}
 
-
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
 }
 /* ══════════════════════════════
    CAMPUS DETAIL POPUP
@@ -888,7 +884,7 @@ footer {
 @media (max-width: 960px) {
   /* NAV */
   .nav { padding: 0 20px; }
-  .nav-links { display: none !important; }
+  
   .nav-tel { display: none; }
   .nav-cta { display: none; }
   .hamburger { display: flex; }
@@ -1047,55 +1043,6 @@ footer {
   .hero-headline { font-size: clamp(36px,9vw,52px); }
 }
 
-
-
-/* ══ 레이아웃 깨짐 완전 수정 ══ */
-html {
-  overflow-x: hidden !important;
-  max-width: 100vw;
-}
-body {
-  overflow-x: hidden !important;
-  max-width: 100vw;
-  position: relative;
-}
-.hero {
-  overflow: hidden !important;
-  max-width: 100vw;
-}
-.hero-bg-word {
-  max-width: 100vw;
-  overflow: hidden;
-}
-.hero-content {
-  position: relative;
-  z-index: 5;
-  max-width: calc(100vw - 48px);
-}
-.hero-headline {
-  word-break: keep-all;
-  overflow-wrap: break-word;
-  max-width: 100%;
-}
-/* 숫자 밴드 넘침 방지 */
-.numbers-band {
-  max-width: 100vw;
-  overflow: hidden;
-}
-/* 전체 섹션 넘침 방지 */
-.sec, section, footer, nav {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-/* 그리드 최소 너비 0 */
-.features-grid > *, .campus-map-wrap > *,
-.numbers-band > *, .process-grid > *,
-.feed-grid > *, .fi-grid > * {
-  min-width: 0;
-  overflow: hidden;
-}
-
-
 </style>
 </head>
 <body>
@@ -1129,7 +1076,7 @@ body {
     <li>
       <a href="#info">입시정보 <span class="arr">▼</span></a>
       <div class="nav-dropdown">
-        <a href="https://www.finalsports.co.kr/36">최신입시</a>
+        <a href="info.html">최신입시</a>
       </div>
     </li>
 
@@ -1137,8 +1084,8 @@ body {
     <li>
       <a href="#community">커뮤니티 <span class="arr">▼</span></a>
       <div class="nav-dropdown">
-        <a href="https://www.finalsports.co.kr/31">파이널갤러리</a>
-        <a href="https://www.finalsports.co.kr/33">파이널소식</a>
+        <a href="community.html">파이널갤러리</a>
+        <a href="community.html?tab=news">파이널소식</a>
       </div>
     </li>
 
@@ -1147,7 +1094,7 @@ body {
       <a href="#contact">파트너모집 <span class="arr">▼</span></a>
       <div class="nav-dropdown">
         <a href="partner.html#franchise-form">가맹점문의</a>
-        <a href="partner.html#franchise-form">협력사문의</a>
+        <a href="partner.html?tab=partner">협력사문의</a>
       </div>
     </li>
 
@@ -1381,7 +1328,7 @@ body {
             <div class="cdp-meta" id="cdpMeta"></div>
             <div class="cdp-actions">
               <button class="cdp-btn-primary" id="cdpBtnConsult" onclick="window.open('https://ig.me/m/final._.time','_blank')">상담 문의</button>
-              <button class="cdp-btn-ghost" id="cdpBtnMore" onclick="location.href='https://www.finalsports.co.kr/40'">지점 상세보기</button>
+              <button class="cdp-btn-ghost" id="cdpBtnMore" onclick="location.href='campus.html'">지점 상세보기</button>
             </div>
           </div>
         </div>
@@ -1406,7 +1353,6 @@ body {
 </div>
 
 <script>
-
 const CAMPUSES = [
   // ── 서울
   { name:"관악 캠퍼스",    region:"서울", lat:37.4784, lng:126.9294,
@@ -1499,6 +1445,10 @@ const CAMPUSES = [
     addr:"경상남도 진주시 촉석로186번길 4 (중안동) 3층", tel:"010-8533-7563",
     hours:"평일 08:30~17:30", photos:[], insta:"final_jinju" },
 ];
+
+let naverMap, markers = [], activeIdx = -1, currentSlide = 0;
+
+/* ── 팝업 열기 ── */
 function openDetail(i) {
   const c = CAMPUSES[i];
   const popup = document.getElementById("campusDetailPopup");
@@ -1571,8 +1521,204 @@ function goSlide(idx) {
   );
 }
 
-initLeafletMap();
+function initNaverMap() {
+  naverMap = new naver.maps.Map("kakao-map", {
+    center: new naver.maps.LatLng(36.5, 127.8),
+    zoom: 7,
+    mapTypeId: naver.maps.MapTypeId.NORMAL,
+    mapTypeControl: false,
+    scaleControl: false,
+    logoControl: true,
+    mapDataControl: false,
+  });
 
+  // 마커 SVG (레드 핀)
+  const markerSVG = (active) => `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="34" viewBox="0 0 26 34">
+    <path d="M13 0C5.82 0 0 5.82 0 13c0 10 13 21 13 21S26 23 26 13C26 5.82 20.18 0 13 0z"
+      fill="${active ? '#ff3344' : '#cb1f2f'}" />
+    <circle cx="13" cy="13" r="5.5" fill="white"/>
+  </svg>`;
+
+  CAMPUSES.forEach((c, i) => {
+    const marker = new naver.maps.Marker({
+      position: new naver.maps.LatLng(c.lat, c.lng),
+      map: naverMap,
+      icon: {
+        content: markerSVG(false),
+        anchor: new naver.maps.Point(13, 34),
+      },
+      title: c.name,
+    });
+
+    // 말풍선 인포윈도우
+    const iw = new naver.maps.InfoWindow({
+      content: `<div style="
+        background:#0b0d0c;
+        border:1.5px solid #cb1f2f;
+        border-radius:2px;
+        padding:8px 14px;
+        font-family:'Noto Sans KR',sans-serif;
+        font-size:12px;font-weight:500;color:#fff;
+        white-space:nowrap;
+        box-shadow:0 4px 20px rgba(0,0,0,0.7);
+      ">
+        <span style="display:block;font-size:9px;letter-spacing:1.5px;color:#cb1f2f;margin-bottom:3px;">${c.region.toUpperCase()}</span>
+        ${c.name}
+      </div>`,
+      borderWidth: 0,
+      backgroundColor: "transparent",
+      disableAnchor: false,
+      anchorSize: new naver.maps.Size(12, 10),
+      anchorColor: "#cb1f2f",
+      pixelOffset: new naver.maps.Point(0, -6),
+    });
+
+    naver.maps.Event.addListener(marker, "click", () => {
+      selectCampus(i, iw);
+    });
+
+    markers.push({ marker, iw });
+  });
+
+  buildList();
+}
+
+let activeIW = null;
+
+function selectCampus(i, iw) {
+  // 이전 인포윈도우 닫기
+  if (activeIW) activeIW.close();
+
+  // 지도 이동
+  naverMap.panTo(new naver.maps.LatLng(CAMPUSES[i].lat, CAMPUSES[i].lng));
+  naverMap.setZoom(14, true);
+
+  // 인포윈도우 열기 (간단 말풍선)
+  if (iw) {
+    iw.open(naverMap, markers[i].marker);
+    activeIW = iw;
+  }
+
+  // 리스트 활성화
+  document.querySelectorAll(".campus-list-item").forEach((el, j) => {
+    el.classList.toggle("active", j === i);
+  });
+  const el = document.querySelectorAll(".campus-list-item")[i];
+  if (el) el.scrollIntoView({ block: "nearest", behavior: "smooth" });
+
+  // 하단 상세 팝업 열기
+  openDetail(i);
+}
+
+let activeRegion = "전체";
+
+function buildList(filterRegion) {
+  if (filterRegion) activeRegion = filterRegion;
+  const list = document.getElementById("campusList");
+  const filtered = CAMPUSES.map((c,i)=>({...c,i}))
+    .filter(c => activeRegion === "전체" || c.region === activeRegion);
+  const items = filtered.map(c => `
+    <div class="campus-list-item" data-idx="${c.i}" onclick="selectCampus(${c.i}, markers[${c.i}] ? markers[${c.i}].iw : null)">
+      <div class="cli-left">
+        <div class="cli-dot"></div>
+        <div>
+          <div class="cli-region">${c.region.toUpperCase()}</div>
+          <div class="cli-name">${c.name}</div>
+        </div>
+      </div>
+      <span class="cli-arr">↗</span>
+    </div>
+  `).join("");
+  // 두 배 복제로 끊김 없는 무한 스크롤
+  list.innerHTML = items + items;
+  // 속도 조정
+  const duration = Math.max(20, filtered.length * 1.8);
+  list.style.animationDuration = duration + 's';
+
+  // 지역 탭 그리기
+  const regions = ["전체","서울","경기","강원","충청","전라","경남"];
+  const tabs = document.getElementById("regionTabs");
+  if (tabs) {
+    tabs.innerHTML = regions.map(r => `
+      <button onclick="buildList('${r}')" style="
+        flex:1;min-width:40px;padding:7px 4px;
+        font-family:var(--sans);font-size:9px;letter-spacing:1px;
+        border:none;cursor:pointer;
+        background:${r===activeRegion?'var(--red)':'var(--gray-card)'};
+        color:${r===activeRegion?'#fff':'rgba(255,255,255,0.35)'};
+        transition:all 0.2s;
+      ">${r}</button>
+    `).join("");
+  }
+}
+
+// 네이버 지도 SDK 로드
+// ★ 실제 배포 시 YOUR_NAVER_CLIENT_ID 를 네이버 클라우드 플랫폼 클라이언트 ID로 교체하세요
+(function () {
+  const script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src = "https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=YOUR_NAVER_CLIENT_ID";
+  script.onload = initNaverMap;
+  script.onerror = () => {
+    // 키 없을 때 폴백: 다크 OpenStreetMap (Leaflet)
+    loadLeafletFallback();
+  };
+  document.head.appendChild(script);
+})();
+
+// ── 폴백: Leaflet (API 키 없는 환경) ──────────────────────
+function loadLeafletFallback() {
+  const css = document.createElement("link");
+  css.rel = "stylesheet";
+  css.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+  document.head.appendChild(css);
+
+  const script = document.createElement("script");
+  script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+  script.onload = () => {
+    const map = L.map("kakao-map").setView([36.5, 127.8], 7);
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+      attribution: "© OpenStreetMap © CARTO", maxZoom: 19
+    }).addTo(map);
+
+    const icon = L.divIcon({
+      className: "",
+      html: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" viewBox="0 0 26 34">
+        <path d="M13 0C5.82 0 0 5.82 0 13c0 10 13 21 13 21S26 23 26 13C26 5.82 20.18 0 13 0z" fill="#cb1f2f"/>
+        <circle cx="13" cy="13" r="5.5" fill="white"/>
+      </svg>`,
+      iconSize: [22, 30], iconAnchor: [11, 30], popupAnchor: [0, -34]
+    });
+
+    CAMPUSES.forEach((c, i) => {
+      const m = L.marker([c.lat, c.lng], { icon })
+        .addTo(map)
+        .bindPopup(`<div style="font-family:'Noto Sans KR',sans-serif;font-weight:600;font-size:13px;">${c.name}</div>`, {
+          closeButton: false
+        });
+      m.on("click", () => {
+        map.flyTo([c.lat, c.lng], 14, { duration: 0.7 });
+        m.openPopup();
+        document.querySelectorAll(".campus-list-item").forEach((el, j) => el.classList.toggle("active", j === i));
+        const el = document.querySelectorAll(".campus-list-item")[i];
+        if (el) el.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        openDetail(i);
+      });
+      markers.push({ marker: m, iw: null });
+    });
+
+    buildList();
+
+    // 리스트 클릭 시 폴백용 재연결
+    document.getElementById("campusList").addEventListener("click", (e) => {
+      const item = e.target.closest(".campus-list-item");
+      if (!item) return;
+      const i = [...document.querySelectorAll(".campus-list-item")].indexOf(item);
+      if (i >= 0) markers[i].marker.fire("click");
+    });
+  };
+  document.head.appendChild(script);
+}
 </script>
 
 
@@ -1744,9 +1890,9 @@ async function loadMainFeed() {
     </div>
     <div class="footer-right">
       <div class="footer-nav">
-        <a href="https://www.finalsports.co.kr/39">파이널 소개</a>
-        <a href="https://www.finalsports.co.kr/40">캠퍼스 현황</a>
-        <a href="https://www.finalsports.co.kr/36">체육대학 입시요강</a>
+        <a href="about.html">파이널 소개</a>
+        <a href="campus.html">캠퍼스 현황</a>
+        <a href="info.html">체육대학 입시요강</a>
         <a href="partner.html#franchise-form">가맹점 문의</a>
       </div>
       <div class="footer-sns">

@@ -9,10 +9,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Bebas+Neue&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html { width:100%; max-width:100vw; overflow-x:hidden; }
-body { width:100%; max-width:100vw; overflow-x:hidden; position:relative; }
-img, video, iframe { max-width:100%; height:auto; }
-.nav, section, footer, header, div { max-width:100vw; }
+html, body { width:100%; max-width:100%; overflow-x:hidden; }
+img, video, iframe { max-width:100%; }
 :root {
   --red:#cb1f2f; --red-deep:#9e1824; --red-faint:rgba(203,31,47,0.06);
   --black:#0b0d0c; --gray-panel:#161818; --gray-card:#111313; --gray-dark:#363838;
@@ -32,7 +30,7 @@ a { text-decoration:none; color:inherit; }
 .nav {
   position:fixed; top:0; left:0; right:0; z-index:1000;
   display:flex; align-items:center; justify-content:space-between;
-  padding:0 max(20px, min(64px, 5vw)); height:68px;
+  padding:0 64px; height:68px;
   background:rgba(11,13,12,0.95); backdrop-filter:blur(20px);
   border-bottom:0.5px solid var(--border);
 }
@@ -73,9 +71,8 @@ a { text-decoration:none; color:inherit; }
 
 /* ── PAGE HERO ── */
 .page-hero {
-  padding:140px max(20px, min(64px, 5vw)) 72px; background:var(--gray-panel);
+  padding:140px 64px 72px; background:var(--gray-panel);
   border-bottom:2px solid var(--red); position:relative; overflow:hidden;
-  max-width:100vw;
 }
 .page-hero::before {
   content:''; position:absolute; inset:0;
@@ -94,7 +91,7 @@ a { text-decoration:none; color:inherit; }
 .page-title-ko { font-size:clamp(18px,2.5vw,28px); font-weight:700; letter-spacing:-1px; color:var(--white-50); }
 
 /* ── 서브탭 ── */
-.sub-tabs { display:flex; border-bottom:0.5px solid var(--border); background:var(--gray-panel); padding:0 max(20px, min(64px, 5vw)); }
+.sub-tabs { display:flex; border-bottom:0.5px solid var(--border); background:var(--gray-panel); padding:0 64px; }
 .sub-tab {
   font-size:13px; color:var(--white-25); padding:16px 24px; cursor:pointer;
   border:none; background:transparent; border-bottom:2px solid transparent;
@@ -104,7 +101,7 @@ a { text-decoration:none; color:inherit; }
 .sub-tab.active { color:var(--white); border-bottom-color:var(--red); font-weight:500; }
 
 /* ══ 가맹점 모집 지도 섹션 ══ */
-.recruit-map-section { background:var(--black); padding:max(20px, min(64px, 5vw)) max(20px, min(64px, 5vw)) 0; }
+.recruit-map-section { background:var(--black); padding:64px 64px 0; }
 .recruit-map-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:32px; flex-wrap:wrap; gap:16px; }
 .sec-label { font-size:9px; font-weight:500; letter-spacing:4px; color:var(--red); margin-bottom:8px; }
 .recruit-map-header h2 { font-size:22px; font-weight:700; letter-spacing:-0.5px; }
@@ -248,10 +245,10 @@ a { text-decoration:none; color:inherit; }
 .list-foot-btn.danger:hover { color:#ff6b6b; border-color:#ff6b6b; }
 
 /* ── 협력사 문의 섹션 ── */
-.partner-section { padding:80px max(20px, min(64px, 5vw)); background:var(--gray-panel); display:none; }
+.partner-section { padding:80px 64px; background:var(--gray-panel); display:none; }
 
 /* ── 가맹 안내 섹션 ── */
-.franchise-info { padding:max(20px, min(64px, 5vw)) max(20px, min(64px, 5vw)) 80px; background:var(--black); }
+.franchise-info { padding:64px 64px 80px; background:var(--black); }
 .fi-grid {
   display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
   background:var(--border); margin-top:44px;
@@ -272,7 +269,7 @@ a { text-decoration:none; color:inherit; }
 
 /* ── 문의 CTA ── */
 .inquiry-cta {
-  background:var(--red); padding:max(20px, min(64px, 5vw));
+  background:var(--red); padding:64px;
   display:grid; grid-template-columns:1fr auto; gap:32px; align-items:center;
 }
 .inquiry-cta h2 { font-family:var(--display); font-size:clamp(32px,4vw,52px); letter-spacing:1px; line-height:1; }
@@ -317,7 +314,7 @@ body.admin-mode .admin-login-btn {
 .franchise-form-section {
   background: var(--gray-panel);
   border-top: 0.5px solid var(--border);
-  padding: 80px max(20px, min(max(20px, min(64px, 5vw)), 5vw));
+  padding: 80px 64px;
 }
 .franchise-form-inner { max-width: 860px; margin: 0 auto; }
 .franchise-form-header { margin-bottom: 48px; }
@@ -402,7 +399,7 @@ body.admin-mode .admin-login-btn {
 .form-submit-btn {
   font-family: var(--sans); font-size: 15px; font-weight: 700;
   letter-spacing: 4px;
-  padding: 14px max(20px, min(64px, 5vw));
+  padding: 14px 64px;
   background: var(--gray-dark); color: var(--white);
   border: none; cursor: pointer;
   transition: background 0.2s;
@@ -413,7 +410,6 @@ body.admin-mode .admin-login-btn {
 .form-fields.disabled { opacity: 0.35; pointer-events: none; }
 
 
-}
 
 
 /* 관리자 모드 리스트 아이템 */
@@ -448,7 +444,7 @@ body.admin-mode .recruit-list-item .rli-delete {
 body.admin-mode .recruit-list-inner { animation-play-state: paused !important; }
 
 /* ── FOOTER ── */
-footer { background:#060808; padding:52px max(20px, min(64px, 5vw)); border-top:0.5px solid var(--border); }
+footer { background:#060808; padding:52px 64px; border-top:0.5px solid var(--border); }
 .footer-inner { display:flex; justify-content:space-between; flex-wrap:wrap; gap:32px; }
 .footer-wordmark { font-family:var(--display); font-size:18px; letter-spacing:2px; }
 .footer-wordmark .red { color:var(--red); }
@@ -462,20 +458,7 @@ footer { background:#060808; padding:52px max(20px, min(64px, 5vw)); border-top:
 .footer-sns a:hover { color:var(--red); border-color:var(--border-red); }
 .footer-bottom { margin-top:40px; padding-top:20px; border-top:0.5px solid var(--border); font-size:10px; color:rgba(255,255,255,0.15); }
 
- 
-  .page-hero { padding:120px 24px 56px; }
-  .sub-tabs { padding:0 24px; overflow-x:auto; }
-  .recruit-map-section { padding:40px 24px 0; }
-  .recruit-map-wrap { grid-template-columns:1fr; height:auto; }
-  .recruit-map-frame { height:360px; }
-  .recruit-list-panel { max-height:280px; border-left:none; border-top:0.5px solid var(--border); }
-  .franchise-info { padding:56px 24px; }
-  .fi-grid { grid-template-columns:1fr; }
-  .inquiry-cta { grid-template-columns:1fr; padding:48px 24px; }
-  .inquiry-btns { align-items:flex-start; }
-  footer { padding:40px 24px; }
-  .footer-nav { align-items:flex-start; } .footer-sns { justify-content:flex-start; }
-}
+
 
 /* ══════════════════════════════
    모바일 햄버거 메뉴
@@ -567,7 +550,7 @@ footer { background:#060808; padding:52px max(20px, min(64px, 5vw)); border-top:
 @media (max-width: 960px) {
   /* NAV */
   .nav { padding: 0 20px; }
-  .nav-links { display: none !important; }
+  
   .nav-tel { display: none; }
   .nav-cta { display: none; }
   .hamburger { display: flex; }
@@ -725,19 +708,6 @@ footer { background:#060808; padding:52px max(20px, min(64px, 5vw)); border-top:
   .ai-steps { grid-template-columns: 1fr; }
   .hero-headline { font-size: clamp(36px,9vw,52px); }
 }
-
-
-/* ══ 레이아웃 깨짐 완전 수정 ══ */
-html { overflow-x: hidden !important; max-width: 100vw; }
-body { overflow-x: hidden !important; max-width: 100vw; position: relative; }
-.hero { overflow: hidden !important; max-width: 100vw; }
-.hero-bg-word { max-width: 100vw; overflow: hidden; }
-.hero-content { position: relative; z-index: 5; max-width: calc(100vw - 48px); }
-.hero-headline { word-break: keep-all; overflow-wrap: break-word; max-width: 100%; }
-.numbers-band { max-width: 100vw; overflow: hidden; }
-.sec, section, footer, nav { max-width: 100vw; overflow-x: hidden; }
-.features-grid > *, .campus-map-wrap > *, .numbers-band > *,
-.process-grid > *, .feed-grid > *, .fi-grid > * { min-width: 0; }
 
 </style>
 </head>
@@ -1045,7 +1015,7 @@ body { overflow-x: hidden !important; max-width: 100vw; position: relative; }
 
 <!-- ══ 협력사 문의 ══ -->
 <div id="section-partner" style="display:none;">
-  <section style="padding:80px max(20px, min(64px, 5vw));background:var(--black);">
+  <section style="padding:80px 64px;background:var(--black);">
     <div class="sec-label">PARTNERSHIP</div>
     <div style="font-family:var(--display);font-size:clamp(28px,4vw,44px);letter-spacing:1px;margin-bottom:6px;">COOPERATION</div>
     <div style="font-size:clamp(20px,2.5vw,28px);font-weight:700;letter-spacing:-1px;color:var(--white-50);margin-bottom:44px;">협력사 문의</div>

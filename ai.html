@@ -8,10 +8,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Bebas+Neue&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html { width:100%; max-width:100vw; overflow-x:hidden; }
-body { width:100%; max-width:100vw; overflow-x:hidden; position:relative; }
-img, video, iframe { max-width:100%; height:auto; }
-.nav, section, footer, header, div { max-width:100vw; }
+html, body { width:100%; max-width:100%; overflow-x:hidden; }
+img, video, iframe { max-width:100%; }
 :root {
   --red:#cb1f2f; --red-deep:#9e1824; --red-dim:rgba(203,31,47,0.12); --red-faint:rgba(203,31,47,0.06);
   --black:#0b0d0c; --gray-dark:#363838; --gray-mid:#1e2020; --gray-panel:#161818; --gray-card:#111313;
@@ -29,7 +27,7 @@ a { text-decoration:none; color:inherit; }
 .nav {
   position:fixed; top:0; left:0; right:0; z-index:1000;
   display:flex; align-items:center; justify-content:space-between;
-  padding:0 max(20px, min(64px, 5vw)); height:68px;
+  padding:0 64px; height:68px;
   background:rgba(11,13,12,0.95); backdrop-filter:blur(20px);
   border-bottom:0.5px solid var(--border);
 }
@@ -68,9 +66,8 @@ a { text-decoration:none; color:inherit; }
 }
 .nav-cta:hover { background:var(--red-deep); }
 .page-hero {
-  padding:140px max(20px, min(64px, 5vw)) 72px; background:var(--gray-panel);
+  padding:140px 64px 72px; background:var(--gray-panel);
   border-bottom:2px solid var(--red); position:relative; overflow:hidden;
-  max-width:100vw;
 }
 .page-hero::before {
   content:''; position:absolute; inset:0;
@@ -87,7 +84,7 @@ a { text-decoration:none; color:inherit; }
 .breadcrumb .current { color:var(--red); }
 .page-title { font-family:var(--display); font-size:clamp(48px,7vw,88px); line-height:0.95; letter-spacing:1px; margin-bottom:6px; }
 .page-title-ko { font-size:clamp(18px,2.5vw,28px); font-weight:700; letter-spacing:-1px; color:var(--white-50); }
-.sub-tabs { display:flex; border-bottom:0.5px solid var(--border); background:var(--gray-panel); padding:0 max(20px, min(64px, 5vw)); }
+.sub-tabs { display:flex; border-bottom:0.5px solid var(--border); background:var(--gray-panel); padding:0 64px; }
 .sub-tab {
   font-size:13px; color:var(--white-25); padding:16px 24px; cursor:pointer;
   border:none; background:transparent; border-bottom:2px solid transparent;
@@ -95,12 +92,12 @@ a { text-decoration:none; color:inherit; }
 }
 .sub-tab:hover { color:var(--white-80); }
 .sub-tab.active { color:var(--white); border-bottom-color:var(--red); font-weight:500; }
-.sec { padding:80px max(20px, min(64px, 5vw)); }
+.sec { padding:80px 64px; }
 .sec-label { font-size:9px; font-weight:500; letter-spacing:4px; color:var(--red); margin-bottom:12px; }
 .sec-title { font-family:var(--display); font-size:clamp(28px,4vw,44px); letter-spacing:1px; line-height:1.1; margin-bottom:8px; }
 .sec-title-ko { font-size:clamp(20px,2.5vw,28px); font-weight:700; letter-spacing:-1px; }
 .red-rule { width:32px; height:2px; background:var(--red); margin:14px 0 44px; }
-footer { background:#060808; padding:52px max(20px, min(64px, 5vw)); border-top:0.5px solid var(--border); }
+footer { background:#060808; padding:52px 64px; border-top:0.5px solid var(--border); }
 .footer-inner { display:flex; justify-content:space-between; flex-wrap:wrap; gap:32px; }
 .footer-wordmark { font-family:var(--display); font-size:18px; letter-spacing:2px; }
 .footer-wordmark .red { color:var(--red); }
@@ -113,17 +110,11 @@ footer { background:#060808; padding:52px max(20px, min(64px, 5vw)); border-top:
 .footer-sns a { font-size:10px; color:var(--white-25); border:0.5px solid var(--border); padding:5px 12px; letter-spacing:1.5px; transition:all 0.2s; }
 .footer-sns a:hover { color:var(--red); border-color:var(--border-red); }
 .footer-bottom { margin-top:40px; padding-top:20px; border-top:0.5px solid var(--border); font-size:10px; color:rgba(255,255,255,0.15); }
- 
-  .page-hero { padding:120px 24px 56px; }
-  .sub-tabs { padding:0 24px; overflow-x:auto; }
-  .sec { padding:56px 24px; }
-  footer { padding:40px 24px; }
-  .footer-nav { align-items:flex-start; } .footer-sns { justify-content:flex-start; }
-}
+
 
 /* ai 전용 */
 .ai-hero-band {
-  background:var(--red); padding:max(20px, min(64px, 5vw));
+  background:var(--red); padding:64px;
   display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center;
 }
 .ai-hero-band h2 {
@@ -150,7 +141,7 @@ footer { background:#060808; padding:52px max(20px, min(64px, 5vw)); border-top:
 .ai-feat-title { font-size:18px; font-weight:700; margin-bottom:12px; letter-spacing:-0.3px; }
 .ai-feat-body { font-size:13px; color:var(--white-50); line-height:1.8; }
 .ai-process {
-  padding:80px max(20px, min(64px, 5vw)); background:var(--black);
+  padding:80px 64px; background:var(--black);
 }
 .ai-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:44px; }
 .ai-step {
@@ -170,11 +161,6 @@ footer { background:#060808; padding:52px max(20px, min(64px, 5vw)); border-top:
 }
 .ai-step:last-child::after { display:none; }
 
-  .ai-features { grid-template-columns:1fr; }
-  .ai-process { padding:56px 24px; }
-  .ai-steps { grid-template-columns:1fr 1fr; }
-  .ai-step::after { display:none; }
-}
 
 /* ══════════════════════════════
    모바일 햄버거 메뉴
@@ -266,7 +252,7 @@ footer { background:#060808; padding:52px max(20px, min(64px, 5vw)); border-top:
 @media (max-width: 960px) {
   /* NAV */
   .nav { padding: 0 20px; }
-  .nav-links { display: none !important; }
+  
   .nav-tel { display: none; }
   .nav-cta { display: none; }
   .hamburger { display: flex; }
@@ -425,19 +411,6 @@ footer { background:#060808; padding:52px max(20px, min(64px, 5vw)); border-top:
   .hero-headline { font-size: clamp(36px,9vw,52px); }
 }
 
-
-/* ══ 레이아웃 깨짐 완전 수정 ══ */
-html { overflow-x: hidden !important; max-width: 100vw; }
-body { overflow-x: hidden !important; max-width: 100vw; position: relative; }
-.hero { overflow: hidden !important; max-width: 100vw; }
-.hero-bg-word { max-width: 100vw; overflow: hidden; }
-.hero-content { position: relative; z-index: 5; max-width: calc(100vw - 48px); }
-.hero-headline { word-break: keep-all; overflow-wrap: break-word; max-width: 100%; }
-.numbers-band { max-width: 100vw; overflow: hidden; }
-.sec, section, footer, nav { max-width: 100vw; overflow-x: hidden; }
-.features-grid > *, .campus-map-wrap > *, .numbers-band > *,
-.process-grid > *, .feed-grid > *, .fi-grid > * { min-width: 0; }
-
 </style><title>파이널AI — FINAL SPORTS ACADEMY</title></head><body>
 <nav class="nav">
   <a href="index.html" class="nav-logo">
@@ -454,7 +427,7 @@ body { overflow-x: hidden !important; max-width: 100vw; position: relative; }
       <div class="nav-dropdown"><a href="info.html">최신입시</a></div></li>
     <li><a href="community.html">커뮤니티 <span class="arr">▼</span></a>
       <div class="nav-dropdown">
-        <a href="community.html">파이널갤러리</a><a href="community.html">파이널소식</a>
+        <a href="community.html">파이널갤러리</a><a href="community.html?tab=news">파이널소식</a>
       </div></li>
     <li><a href="partner.html">파트너모집 <span class="arr">▼</span></a>
       <div class="nav-dropdown">

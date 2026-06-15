@@ -6,169 +6,173 @@
 <title>지점소개 — FINAL SPORTS ACADEMY</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Bebas+Neue&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:100%;max-width:100%;overflow-x:hidden;font-family:'Noto Sans KR',sans-serif;background:#0b0d0c;color:#fff;}
+html,body{width:100%;overflow-x:hidden;font-family:'Noto Sans KR',sans-serif;background:#0b0d0c;color:#fff;}
 :root{
   --red:#cb1f2f;--red-deep:#9e1824;
   --black:#0b0d0c;--panel:#161818;--card:#111313;--gray:#363838;
-  --white:#fff;--w80:rgba(255,255,255,0.80);--w50:rgba(255,255,255,0.50);
-  --w25:rgba(255,255,255,0.25);
-  --border:rgba(255,255,255,0.07);--border-red:rgba(203,31,47,0.25);
+  --white:#fff;--w80:rgba(255,255,255,.80);--w50:rgba(255,255,255,.50);
+  --w25:rgba(255,255,255,.25);
+  --border:rgba(255,255,255,.07);--border-red:rgba(203,31,47,.25);
   --sans:'Noto Sans KR',sans-serif;--display:'Bebas Neue',sans-serif;
 }
-::-webkit-scrollbar{width:3px;}
-::-webkit-scrollbar-track{background:var(--black);}
-::-webkit-scrollbar-thumb{background:var(--red-deep);}
 a{text-decoration:none;color:inherit;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--red-deep);}
 
 /* NAV */
-.nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,4vw,64px);height:68px;background:rgba(11,13,12,0.96);backdrop-filter:blur(20px);border-bottom:0.5px solid var(--border);}
-.nav-logo img{height:36px;width:auto;display:block;}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,4vw,64px);height:68px;background:rgba(11,13,12,.96);backdrop-filter:blur(20px);border-bottom:.5px solid var(--border);}
+.nav-logo img{height:36px;display:block;}
 .nav-links{display:flex;gap:0;list-style:none;height:68px;}
 .nav-links>li{position:relative;display:flex;align-items:center;}
-.nav-links>li>a{font-size:12px;color:var(--w50);padding:0 18px;height:68px;display:flex;align-items:center;gap:4px;white-space:nowrap;transition:color 0.2s;position:relative;}
-.nav-links>li>a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--red);transform:scaleX(0);transition:transform 0.25s;transform-origin:center;}
+.nav-links>li>a{font-size:12px;color:var(--w50);padding:0 18px;height:68px;display:flex;align-items:center;gap:4px;white-space:nowrap;transition:color .2s;position:relative;}
+.nav-links>li>a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--red);transform:scaleX(0);transition:transform .25s;transform-origin:center;}
 .nav-links>li:hover>a{color:var(--white);}
 .nav-links>li:hover>a::after{transform:scaleX(1);}
-.nav-links>li>a .arr{font-size:8px;color:var(--w25);transition:transform 0.2s,color 0.2s;}
+.nav-links>li>a .arr{font-size:8px;color:var(--w25);transition:transform .2s;}
 .nav-links>li:hover>a .arr{transform:rotate(180deg);color:var(--red);}
-.nav-dropdown{position:absolute;top:68px;left:0;min-width:140px;background:rgba(11,13,12,0.97);border:0.5px solid var(--border);border-top:2px solid var(--red);backdrop-filter:blur(16px);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity 0.25s,transform 0.25s,visibility 0.25s;z-index:200;padding:8px 0;}
+.nav-dropdown{position:absolute;top:68px;left:0;min-width:140px;background:rgba(11,13,12,.97);border:.5px solid var(--border);border-top:2px solid var(--red);backdrop-filter:blur(16px);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .25s,transform .25s,visibility .25s;z-index:200;padding:8px 0;}
 .nav-links>li:hover .nav-dropdown{opacity:1;visibility:visible;transform:translateY(0);}
-.nav-dropdown a{display:block;padding:10px 20px;font-size:12px;color:var(--w50);transition:color 0.15s,background 0.15s,padding-left 0.15s;white-space:nowrap;}
-.nav-dropdown a:hover{color:var(--white);background:rgba(203,31,47,0.08);padding-left:24px;}
+.nav-dropdown a{display:block;padding:10px 20px;font-size:12px;color:var(--w50);transition:color .15s,background .15s,padding-left .15s;white-space:nowrap;}
+.nav-dropdown a:hover{color:var(--white);background:rgba(203,31,47,.08);padding-left:24px;}
 .nav-right{display:flex;align-items:center;gap:16px;}
 .nav-tel{font-size:12px;color:var(--w25);}
-.nav-cta{background:var(--red);color:var(--white);font-family:var(--sans);font-size:12px;font-weight:700;padding:9px 20px;border:none;cursor:pointer;transition:background 0.2s;white-space:nowrap;}
-.nav-cta:hover{background:var(--red-deep);}
+.nav-cta{background:var(--red);color:var(--white);font-family:var(--sans);font-size:12px;font-weight:700;padding:9px 20px;border:none;cursor:pointer;white-space:nowrap;}
 .hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;width:40px;height:40px;cursor:pointer;gap:5px;background:transparent;border:none;}
-.hamburger span{display:block;width:22px;height:2px;background:var(--white);border-radius:2px;transition:all 0.3s;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--white);border-radius:2px;transition:all .3s;}
 .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
 .hamburger.open span:nth-child(2){opacity:0;}
 .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-.mobile-drawer{position:fixed;top:68px;left:0;right:0;bottom:0;background:rgba(11,13,12,0.98);backdrop-filter:blur(20px);z-index:999;transform:translateX(100%);transition:transform 0.35s;overflow-y:auto;padding:16px 0 80px;border-top:0.5px solid var(--border);}
+.mobile-drawer{position:fixed;top:68px;left:0;right:0;bottom:0;background:rgba(11,13,12,.98);z-index:999;transform:translateX(100%);transition:transform .35s;overflow-y:auto;padding:16px 0 80px;border-top:.5px solid var(--border);}
 .mobile-drawer.open{transform:translateX(0);}
-.mobile-menu-item{border-bottom:0.5px solid var(--border);}
+.mobile-menu-item{border-bottom:.5px solid var(--border);}
 .mobile-menu-top{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;cursor:pointer;font-size:15px;font-weight:500;color:var(--w80);}
 .mobile-menu-item.open .mobile-menu-top{color:var(--red);}
-.mobile-menu-top .m-arr{font-size:10px;color:var(--w25);transition:transform 0.25s;}
+.mobile-menu-top .m-arr{font-size:10px;color:var(--w25);transition:transform .25s;}
 .mobile-menu-item.open .m-arr{transform:rotate(180deg);color:var(--red);}
-.mobile-sub-menu{max-height:0;overflow:hidden;transition:max-height 0.3s;background:rgba(0,0,0,0.2);}
+.mobile-sub-menu{max-height:0;overflow:hidden;transition:max-height .3s;background:rgba(0,0,0,.2);}
 .mobile-menu-item.open .mobile-sub-menu{max-height:300px;}
-.mobile-sub-menu a{display:block;padding:13px 24px 13px 44px;font-size:13px;color:var(--w50);border-bottom:0.5px solid rgba(255,255,255,0.04);}
+.mobile-sub-menu a{display:block;padding:13px 24px 13px 44px;font-size:13px;color:var(--w50);border-bottom:.5px solid rgba(255,255,255,.04);}
 .mobile-sub-menu a:hover{color:var(--white);}
-.mobile-drawer-bottom{padding:28px 24px 0;border-top:0.5px solid var(--border);margin-top:16px;}
+.mobile-drawer-bottom{padding:28px 24px 0;border-top:.5px solid var(--border);margin-top:16px;}
 .mobile-drawer-tel{font-size:22px;font-weight:700;color:var(--red);margin-bottom:6px;}
 .mobile-drawer-hours{font-size:11px;color:var(--w25);margin-bottom:20px;}
 .mobile-drawer-cta{display:block;width:100%;font-family:var(--sans);font-size:14px;font-weight:700;padding:14px;background:var(--red);color:var(--white);border:none;cursor:pointer;}
 
-/* PAGE HERO */
-.page-hero{padding:clamp(100px,14vw,140px) clamp(16px,4vw,64px) clamp(48px,6vw,72px);background:var(--panel);border-bottom:2px solid var(--red);position:relative;overflow:hidden;}
-.page-hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-55deg,transparent,transparent 2px,rgba(203,31,47,0.03) 2px,rgba(203,31,47,0.03) 3px);}
-.page-hero-bg{position:absolute;right:0;bottom:-30px;font-family:var(--display);font-size:clamp(80px,18vw,260px);line-height:1;letter-spacing:-8px;color:rgba(255,255,255,0.025);pointer-events:none;user-select:none;overflow:hidden;}
-.page-hero-content{position:relative;}
-.breadcrumb{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--w25);margin-bottom:20px;}
-.breadcrumb .sep{color:var(--red);}
-.breadcrumb .current{color:var(--red);}
-.page-title{font-family:var(--display);font-size:clamp(40px,8vw,88px);line-height:0.95;letter-spacing:1px;margin-bottom:6px;}
-.page-title-ko{font-size:clamp(16px,3vw,28px);font-weight:700;letter-spacing:-1px;color:var(--w50);}
+/* 섹션 헤더 */
+.campus-header{background:var(--panel);padding:24px clamp(16px,4vw,64px);border-bottom:2px solid var(--red);margin-top:68px;}
+.campus-header-inner{display:flex;justify-content:space-between;align-items:center;}
+.campus-header .sec-label{font-size:9px;font-weight:500;letter-spacing:4px;color:var(--red);margin-bottom:8px;}
+.campus-header h2{font-size:clamp(20px,3vw,28px);font-weight:700;letter-spacing:-1px;}
 
-/* 지도+패널 */
-.campus-wrap{display:grid;grid-template-columns:1fr 320px;height:580px;border-top:0.5px solid var(--border);}
-.map-frame{position:relative;overflow:hidden;background:#111;}
-#campusMap{width:100%;height:100%;}
-.admin-login-btn{position:absolute;top:12px;right:12px;z-index:20;font-family:var(--sans);font-size:11px;font-weight:500;padding:7px 14px;background:rgba(11,13,12,0.85);color:var(--w25);border:0.5px solid var(--border);cursor:pointer;transition:all 0.2s;backdrop-filter:blur(8px);}
-.admin-login-btn:hover{color:var(--w80);}
-body.admin-mode .admin-login-btn{color:var(--red);border-color:var(--border-red);background:rgba(203,31,47,0.08);}
+/* 지도+패널 — partner.html과 동일한 구조 */
+.campus-map-wrap{
+  display:grid;grid-template-columns:1fr 320px;
+  height:580px;border-top:.5px solid var(--border);
+  position:relative;
+}
+.campus-map-frame{position:relative;overflow:hidden;background:#111;height:580px;}
+#campusMapDiv{width:100%;height:580px;display:block;}
 
-/* 패널 */
-.campus-panel{background:var(--card);border-left:0.5px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
-.panel-head{padding:18px 20px 14px;border-bottom:0.5px solid var(--border);flex-shrink:0;}
-.panel-head-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
-.panel-title{font-size:11px;font-weight:500;letter-spacing:1px;color:var(--white);}
-.panel-count{font-family:'Oswald',sans-serif;font-size:24px;color:var(--red);font-weight:600;}
-.panel-sub{font-size:10px;color:var(--w25);}
-.region-tabs{display:flex;flex-wrap:wrap;gap:1px;background:var(--border);border-bottom:0.5px solid var(--border);flex-shrink:0;}
-.region-tab{flex:1;min-width:36px;padding:7px 2px;font-family:var(--sans);font-size:9px;letter-spacing:0.3px;border:none;cursor:pointer;background:var(--card);color:var(--w25);transition:all 0.2s;}
-.region-tab:hover{color:var(--w80);}
+/* 관리자 버튼 */
+.admin-login-btn{
+  position:absolute;top:12px;right:12px;z-index:20;
+  font-family:var(--sans);font-size:11px;font-weight:500;
+  padding:7px 14px;background:rgba(11,13,12,.85);
+  color:var(--w25);border:.5px solid var(--border);
+  cursor:pointer;transition:all .2s;backdrop-filter:blur(8px);
+}
+body.admin-mode .admin-login-btn{color:var(--red);border-color:var(--border-red);}
+
+/* 우측 패널 */
+.campus-list-panel{
+  background:var(--card);border-left:.5px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden;height:580px;
+}
+.campus-list-panel-head{padding:18px 20px 14px;border-bottom:.5px solid var(--border);flex-shrink:0;}
+.clph-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.clph-title{font-size:11px;font-weight:500;letter-spacing:1px;color:var(--white);}
+.clph-count{font-family:'Oswald',sans-serif;font-size:24px;color:var(--red);font-weight:600;}
+.clph-sub{font-size:10px;color:var(--w25);}
+
+/* 지역 탭 */
+.region-tabs{display:flex;flex-wrap:wrap;gap:1px;background:var(--border);border-bottom:.5px solid var(--border);flex-shrink:0;}
+.region-tab{flex:1;min-width:32px;padding:7px 2px;font-family:var(--sans);font-size:9px;border:none;cursor:pointer;background:var(--card);color:var(--w25);transition:all .2s;}
 .region-tab.active{background:var(--red);color:var(--white);}
-.admin-bar{display:none;align-items:center;gap:6px;padding:8px 12px;background:rgba(203,31,47,0.06);border-bottom:0.5px solid var(--border-red);flex-shrink:0;flex-wrap:wrap;}
-body.admin-mode .admin-bar{display:flex;}
-.admin-input{flex:1;min-width:80px;background:var(--black);border:0.5px solid var(--border);color:var(--white);font-family:var(--sans);font-size:11px;padding:6px 8px;outline:none;}
-.admin-input:focus{border-color:var(--border-red);}
-.admin-input::placeholder{color:var(--w25);}
-.admin-add-btn{font-family:var(--sans);font-size:10px;font-weight:700;padding:6px 10px;background:var(--red);color:var(--white);border:none;cursor:pointer;white-space:nowrap;}
-.admin-del-btn{font-family:var(--sans);font-size:10px;color:rgba(255,100,100,0.7);padding:5px 8px;border:0.5px solid rgba(255,100,100,0.3);background:transparent;cursor:pointer;white-space:nowrap;}
 
-/* 리스트 */
-.list-scroll-wrap{flex:1;overflow:hidden;position:relative;}
-.list-scroll-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:24px;background:linear-gradient(to bottom,var(--card),transparent);z-index:2;pointer-events:none;}
-.list-scroll-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:24px;background:linear-gradient(to top,var(--card),transparent);z-index:2;pointer-events:none;}
-.list-inner{display:flex;flex-direction:column;}
-@keyframes listScrollUp{0%{transform:translateY(0);}100%{transform:translateY(-50%);}}
-.campus-item{padding:12px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background 0.2s;flex-shrink:0;}
-.campus-item:hover{background:rgba(203,31,47,0.06);}
-.campus-item.active{background:rgba(203,31,47,0.1);}
+/* 관리자 입력바 */
+.admin-bar{display:none;align-items:center;gap:6px;padding:8px 12px;background:rgba(203,31,47,.06);border-bottom:.5px solid var(--border-red);flex-shrink:0;flex-wrap:wrap;}
+body.admin-mode .admin-bar{display:flex;}
+.admin-input{flex:1;min-width:80px;background:var(--black);border:.5px solid var(--border);color:var(--white);font-family:var(--sans);font-size:11px;padding:6px 8px;outline:none;}
+.admin-add-btn{font-family:var(--sans);font-size:10px;font-weight:700;padding:6px 10px;background:var(--red);color:var(--white);border:none;cursor:pointer;white-space:nowrap;}
+.admin-del-btn{font-family:var(--sans);font-size:10px;color:rgba(255,100,100,.7);padding:5px 8px;border:.5px solid rgba(255,100,100,.3);background:transparent;cursor:pointer;white-space:nowrap;}
+
+/* 리스트 스크롤 */
+.campus-list-scroll-wrap{flex:1;overflow:hidden;position:relative;}
+.campus-list-scroll-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:24px;background:linear-gradient(to bottom,var(--card),transparent);z-index:2;pointer-events:none;}
+.campus-list-scroll-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:24px;background:linear-gradient(to top,var(--card),transparent);z-index:2;pointer-events:none;}
+.campus-list-inner{display:flex;flex-direction:column;}
+@keyframes campusListUp{0%{transform:translateY(0);}100%{transform:translateY(-50%);}}
+.campus-item{padding:12px 16px;border-bottom:.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .2s;flex-shrink:0;}
+.campus-item:hover{background:rgba(203,31,47,.06);}
+.campus-item.active{background:rgba(203,31,47,.1);}
 .campus-item.active .ci-name{color:var(--red);}
 .campus-item.active .ci-dot{background:var(--red);}
 .ci-left{display:flex;align-items:center;gap:10px;}
-.ci-dot{width:6px;height:6px;border-radius:50%;background:var(--gray);flex-shrink:0;transition:background 0.2s;}
-.ci-region{font-size:9px;letter-spacing:1.5px;color:rgba(203,31,47,0.7);}
-.ci-name{font-size:13px;font-weight:500;transition:color 0.2s;}
+.ci-dot{width:6px;height:6px;border-radius:50%;background:var(--gray);flex-shrink:0;}
+.ci-region{font-size:9px;letter-spacing:1.5px;color:rgba(203,31,47,.7);}
+.ci-name{font-size:13px;font-weight:500;}
 .ci-right{display:flex;align-items:center;gap:6px;}
-.ci-insta{font-size:9px;letter-spacing:0.5px;color:var(--red);border:0.5px solid var(--border-red);padding:2px 7px;transition:all 0.2s;white-space:nowrap;cursor:pointer;}
-.ci-insta:hover{background:var(--red);color:var(--white);}
-.ci-delete{display:none;width:18px;height:18px;align-items:center;justify-content:center;background:rgba(203,31,47,0.12);color:var(--red);font-size:10px;border:0.5px solid var(--border-red);cursor:pointer;flex-shrink:0;transition:all 0.2s;}
+.ci-insta{font-size:9px;color:var(--red);border:.5px solid var(--border-red);padding:2px 7px;cursor:pointer;white-space:nowrap;}
+.ci-insta:hover{background:var(--red);color:#fff;}
+.ci-delete{display:none;width:18px;height:18px;align-items:center;justify-content:center;background:rgba(203,31,47,.12);color:var(--red);font-size:10px;border:.5px solid var(--border-red);cursor:pointer;flex-shrink:0;}
 .ci-delete:hover{background:var(--red);color:#fff;}
 body.admin-mode .ci-delete{display:flex;}
 body.admin-mode .campus-item{cursor:grab;}
-body.admin-mode .campus-item:active{cursor:grabbing;}
-.campus-item.dragging{opacity:0.4;}
+.campus-item.dragging{opacity:.4;}
 .campus-item.drag-over{border-top:2px solid var(--red);}
 
 /* 팝업 */
-.final-popup .leaflet-popup-content-wrapper{background:transparent;border:none;box-shadow:none;padding:0;}
-.final-popup .leaflet-popup-content{margin:0;}
-.final-popup .leaflet-popup-tip-container{display:none;}
-.map-popup{background:#0b0d0c;border:1.5px solid #cb1f2f;border-radius:2px;padding:10px 14px;font-family:'Noto Sans KR',sans-serif;font-size:12px;color:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.7);min-width:160px;}
+.final-popup .leaflet-popup-content-wrapper{background:transparent!important;border:none!important;box-shadow:none!important;padding:0!important;}
+.final-popup .leaflet-popup-content{margin:0!important;}
+.final-popup .leaflet-popup-tip-container{display:none!important;}
+.map-popup{background:#0b0d0c;border:1.5px solid #cb1f2f;border-radius:2px;padding:10px 14px;font-family:'Noto Sans KR',sans-serif;font-size:12px;color:#fff;box-shadow:0 4px 20px rgba(0,0,0,.7);min-width:160px;}
 .map-popup .pop-region{font-size:9px;letter-spacing:2px;color:#cb1f2f;margin-bottom:4px;}
 .map-popup .pop-name{font-size:14px;font-weight:700;margin-bottom:6px;}
-.map-popup .pop-addr{font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5;margin-bottom:8px;}
-.map-popup .pop-tel{font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;}
-.map-popup .pop-insta{display:inline-block;font-size:10px;letter-spacing:1px;color:#cb1f2f;border:0.5px solid rgba(203,31,47,0.4);padding:4px 10px;cursor:pointer;transition:all 0.2s;}
+.map-popup .pop-addr{font-size:11px;color:rgba(255,255,255,.5);line-height:1.5;margin-bottom:4px;}
+.map-popup .pop-tel{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:8px;}
+.map-popup .pop-insta{display:inline-block;font-size:10px;color:#cb1f2f;border:.5px solid rgba(203,31,47,.4);padding:4px 10px;cursor:pointer;}
 .map-popup .pop-insta:hover{background:#cb1f2f;color:#fff;}
 
 /* FOOTER */
-footer{background:#060808;padding:clamp(32px,5vw,52px) clamp(16px,4vw,64px);border-top:0.5px solid var(--border);}
+footer{background:#060808;padding:clamp(32px,5vw,52px) clamp(16px,4vw,64px);border-top:.5px solid var(--border);}
 .footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:28px;}
 .footer-wordmark{font-family:var(--display);font-size:18px;letter-spacing:2px;}
 .footer-wordmark .red{color:var(--red);}
 .footer-wordmark small{display:block;font-family:var(--sans);font-size:9px;letter-spacing:3px;color:var(--w25);margin-top:2px;}
-.footer-info{font-size:11px;color:rgba(255,255,255,0.2);line-height:2.2;margin-top:12px;max-width:400px;}
+.footer-info{font-size:11px;color:rgba(255,255,255,.2);line-height:2.2;margin-top:12px;max-width:400px;}
 .footer-nav{display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
-.footer-nav a{font-size:11px;color:var(--w25);transition:color 0.2s;}
+.footer-nav a{font-size:11px;color:var(--w25);}
 .footer-nav a:hover{color:var(--w50);}
 .footer-sns{display:flex;gap:8px;margin-top:12px;justify-content:flex-end;}
-.footer-sns a{font-size:10px;color:var(--w25);border:0.5px solid var(--border);padding:5px 12px;letter-spacing:1.5px;transition:all 0.2s;}
+.footer-sns a{font-size:10px;color:var(--w25);border:.5px solid var(--border);padding:5px 12px;letter-spacing:1.5px;}
 .footer-sns a:hover{color:var(--red);border-color:var(--border-red);}
-.footer-bottom{margin-top:36px;padding-top:18px;border-top:0.5px solid var(--border);font-size:10px;color:rgba(255,255,255,0.15);}
+.footer-bottom{margin-top:36px;padding-top:18px;border-top:.5px solid var(--border);font-size:10px;color:rgba(255,255,255,.15);}
 
-/* 모바일 */
 @media(max-width:960px){
-  .nav-links,.nav-tel,.nav-cta{display:none!important;}
+  
   .hamburger{display:flex;}
-  .campus-wrap{grid-template-columns:1fr;height:auto;}
-  .map-frame{height:320px;}
-  .campus-panel{max-height:280px;border-left:none;border-top:0.5px solid var(--border);}
+  .campus-map-wrap{grid-template-columns:1fr;height:auto;}
+  .campus-map-frame{height:320px;}
+  #campusMapDiv{height:320px;}
+  .campus-list-panel{height:280px;border-left:none;border-top:.5px solid var(--border);}
   .footer-nav{align-items:flex-start;}
   .footer-sns{justify-content:flex-start;}
 }
 </style>
 </head>
 <body>
-
-<!-- NAV -->
 <nav class="nav">
   <a href="index.html" class="nav-logo">
     <img src="data:image/png;base64,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" alt="FINAL SPORTS ACADEMY">
@@ -206,43 +210,40 @@ footer{background:#060808;padding:clamp(32px,5vw,52px) clamp(16px,4vw,64px);bord
   </div>
 </nav>
 
-<!-- PAGE HERO -->
-<div class="page-hero">
-  <div class="page-hero-bg">CAMPUS</div>
-  <div class="page-hero-content">
-    <div class="breadcrumb"><a href="index.html">HOME</a><span class="sep">/</span><span>지점소개</span><span class="sep">/</span><span class="current">캠퍼스현황</span></div>
-    <div class="page-title">CAMPUS</div>
-    <div class="page-title-ko">전국 캠퍼스 현황</div>
+<div class="campus-header">
+  <div class="campus-header-inner">
+    <div>
+      <div class="sec-label">CAMPUS NETWORK</div>
+      <h2>전국 캠퍼스 현황</h2>
+    </div>
   </div>
 </div>
 
-<!-- 지도 + 패널 -->
-<div class="campus-wrap">
-  <div class="map-frame">
-    <div id="campusMap"></div>
+<div class="campus-map-wrap">
+  <div class="campus-map-frame">
+    <div id="campusMapDiv"></div>
     <button class="admin-login-btn" id="adminLoginBtn" onclick="toggleAdmin()">🔒 관리자</button>
   </div>
-  <div class="campus-panel">
-    <div class="panel-head">
-      <div class="panel-head-top">
-        <span class="panel-title">전국 캠퍼스</span>
-        <span class="panel-count" id="panelCount">28</span>
+  <div class="campus-list-panel">
+    <div class="campus-list-panel-head">
+      <div class="clph-top">
+        <span class="clph-title">전국 캠퍼스</span>
+        <span class="clph-count" id="campusCount">28</span>
       </div>
-      <div class="panel-sub">클릭하면 지도에서 위치를 확인합니다</div>
+      <div class="clph-sub">클릭하면 지도에서 위치를 확인합니다</div>
     </div>
     <div class="region-tabs" id="regionTabs"></div>
     <div class="admin-bar">
-      <input class="admin-input" type="text" id="adminInput" placeholder="캠퍼스명 (예: 경기 파주 캠퍼스)" onkeydown="if(event.key==='Enter')addCampus()">
+      <input class="admin-input" type="text" id="adminInput" placeholder="캠퍼스명 입력" onkeydown="if(event.key==='Enter')addCampus()">
       <button class="admin-add-btn" onclick="addCampus()">+ 추가</button>
       <button class="admin-del-btn" onclick="deleteLast()">마지막 삭제</button>
     </div>
-    <div class="list-scroll-wrap">
-      <div class="list-inner" id="listInner"></div>
+    <div class="campus-list-scroll-wrap">
+      <div class="campus-list-inner" id="campusListInner"></div>
     </div>
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-inner">
     <div>
@@ -257,7 +258,6 @@ footer{background:#060808;padding:clamp(32px,5vw,52px) clamp(16px,4vw,64px);bord
   <div class="footer-bottom">COPYRIGHTc 2026 FINAL SPORTS ACADEMY. ALL RIGHTS RESERVED.</div>
 </footer>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const CAMPUSES = [
   {name:"관악 캠퍼스",  region:"서울", lat:37.4784, lng:126.9294, addr:"서울시 관악구 난곡로 63가길 60 로얄빌딩 지하1층",    tel:"010-7104-0794", insta:"final_gwanak"},
@@ -290,191 +290,142 @@ const CAMPUSES = [
   {name:"진주 캠퍼스",  region:"경남", lat:35.1796, lng:128.1076, addr:"경상남도 진주시 촉석로186번길 4 (중안동) 3층",       tel:"010-8533-7563", insta:"final_jinju"},
 ];
 
-function getInstaUrl(insta) {
-  if (!insta) return null;
-  if (insta.startsWith('http')) return insta;
-  return 'https://www.instagram.com/' + insta;
+function getInstaUrl(v){if(!v)return null;return v.startsWith('http')?v:'https://www.instagram.com/'+v;}
+
+let campusMap=null, campusMarkers=[], activeRegion='전체', isAdmin=false, dragSrc=null;
+
+function initCampusMap(){
+  campusMap = L.map('campusMapDiv',{zoomControl:true}).setView([36.5,127.8],7);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+    attribution:'© OpenStreetMap © CARTO',maxZoom:19
+  }).addTo(campusMap);
+  buildCampusMarkers();
+  renderRegionTabs();
+  renderCampusList();
 }
 
-// 지도
-const map = L.map('campusMap').setView([36.5, 127.8], 7);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  attribution:'© OpenStreetMap © CARTO', maxZoom:19
-}).addTo(map);
-
-const redIcon = L.divIcon({
-  className:'',
-  html:'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" viewBox="0 0 26 34"><path d="M13 0C5.82 0 0 5.82 0 13c0 10 13 21 13 21S26 23 26 13C26 5.82 20.18 0 13 0z" fill="#cb1f2f"/><circle cx="13" cy="13" r="5.5" fill="white"/></svg>',
-  iconSize:[22,30], iconAnchor:[11,30], popupAnchor:[0,-34]
-});
-
-let markers = [];
-let activeRegion = '전체';
-let isAdmin = false;
-let dragSrc = null;
-
-function buildMarkers() {
-  markers.forEach(m => m.remove());
-  markers = [];
-  CAMPUSES.forEach((c, i) => {
-    const m = L.marker([c.lat, c.lng], {icon: redIcon}).addTo(map);
-    const instaUrl = getInstaUrl(c.insta);
-    const instaBtn = instaUrl ? '<div class="pop-insta" onclick="window.open('' + instaUrl + '','_blank')">📷 인스타그램 보기</div>' : '';
+function buildCampusMarkers(){
+  campusMarkers.forEach(m=>m.remove());
+  campusMarkers=[];
+  const icon=L.divIcon({className:'',
+    html:'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" viewBox="0 0 26 34"><path d="M13 0C5.82 0 0 5.82 0 13c0 10 13 21 13 21S26 23 26 13C26 5.82 20.18 0 13 0z" fill="#cb1f2f"/><circle cx="13" cy="13" r="5.5" fill="white"/></svg>',
+    iconSize:[22,30],iconAnchor:[11,30],popupAnchor:[0,-34]
+  });
+  CAMPUSES.forEach((c,i)=>{
+    const m=L.marker([c.lat,c.lng],{icon}).addTo(campusMap);
+    const url=getInstaUrl(c.insta);
+    const ib=url?'<div class="pop-insta" onclick="window.open(\''+url+'\',\'_blank\')">📷 인스타그램 보기</div>':'';
     m.bindPopup(
-      '<div class="map-popup">' +
-      '<div class="pop-region">' + c.region.toUpperCase() + '</div>' +
-      '<div class="pop-name">' + c.name + '</div>' +
-      '<div class="pop-addr">' + c.addr + '</div>' +
-      '<div class="pop-tel">' + c.tel + '</div>' +
-      instaBtn +
-      '</div>',
-      {closeButton:true, className:'final-popup', maxWidth:240}
+      '<div class="map-popup">'+
+      '<div class="pop-region">'+c.region.toUpperCase()+'</div>'+
+      '<div class="pop-name">'+c.name+'</div>'+
+      '<div class="pop-addr">'+c.addr+'</div>'+
+      '<div class="pop-tel">'+c.tel+'</div>'+ib+'</div>',
+      {closeButton:true,className:'final-popup',maxWidth:240}
     );
-    m.on('click', () => focusCampus(i));
-    markers.push(m);
+    m.on('click',()=>focusCampus(i));
+    campusMarkers.push(m);
   });
 }
 
-function focusCampus(i) {
-  const c = CAMPUSES[i];
-  if (!c) return;
-  map.flyTo([c.lat, c.lng], 14, {duration:0.7});
-  if (markers[i]) markers[i].openPopup();
-  document.querySelectorAll('.campus-item').forEach(el => {
-    el.classList.toggle('active', parseInt(el.dataset.realIdx) === i);
+function focusCampus(i){
+  if(!campusMap||!CAMPUSES[i])return;
+  campusMap.flyTo([CAMPUSES[i].lat,CAMPUSES[i].lng],14,{duration:0.7});
+  if(campusMarkers[i])campusMarkers[i].openPopup();
+  document.querySelectorAll('.campus-item').forEach(el=>{
+    el.classList.toggle('active',parseInt(el.dataset.idx)===i);
   });
-  const el = document.querySelector('.campus-item[data-real-idx="' + i + '"]');
-  if (el) el.scrollIntoView({block:'nearest', behavior:'smooth'});
+  const el=document.querySelector('.campus-item[data-idx="'+i+'"]');
+  if(el)el.scrollIntoView({block:'nearest',behavior:'smooth'});
 }
 
-// 리스트
-const REGIONS = ['전체','서울','경기','강원','충청','전라','경남'];
-
-function renderTabs() {
-  const tabs = document.getElementById('regionTabs');
-  tabs.innerHTML = REGIONS.map(r =>
-    '<button class="region-tab ' + (r===activeRegion?'active':'') + '" onclick="setRegion('' + r + '')">' + r + '</button>'
+const REGIONS=['전체','서울','경기','강원','충청','전라','경남'];
+function renderRegionTabs(){
+  document.getElementById('regionTabs').innerHTML=REGIONS.map(r=>
+    '<button class="region-tab'+(r===activeRegion?' active':'')+'" onclick="setRegion(\''+r+'\')">'+r+'</button>'
   ).join('');
 }
+function setRegion(r){activeRegion=r;renderRegionTabs();renderCampusList();}
 
-function setRegion(r) {
-  activeRegion = r;
-  renderTabs();
-  renderList();
-}
-
-function renderList() {
-  const inner = document.getElementById('listInner');
-  const filtered = CAMPUSES.map((c,i) => Object.assign({},c,{realIdx:i}))
-    .filter(c => activeRegion==='전체' || c.region===activeRegion);
-
-  function makeItem(c, isClone) {
-    const instaUrl = getInstaUrl(c.insta);
-    return '<div class="campus-item" data-real-idx="' + c.realIdx + '"' +
-      (isAdmin && !isClone ? ' draggable="true"' : '') +
-      ' onclick="focusCampus(' + c.realIdx + ')"' +
-      (isAdmin && !isClone ? ' ondragstart="onDragStart(event,' + c.realIdx + ')" ondragover="onDragOver(event)" ondrop="onDrop(event,' + c.realIdx + ')" ondragleave="onDragLeave(event)" ondragend="onDragEnd(event)"' : '') +
-      '>' +
-      '<div class="ci-left"><div class="ci-dot"></div><div>' +
-      '<div class="ci-region">' + c.region.toUpperCase() + '</div>' +
-      '<div class="ci-name">' + c.name + '</div>' +
-      '</div></div>' +
-      '<div class="ci-right">' +
-      (!isClone && instaUrl ? '<span class="ci-insta" onclick="event.stopPropagation();window.open('' + instaUrl + '','_blank')">INSTA</span>' : '') +
-      (!isClone ? '<span class="ci-delete" onclick="event.stopPropagation();deleteCampus(' + c.realIdx + ')">x</span>' : '') +
-      '</div>' +
-      '</div>';
+function renderCampusList(){
+  const inner=document.getElementById('campusListInner');
+  const filtered=CAMPUSES.map((c,i)=>Object.assign({},c,{idx:i}))
+    .filter(c=>activeRegion==='전체'||c.region===activeRegion);
+  function mk(c,clone){
+    const url=getInstaUrl(c.insta);
+    return '<div class="campus-item" data-idx="'+c.idx+'"'+
+      (isAdmin&&!clone?' draggable="true" ondragstart="ds(event,'+c.idx+')" ondragover="dov(event)" ondrop="dp(event,'+c.idx+')" ondragleave="dl(event)" ondragend="de(event)"':'')+
+      ' onclick="focusCampus('+c.idx+')">'+
+      '<div class="ci-left"><div class="ci-dot"></div><div>'+
+      '<div class="ci-region">'+c.region.toUpperCase()+'</div>'+
+      '<div class="ci-name">'+c.name+'</div></div></div>'+
+      '<div class="ci-right">'+
+      (!clone&&url?'<span class="ci-insta" onclick="event.stopPropagation();window.open(\''+url+'\',\'_blank\')">INSTA</span>':'')+
+      (!clone?'<span class="ci-delete" onclick="event.stopPropagation();delCampus('+c.idx+')">✕</span>':'')+
+      '</div></div>';
   }
-
-  if (isAdmin) {
-    inner.innerHTML = filtered.map(c => makeItem(c, false)).join('');
-    inner.style.animation = 'none';
-  } else {
-    const items = filtered.map(c => makeItem(c, false)).join('');
-    inner.innerHTML = items + items;
-    const dur = Math.max(20, filtered.length * 2);
-    inner.style.animation = 'listScrollUp ' + dur + 's linear infinite';
+  if(isAdmin){
+    inner.innerHTML=filtered.map(c=>mk(c,false)).join('');
+    inner.style.animation='none';
+  }else{
+    const items=filtered.map(c=>mk(c,false)).join('');
+    inner.innerHTML=items+items;
+    inner.style.animation='campusListUp '+(Math.max(20,filtered.length*2))+'s linear infinite';
   }
-  document.getElementById('panelCount').textContent = CAMPUSES.length;
+  document.getElementById('campusCount').textContent=CAMPUSES.length;
 }
 
 // 관리자
-const ADMIN_PW = 'final2026';
-function toggleAdmin() {
-  const btn = document.getElementById('adminLoginBtn');
-  if (isAdmin) {
-    isAdmin = false;
-    document.body.classList.remove('admin-mode');
-    btn.textContent = '🔒 관리자';
-    renderList();
-  } else {
-    const pw = prompt('관리자 비밀번호:');
-    if (pw === null) return;
-    if (pw !== ADMIN_PW) { alert('비밀번호가 올바르지 않습니다.'); return; }
-    isAdmin = true;
-    document.body.classList.add('admin-mode');
-    btn.textContent = '🔓 관리자 ✓';
-    renderList();
+const ADMIN_PW='final2026';
+function toggleAdmin(){
+  const btn=document.getElementById('adminLoginBtn');
+  if(isAdmin){isAdmin=false;document.body.classList.remove('admin-mode');btn.textContent='🔒 관리자';renderCampusList();}
+  else{
+    const pw=prompt('관리자 비밀번호:');if(pw===null)return;
+    if(pw!==ADMIN_PW){alert('비밀번호가 올바르지 않습니다.');return;}
+    isAdmin=true;document.body.classList.add('admin-mode');btn.textContent='🔓 관리자 ✓';renderCampusList();
   }
 }
+async function addCampus(){
+  const val=document.getElementById('adminInput').value.trim();if(!val)return;
+  if(CAMPUSES.find(c=>c.name===val)){alert('이미 있는 캠퍼스입니다.');return;}
+  const btn=document.querySelector('.admin-add-btn');btn.textContent='검색중...';btn.disabled=true;
+  const rlist=['서울','경기','인천','강원','충북','충남','세종','전북','전남','광주','경북','경남','부산','대구','대전','울산','제주'];
+  const region=rlist.find(r=>val.includes(r))||'기타';
+  try{
+    const res=await fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(val+' 대한민국')+'&format=json&limit=1');
+    const data=await res.json();if(!data.length){alert('좌표를 찾을 수 없습니다.');return;}
+    CAMPUSES.push({name:val,region,lat:parseFloat(data[0].lat),lng:parseFloat(data[0].lon),addr:'',tel:'',insta:''});
+    document.getElementById('adminInput').value='';buildCampusMarkers();renderCampusList();
+    alert('"'+val+'" 추가되었습니다!');
+  }catch(e){alert('오류가 발생했습니다.');}
+  finally{btn.textContent='+ 추가';btn.disabled=false;}
+}
+function delCampus(i){if(!confirm('"'+CAMPUSES[i].name+'"을 삭제하시겠습니까?'))return;CAMPUSES.splice(i,1);buildCampusMarkers();renderCampusList();}
+function deleteLast(){if(!CAMPUSES.length)return;if(!confirm('"'+CAMPUSES[CAMPUSES.length-1].name+'"을 삭제하시겠습니까?'))return;CAMPUSES.pop();buildCampusMarkers();renderCampusList();}
 
-async function addCampus() {
-  const val = document.getElementById('adminInput').value.trim();
-  if (!val) return;
-  if (CAMPUSES.find(c => c.name === val)) { alert('이미 있는 캠퍼스입니다.'); return; }
-  const btn = document.querySelector('.admin-add-btn');
-  btn.textContent = '검색중...'; btn.disabled = true;
-  const regionList = ['서울','경기','인천','강원','충북','충남','세종','전북','전남','광주','경북','경남','부산','대구','대전','울산','제주'];
-  const region = regionList.find(r => val.includes(r)) || '기타';
-  try {
-    const res = await fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(val + ' 대한민국') + '&format=json&limit=1');
-    const data = await res.json();
-    if (!data.length) { alert('좌표를 찾을 수 없습니다.'); return; }
-    CAMPUSES.push({name:val, region:region, lat:parseFloat(data[0].lat), lng:parseFloat(data[0].lon), addr:'', tel:'', insta:''});
-    document.getElementById('adminInput').value = '';
-    buildMarkers(); renderList();
-    alert('"' + val + '" 추가되었습니다!');
-  } catch(e) { alert('오류가 발생했습니다.'); }
-  finally { btn.textContent = '+ 추가'; btn.disabled = false; }
-}
-
-function deleteCampus(i) {
-  if (!confirm('"' + CAMPUSES[i].name + '"을 삭제하시겠습니까?')) return;
-  CAMPUSES.splice(i, 1); buildMarkers(); renderList();
-}
-function deleteLast() {
-  if (!CAMPUSES.length) return;
-  if (!confirm('"' + CAMPUSES[CAMPUSES.length-1].name + '"을 삭제하시겠습니까?')) return;
-  CAMPUSES.pop(); buildMarkers(); renderList();
-}
-
-function onDragStart(e, i) { if (!isAdmin) { e.preventDefault(); return; } dragSrc=i; e.currentTarget.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; }
-function onDragOver(e) { if (!isAdmin) return; e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
-function onDragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
-function onDrop(e, targetIdx) {
-  if (!isAdmin || dragSrc===null || dragSrc===targetIdx) return;
-  e.currentTarget.classList.remove('drag-over');
-  const moved = CAMPUSES.splice(dragSrc, 1)[0];
-  CAMPUSES.splice(targetIdx, 0, moved);
-  dragSrc = null; buildMarkers(); renderList();
-}
-function onDragEnd(e) { e.currentTarget.classList.remove('dragging'); document.querySelectorAll('.campus-item').forEach(el=>el.classList.remove('drag-over')); dragSrc=null; }
+// 드래그
+function ds(e,i){if(!isAdmin){e.preventDefault();return;}dragSrc=i;e.currentTarget.classList.add('dragging');e.dataTransfer.effectAllowed='move';}
+function dov(e){if(!isAdmin)return;e.preventDefault();e.currentTarget.classList.add('drag-over');}
+function dl(e){e.currentTarget.classList.remove('drag-over');}
+function dp(e,ti){if(!isAdmin||dragSrc===null||dragSrc===ti)return;e.currentTarget.classList.remove('drag-over');const mv=CAMPUSES.splice(dragSrc,1)[0];CAMPUSES.splice(ti,0,mv);dragSrc=null;buildCampusMarkers();renderCampusList();}
+function de(e){e.currentTarget.classList.remove('dragging');document.querySelectorAll('.campus-item').forEach(el=>el.classList.remove('drag-over'));dragSrc=null;}
 
 // 햄버거
-function toggleDrawer() {
-  const d=document.getElementById('mobileDrawer'), b=document.getElementById('hamburgerBtn');
-  const open=d.classList.contains('open');
-  if(open){d.classList.remove('open');b.classList.remove('open');document.body.style.overflow='';}
-  else{d.classList.add('open');b.classList.add('open');document.body.style.overflow='hidden';}
-}
+function toggleDrawer(){const d=document.getElementById('mobileDrawer'),b=document.getElementById('hamburgerBtn');if(d.classList.contains('open')){d.classList.remove('open');b.classList.remove('open');document.body.style.overflow='';}else{d.classList.add('open');b.classList.add('open');document.body.style.overflow='hidden';}}
 function closeDrawer(){document.getElementById('mobileDrawer').classList.remove('open');document.getElementById('hamburgerBtn').classList.remove('open');document.body.style.overflow='';}
 function toggleMobileMenu(el){const item=el.parentElement;const open=item.classList.contains('open');document.querySelectorAll('.mobile-menu-item').forEach(i=>i.classList.remove('open'));if(!open)item.classList.add('open');}
-document.querySelectorAll('.mobile-sub-menu a').forEach(a=>a.addEventListener('click',closeDrawer));
 
-// 초기화
-buildMarkers();
-renderTabs();
-renderList();
+// Leaflet 로드 (partner.html과 완전히 동일)
+(function(){
+  const css=document.createElement('link');
+  css.rel='stylesheet';css.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+  document.head.appendChild(css);
+  const s=document.createElement('script');
+  s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  s.onload=initCampusMap;
+  document.head.appendChild(s);
+})();
 </script>
 </body>
 </html>

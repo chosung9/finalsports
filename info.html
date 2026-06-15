@@ -9,10 +9,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Bebas+Neue&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html { width:100%; max-width:100vw; overflow-x:hidden; }
-body { width:100%; max-width:100vw; overflow-x:hidden; position:relative; }
-img, video, iframe { max-width:100%; height:auto; }
-.nav, section, footer, header, div { max-width:100vw; }
+html, body { width:100%; max-width:100%; overflow-x:hidden; }
+img, video, iframe { max-width:100%; }
 :root {
   --red:#cb1f2f; --red-deep:#9e1824; --red-faint:rgba(203,31,47,0.06);
   --black:#0b0d0c; --gray-panel:#161818; --gray-card:#111313;
@@ -32,7 +30,7 @@ a { text-decoration:none; color:inherit; }
 .nav {
   position:fixed; top:0; left:0; right:0; z-index:1000;
   display:flex; align-items:center; justify-content:space-between;
-  padding:0 max(20px, min(64px, 5vw)); height:68px;
+  padding:0 64px; height:68px;
   background:rgba(11,13,12,0.95); backdrop-filter:blur(20px);
   border-bottom:0.5px solid var(--border);
 }
@@ -73,9 +71,8 @@ a { text-decoration:none; color:inherit; }
 
 /* ── PAGE HERO ── */
 .page-hero {
-  padding:140px max(20px, min(64px, 5vw)) 72px; background:var(--gray-panel);
+  padding:140px 64px 72px; background:var(--gray-panel);
   border-bottom:2px solid var(--red); position:relative; overflow:hidden;
-  max-width:100vw;
 }
 .page-hero::before {
   content:''; position:absolute; inset:0;
@@ -94,7 +91,7 @@ a { text-decoration:none; color:inherit; }
 .page-title-ko { font-size:clamp(18px,2.5vw,28px); font-weight:700; letter-spacing:-1px; color:var(--white-50); }
 
 /* ── 서브탭 ── */
-.sub-tabs { display:flex; border-bottom:0.5px solid var(--border); background:var(--gray-panel); padding:0 max(20px, min(64px, 5vw)); }
+.sub-tabs { display:flex; border-bottom:0.5px solid var(--border); background:var(--gray-panel); padding:0 64px; }
 .sub-tab {
   font-size:13px; color:var(--white-25); padding:16px 24px; cursor:pointer;
   border:none; background:transparent; border-bottom:2px solid transparent;
@@ -105,7 +102,7 @@ a { text-decoration:none; color:inherit; }
 
 /* ── 필터 바 ── */
 .filter-bar {
-  padding:28px max(20px, min(64px, 5vw)); background:var(--black);
+  padding:28px 64px; background:var(--black);
   display:flex; justify-content:space-between; align-items:center;
   border-bottom:0.5px solid var(--border);
 }
@@ -121,7 +118,7 @@ a { text-decoration:none; color:inherit; }
 .filter-count span { color:var(--red); font-weight:700; }
 
 /* ── 인스타 피드 그리드 ── */
-.insta-section { padding:56px max(20px, min(64px, 5vw)); background:var(--black); }
+.insta-section { padding:56px 64px; background:var(--black); }
 .insta-header {
   display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:36px;
 }
@@ -209,7 +206,7 @@ a { text-decoration:none; color:inherit; }
 .connect-banner-btn:hover { background:var(--red-deep); }
 
 /* ── FOOTER ── */
-footer { background:#060808; padding:52px max(20px, min(64px, 5vw)); border-top:0.5px solid var(--border); }
+footer { background:#060808; padding:52px 64px; border-top:0.5px solid var(--border); }
 .footer-inner { display:flex; justify-content:space-between; flex-wrap:wrap; gap:32px; }
 .footer-wordmark { font-family:var(--display); font-size:18px; letter-spacing:2px; }
 .footer-wordmark .red { color:var(--red); }
@@ -223,16 +220,7 @@ footer { background:#060808; padding:52px max(20px, min(64px, 5vw)); border-top:
 .footer-sns a:hover { color:var(--red); border-color:var(--border-red); }
 .footer-bottom { margin-top:40px; padding-top:20px; border-top:0.5px solid var(--border); font-size:10px; color:rgba(255,255,255,0.15); }
 
- 
-  .page-hero { padding:120px 24px 56px; }
-  .sub-tabs { padding:0 24px; overflow-x:auto; }
-  .filter-bar { padding:20px 24px; flex-direction:column; align-items:flex-start; gap:12px; }
-  .insta-section { padding:40px 24px; }
-  .feed-grid { grid-template-columns:repeat(2,1fr); }
-  .connect-banner { margin:0 24px 40px; flex-direction:column; }
-  footer { padding:40px 24px; }
-  .footer-nav { align-items:flex-start; } .footer-sns { justify-content:flex-start; }
-}
+
 
 
 /* ══════════════════════════════
@@ -325,7 +313,7 @@ footer { background:#060808; padding:52px max(20px, min(64px, 5vw)); border-top:
 @media (max-width: 960px) {
   /* NAV */
   .nav { padding: 0 20px; }
-  .nav-links { display: none !important; }
+  
   .nav-tel { display: none; }
   .nav-cta { display: none; }
   .hamburger { display: flex; }
@@ -484,19 +472,6 @@ footer { background:#060808; padding:52px max(20px, min(64px, 5vw)); border-top:
   .hero-headline { font-size: clamp(36px,9vw,52px); }
 }
 
-
-/* ══ 레이아웃 깨짐 완전 수정 ══ */
-html { overflow-x: hidden !important; max-width: 100vw; }
-body { overflow-x: hidden !important; max-width: 100vw; position: relative; }
-.hero { overflow: hidden !important; max-width: 100vw; }
-.hero-bg-word { max-width: 100vw; overflow: hidden; }
-.hero-content { position: relative; z-index: 5; max-width: calc(100vw - 48px); }
-.hero-headline { word-break: keep-all; overflow-wrap: break-word; max-width: 100%; }
-.numbers-band { max-width: 100vw; overflow: hidden; }
-.sec, section, footer, nav { max-width: 100vw; overflow-x: hidden; }
-.features-grid > *, .campus-map-wrap > *, .numbers-band > *,
-.process-grid > *, .feed-grid > *, .fi-grid > * { min-width: 0; }
-
 </style>
 </head>
 <body>
@@ -517,7 +492,7 @@ body { overflow-x: hidden !important; max-width: 100vw; position: relative; }
       <div class="nav-dropdown"><a href="info.html">최신입시</a></div></li>
     <li><a href="community.html">커뮤니티 <span class="arr">▼</span></a>
       <div class="nav-dropdown">
-        <a href="community.html">파이널갤러리</a><a href="community.html">파이널소식</a>
+        <a href="community.html">파이널갤러리</a><a href="community.html?tab=news">파이널소식</a>
       </div></li>
     <li><a href="partner.html">파트너모집 <span class="arr">▼</span></a>
       <div class="nav-dropdown">
