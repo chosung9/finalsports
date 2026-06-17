@@ -129,6 +129,9 @@ body.admin-mode .admin-bar{display:flex;}
 .ci-delete{display:none;width:18px;height:18px;align-items:center;justify-content:center;background:rgba(203,31,47,.12);color:var(--red);font-size:10px;border:.5px solid var(--border-red);cursor:pointer;flex-shrink:0;}
 .ci-delete:hover{background:var(--red);color:#fff;}
 body.admin-mode .ci-delete{display:flex;}
+.ci-edit{display:none;font-size:9px;color:rgba(255,255,255,.75);border:.5px solid rgba(255,255,255,.3);padding:2px 7px;cursor:pointer;white-space:nowrap;}
+.ci-edit:hover{background:rgba(255,255,255,.9);color:#0a0a0a;}
+body.admin-mode .ci-edit{display:inline-block;}
 body.admin-mode .campus-item{cursor:grab;}
 .campus-item.dragging{opacity:.4;}
 .campus-item.drag-over{border-top:2px solid var(--red);}
@@ -398,6 +401,7 @@ function renderCampusList(){
       '<div class="ci-name">'+c.name+'</div></div></div>'+
       '<div class="ci-right">'+
       (!clone&&url?'<span class="ci-insta" onclick="event.stopPropagation();window.open(\''+url+'\',\'_blank\')">INSTA</span>':'')+
+      (!clone?'<span class="ci-edit" onclick="event.stopPropagation();window.fsaEditCampusAndSave&&window.fsaEditCampusAndSave('+c.idx+')">수정</span>':'')+
       (!clone?'<span class="ci-delete" onclick="event.stopPropagation();delCampus('+c.idx+')">✕</span>':'')+
       '</div></div>';
   }
@@ -639,6 +643,30 @@ window.fsaDeleteCampusAndSave = async function(idx){
   if(window.fsaDeleteCampus) window.fsaDeleteCampus(idx);
   await saveCampuses();
   toast('지점이 삭제되었습니다 ✓');
+};
+window.fsaEditCampusAndSave = async function(idx){
+  const list = window.fsaGetCampuses ? window.fsaGetCampuses() : null;
+  if(!list || !list[idx]) return;
+  const c = list[idx];
+  const name = prompt('지점 이름', c.name||''); if(name===null) return;
+  const region = prompt('지역 — 서울 / 경기 / 강원 / 충청 / 전라 / 경남', c.region||''); if(region===null) return;
+  const addr = prompt('지점 주소 (도로명 또는 지번 주소)', c.addr||''); if(addr===null) return;
+  const tel = prompt('전화번호', c.tel||''); if(tel===null) return;
+  const insta = prompt('인스타그램 아이디 (@ 빼고, 없으면 비움)', c.insta||''); if(insta===null) return;
+  let lat=c.lat, lng=c.lng;
+  if(addr.trim() && addr.trim() !== (c.addr||'').trim()){
+    toast('주소로 위치를 다시 찾는 중...');
+    try{
+      const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q='+encodeURIComponent(addr+' 대한민국'));
+      const d = await r.json();
+      if(d && d.length){ lat=parseFloat(d[0].lat); lng=parseFloat(d[0].lon); }
+    }catch(e){ console.warn('주소 검색 실패', e); }
+  }
+  const newList = list.map((x,i)=> i===idx ? Object.assign({}, x, { name:name.trim(), region:region.trim(), addr:addr.trim(), tel:tel.trim(), insta:insta.replace('@','').trim(), lat:lat, lng:lng }) : x);
+  if(window.fsaSetCampuses) window.fsaSetCampuses(newList);
+  await saveCampuses();
+  if(window.fsaMapCtx && window.fsaMapCtx.map && window.fsaMapCtx.map.flyTo){ try{ window.fsaMapCtx.map.flyTo([lat,lng],14,{duration:0.7}); }catch(e){} }
+  toast('지점이 수정되었습니다 ✓');
 };
 function pickLocationOnMap(cb){
   const ctx = window.fsaMapCtx;

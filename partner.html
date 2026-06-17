@@ -1831,6 +1831,30 @@ window.fsaDeleteCampusAndSave = async function(idx){
   await saveCampuses();
   toast('지점이 삭제되었습니다 ✓');
 };
+window.fsaEditCampusAndSave = async function(idx){
+  const list = window.fsaGetCampuses ? window.fsaGetCampuses() : null;
+  if(!list || !list[idx]) return;
+  const c = list[idx];
+  const name = prompt('지점 이름', c.name||''); if(name===null) return;
+  const region = prompt('지역 — 서울 / 경기 / 강원 / 충청 / 전라 / 경남', c.region||''); if(region===null) return;
+  const addr = prompt('지점 주소 (도로명 또는 지번 주소)', c.addr||''); if(addr===null) return;
+  const tel = prompt('전화번호', c.tel||''); if(tel===null) return;
+  const insta = prompt('인스타그램 아이디 (@ 빼고, 없으면 비움)', c.insta||''); if(insta===null) return;
+  let lat=c.lat, lng=c.lng;
+  if(addr.trim() && addr.trim() !== (c.addr||'').trim()){
+    toast('주소로 위치를 다시 찾는 중...');
+    try{
+      const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q='+encodeURIComponent(addr+' 대한민국'));
+      const d = await r.json();
+      if(d && d.length){ lat=parseFloat(d[0].lat); lng=parseFloat(d[0].lon); }
+    }catch(e){ console.warn('주소 검색 실패', e); }
+  }
+  const newList = list.map((x,i)=> i===idx ? Object.assign({}, x, { name:name.trim(), region:region.trim(), addr:addr.trim(), tel:tel.trim(), insta:insta.replace('@','').trim(), lat:lat, lng:lng }) : x);
+  if(window.fsaSetCampuses) window.fsaSetCampuses(newList);
+  await saveCampuses();
+  if(window.fsaMapCtx && window.fsaMapCtx.map && window.fsaMapCtx.map.flyTo){ try{ window.fsaMapCtx.map.flyTo([lat,lng],14,{duration:0.7}); }catch(e){} }
+  toast('지점이 수정되었습니다 ✓');
+};
 function pickLocationOnMap(cb){
   const ctx = window.fsaMapCtx;
   if(ctx && ctx.map && ctx.map.once){ toast('지도에서 지점 위치를 클릭하세요 📍'); ctx.map.once('click', e=> cb(e.latlng.lat, e.latlng.lng)); }

@@ -475,6 +475,8 @@ body.fsa-edit #campusListWrap { overflow-y: auto !important; }
 body.fsa-edit .campus-list-scroll { animation: none !important; transform: none !important; }
 .campus-list-item .cli-del{background:transparent;border:0.5px solid rgba(203,31,47,.7);color:#ff6b6b;font-size:10px;font-weight:700;padding:4px 9px;border-radius:2px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;}
 .campus-list-item .cli-del:hover{background:#cb1f2f;color:#fff;}
+.campus-list-item .cli-edit{background:transparent;border:0.5px solid rgba(255,255,255,.3);color:rgba(255,255,255,.75);font-size:10px;font-weight:700;padding:4px 9px;border-radius:2px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;}
+.campus-list-item .cli-edit:hover{background:rgba(255,255,255,.9);color:#0a0a0a;}
 .campus-list-item .cli-right{display:flex;align-items:center;gap:8px;}
 .campus-list-item .cli-insta{font-size:9px;color:var(--red);border:.5px solid rgba(203,31,47,.5);padding:2px 7px;cursor:pointer;white-space:nowrap;letter-spacing:.5px;font-family:'Noto Sans KR',sans-serif;}
 .campus-list-item .cli-insta:hover{background:var(--red);color:#fff;}
@@ -1680,7 +1682,7 @@ function buildList(filterRegion) {
       </div>
       <div class="cli-right">
         ${_insta ? `<span class="cli-insta" onclick="event.stopPropagation(); window.open('${_insta}','_blank')">INSTA</span>` : ``}
-        ${fsaEditing ? `<button class="cli-del" onclick="event.stopPropagation(); window.fsaDeleteCampusAndSave && window.fsaDeleteCampusAndSave(${c.i})">삭제</button>` : `<span class="cli-arr">↗</span>`}
+        ${fsaEditing ? `<button class="cli-edit" onclick="event.stopPropagation(); window.fsaEditCampusAndSave && window.fsaEditCampusAndSave(${c.i})">수정</button><button class="cli-del" onclick="event.stopPropagation(); window.fsaDeleteCampusAndSave && window.fsaDeleteCampusAndSave(${c.i})">삭제</button>` : `<span class="cli-arr">↗</span>`}
       </div>
     </div>
   `; }).join("");
@@ -2180,6 +2182,30 @@ window.fsaDeleteCampusAndSave = async function(idx){
   if(window.fsaDeleteCampus) window.fsaDeleteCampus(idx);
   await saveCampuses();
   toast('지점이 삭제되었습니다 ✓');
+};
+window.fsaEditCampusAndSave = async function(idx){
+  const list = window.fsaGetCampuses ? window.fsaGetCampuses() : null;
+  if(!list || !list[idx]) return;
+  const c = list[idx];
+  const name = prompt('지점 이름', c.name||''); if(name===null) return;
+  const region = prompt('지역 — 서울 / 경기 / 강원 / 충청 / 전라 / 경남', c.region||''); if(region===null) return;
+  const addr = prompt('지점 주소 (도로명 또는 지번 주소)', c.addr||''); if(addr===null) return;
+  const tel = prompt('전화번호', c.tel||''); if(tel===null) return;
+  const insta = prompt('인스타그램 아이디 (@ 빼고, 없으면 비움)', c.insta||''); if(insta===null) return;
+  let lat=c.lat, lng=c.lng;
+  if(addr.trim() && addr.trim() !== (c.addr||'').trim()){
+    toast('주소로 위치를 다시 찾는 중...');
+    try{
+      const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q='+encodeURIComponent(addr+' 대한민국'));
+      const d = await r.json();
+      if(d && d.length){ lat=parseFloat(d[0].lat); lng=parseFloat(d[0].lon); }
+    }catch(e){ console.warn('주소 검색 실패', e); }
+  }
+  const newList = list.map((x,i)=> i===idx ? Object.assign({}, x, { name:name.trim(), region:region.trim(), addr:addr.trim(), tel:tel.trim(), insta:insta.replace('@','').trim(), lat:lat, lng:lng }) : x);
+  if(window.fsaSetCampuses) window.fsaSetCampuses(newList);
+  await saveCampuses();
+  if(window.fsaMapCtx && window.fsaMapCtx.map && window.fsaMapCtx.map.flyTo){ try{ window.fsaMapCtx.map.flyTo([lat,lng],14,{duration:0.7}); }catch(e){} }
+  toast('지점이 수정되었습니다 ✓');
 };
 function pickLocationOnMap(cb){
   const ctx = window.fsaMapCtx;
