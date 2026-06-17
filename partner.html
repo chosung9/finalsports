@@ -432,6 +432,17 @@ body.admin-mode .recruit-list-item .rli-delete {
   border-radius: 2px;
 }
 .rli-delete:hover { background: var(--red); color: #fff; }
+.rli-actions { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+.rli-edit {
+  display: none; align-items: center; justify-content: center;
+  padding: 0 8px; height: 22px; flex-shrink: 0;
+  background: rgba(255,255,255,0.08); color: var(--white-50);
+  font-size: 10px; font-weight:600; white-space:nowrap;
+  border: 0.5px solid rgba(255,255,255,0.3);
+  cursor: pointer; transition: all 0.2s; border-radius: 2px;
+}
+.rli-edit:hover { background: #fff; color: #0a0a0a; }
+body.admin-mode .recruit-list-item .rli-edit { display: flex; }
 /* 드래그 중 */
 .recruit-list-item.dragging {
   opacity: 0.4;
@@ -1234,7 +1245,33 @@ if (recruitRegions.length === 0) {
   saveRegions();
 }
 
-function saveRegions() { localStorage.setItem('recruitRegions', JSON.stringify(recruitRegions)); }
+function saveRegions() { localStorage.setItem('recruitRegions', JSON.stringify(recruitRegions)); if(window.fsaSaveRegionsShared) window.fsaSaveRegionsShared(); }
+
+/* ===== 모집지역 공용 연동 (지점현황 방식) ===== */
+window.fsaGetRegions = function(){ return recruitRegions; };
+window.fsaSetRegions = function(list){ if(Array.isArray(list)){ recruitRegions = list; localStorage.setItem('recruitRegions', JSON.stringify(recruitRegions)); renderAll(); } };
+window.fsaRegionEditOn = function(){ isAdmin=true; document.body.classList.add('admin-mode'); document.querySelectorAll('.admin-ctrl').forEach(el=> el.style.display='flex'); renderRecruitList(); };
+window.fsaRegionEditOff = function(){ isAdmin=false; document.body.classList.remove('admin-mode'); document.querySelectorAll('.admin-ctrl').forEach(el=> el.style.display='none'); renderRecruitList(); };
+
+/* 모집지역 항목 수정 */
+async function editRegionByIdx(i){
+  const r = recruitRegions[i]; if(!r) return;
+  const name = prompt('지역명 수정 (예: 서울 강남구)', r.name);
+  if(name===null) return;
+  const v = name.trim(); if(!v) return;
+  if(recruitRegions.find((x,j)=> j!==i && x.name===v)){ alert('이미 추가된 지역입니다.'); return; }
+  let lat=r.lat, lng=r.lng, type=r.type;
+  if(v !== r.name){
+    const coords = await getCoords(v);
+    if(coords){ lat=coords.lat; lng=coords.lng; }
+    else if(!confirm('좌표를 찾지 못했습니다. 이름만 변경할까요?')) return;
+    type = v.includes('구') ? '구' : '시';
+  }
+  recruitRegions[i] = { name:v, lat, lng, type };
+  saveRegions();
+  renderAll();
+  focusMapRegion(i);
+}
 
 // 좌표 검색 (Nominatim)
 async function getCoords(name) {
@@ -1323,7 +1360,7 @@ function renderRecruitList() {
         </div>
       </div>
       ${isAdmin && !isClone
-        ? `<div class="rli-delete" onclick="event.stopPropagation();deleteRegionByIdx(${i})" title="삭제">✕</div>`
+        ? `<div class="rli-actions"><div class="rli-edit" onclick="event.stopPropagation();editRegionByIdx(${i})" title="수정">수정</div><div class="rli-delete" onclick="event.stopPropagation();deleteRegionByIdx(${i})" title="삭제">✕</div></div>`
         : `<div class="rli-badge">모집중</div>`}
     </div>`;
 
@@ -1715,6 +1752,7 @@ const PAGE_ID    = (location.pathname.split('/').pop() || 'index').replace(/\.ht
 const contentRef = doc(db, 'siteContent', PAGE_ID);
 const statsCol   = collection(db, 'siteStats');
 const campusesRef = doc(db, 'siteContent', '__campuses');   // 메인↔캠퍼스현황 공용
+const regionsRef  = doc(db, 'siteContent', '__regions');    // 가맹점 모집지역 공용
 
 function dayKey(d){ return (d||new Date()).toLocaleDateString('en-CA',{timeZone:'Asia/Seoul'}); }
 
@@ -1816,6 +1854,11 @@ async function applyCampuses(){
   try{ const cs=await getDoc(campusesRef); if(cs.exists() && Array.isArray(cs.data().campuses)) window.fsaSetCampuses(cs.data().campuses); }
   catch(e){ console.warn('지점 불러오기 실패',e); }
 }
+async function applyRegions(){
+  if(!window.fsaSetRegions) return;
+  try{ const rs=await getDoc(regionsRef); if(rs.exists() && Array.isArray(rs.data().regions)) window.fsaSetRegions(rs.data().regions); }
+  catch(e){ console.warn('모집지역 불러오기 실패',e); }
+}
 
 /* 지점(캠퍼스) 추가/삭제 — 관리자 */
 async function saveCampuses(){
@@ -1825,6 +1868,13 @@ async function saveCampuses(){
   catch(e){ toast('지점 저장 실패 — 권한 확인'); console.warn(e); }
 }
 window.fsaSaveCampusesShared = saveCampuses;
+async function saveRegionsShared(){
+  const list = window.fsaGetRegions ? window.fsaGetRegions() : null;
+  if(!list) return;
+  try{ await setDoc(regionsRef, { regions: JSON.parse(JSON.stringify(list)) }, {merge:true}); }
+  catch(e){ toast('모집지역 저장 실패 — 로그인/권한 확인'); console.warn(e); }
+}
+window.fsaSaveRegionsShared = saveRegionsShared;
 window.fsaDeleteCampusAndSave = async function(idx){
   if(!confirm('이 지점을 삭제할까요?')) return;
   if(window.fsaDeleteCampus) window.fsaDeleteCampus(idx);
@@ -1964,14 +2014,16 @@ function enterEdit(){
   editing=true; document.body.classList.add('fsa-edit');
   editableList().forEach(({el})=> el.setAttribute('contenteditable','true'));
   editBtn.classList.add('on'); editBtn.textContent='💾 저장하기';
-  if(window.fsaCampusEditOn){ try{ window.fsaCampusEditOn(); }catch(e){} } else { if(window.buildList){ try{ buildList(); }catch(e){} } ensureCampusAddBtn(true); }
-  toast('수정 모드 — 텍스트 수정 / 지점 추가·삭제 가능');
+  if(window.fsaCampusEditOn){ try{ window.fsaCampusEditOn(); }catch(e){} } else { try{ if(window.buildList) buildList(); if(typeof ensureCampusAddBtn==='function') ensureCampusAddBtn(true); }catch(e){} }
+  if(window.fsaRegionEditOn){ try{ window.fsaRegionEditOn(); }catch(e){} }
+  toast('수정 모드 — 텍스트 / 지점·지역 추가·수정·삭제 가능');
 }
 function exitEdit(){
   editing=false; document.body.classList.remove('fsa-edit');
   editableList().forEach(({el})=> el.removeAttribute('contenteditable'));
   editBtn.classList.remove('on'); editBtn.textContent='✏️ 수정 모드';
-  if(window.fsaCampusEditOff){ try{ window.fsaCampusEditOff(); }catch(e){} } else { ensureCampusAddBtn(false); if(window.buildList){ try{ buildList(); }catch(e){} } }
+  if(window.fsaCampusEditOff){ try{ window.fsaCampusEditOff(); }catch(e){} } else { try{ if(typeof ensureCampusAddBtn==='function') ensureCampusAddBtn(false); if(window.buildList) buildList(); }catch(e){} }
+  if(window.fsaRegionEditOff){ try{ window.fsaRegionEditOff(); }catch(e){} }
 }
 async function saveEdits(){
   const payload={};
@@ -1983,7 +2035,7 @@ async function saveEdits(){
 /* 토스트 */
 let tt; function toast(msg){ const el=document.getElementById('fsaToast'); el.textContent=msg; el.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=> el.classList.remove('show'),2800); }
 
-applyContent(); applyCampuses(); countVisit();
+applyContent(); applyCampuses(); applyRegions(); countVisit();
 </script>
 </body>
 </html>

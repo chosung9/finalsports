@@ -2072,6 +2072,7 @@ const PAGE_ID    = (location.pathname.split('/').pop() || 'index').replace(/\.ht
 const contentRef = doc(db, 'siteContent', PAGE_ID);
 const statsCol   = collection(db, 'siteStats');
 const campusesRef = doc(db, 'siteContent', '__campuses');   // 메인↔캠퍼스현황 공용
+const regionsRef  = doc(db, 'siteContent', '__regions');    // 가맹점 모집지역 공용
 
 function dayKey(d){ return (d||new Date()).toLocaleDateString('en-CA',{timeZone:'Asia/Seoul'}); }
 
@@ -2173,6 +2174,11 @@ async function applyCampuses(){
   try{ const cs=await getDoc(campusesRef); if(cs.exists() && Array.isArray(cs.data().campuses)) window.fsaSetCampuses(cs.data().campuses); }
   catch(e){ console.warn('지점 불러오기 실패',e); }
 }
+async function applyRegions(){
+  if(!window.fsaSetRegions) return;
+  try{ const rs=await getDoc(regionsRef); if(rs.exists() && Array.isArray(rs.data().regions)) window.fsaSetRegions(rs.data().regions); }
+  catch(e){ console.warn('모집지역 불러오기 실패',e); }
+}
 
 /* 지점(캠퍼스) 추가/삭제 — 관리자 */
 async function saveCampuses(){
@@ -2182,6 +2188,13 @@ async function saveCampuses(){
   catch(e){ toast('지점 저장 실패 — 권한 확인'); console.warn(e); }
 }
 window.fsaSaveCampusesShared = saveCampuses;
+async function saveRegionsShared(){
+  const list = window.fsaGetRegions ? window.fsaGetRegions() : null;
+  if(!list) return;
+  try{ await setDoc(regionsRef, { regions: JSON.parse(JSON.stringify(list)) }, {merge:true}); }
+  catch(e){ toast('모집지역 저장 실패 — 로그인/권한 확인'); console.warn(e); }
+}
+window.fsaSaveRegionsShared = saveRegionsShared;
 window.fsaDeleteCampusAndSave = async function(idx){
   if(!confirm('이 지점을 삭제할까요?')) return;
   if(window.fsaDeleteCampus) window.fsaDeleteCampus(idx);
@@ -2321,14 +2334,16 @@ function enterEdit(){
   editing=true; document.body.classList.add('fsa-edit');
   editableList().forEach(({el})=> el.setAttribute('contenteditable','true'));
   editBtn.classList.add('on'); editBtn.textContent='💾 저장하기';
-  if(window.fsaCampusEditOn){ try{ window.fsaCampusEditOn(); }catch(e){} } else { if(window.buildList){ try{ buildList(); }catch(e){} } ensureCampusAddBtn(true); }
-  toast('수정 모드 — 텍스트 수정 / 지점 추가·삭제 가능');
+  if(window.fsaCampusEditOn){ try{ window.fsaCampusEditOn(); }catch(e){} } else { try{ if(window.buildList) buildList(); if(typeof ensureCampusAddBtn==='function') ensureCampusAddBtn(true); }catch(e){} }
+  if(window.fsaRegionEditOn){ try{ window.fsaRegionEditOn(); }catch(e){} }
+  toast('수정 모드 — 텍스트 / 지점·지역 추가·수정·삭제 가능');
 }
 function exitEdit(){
   editing=false; document.body.classList.remove('fsa-edit');
   editableList().forEach(({el})=> el.removeAttribute('contenteditable'));
   editBtn.classList.remove('on'); editBtn.textContent='✏️ 수정 모드';
-  if(window.fsaCampusEditOff){ try{ window.fsaCampusEditOff(); }catch(e){} } else { ensureCampusAddBtn(false); if(window.buildList){ try{ buildList(); }catch(e){} } }
+  if(window.fsaCampusEditOff){ try{ window.fsaCampusEditOff(); }catch(e){} } else { try{ if(typeof ensureCampusAddBtn==='function') ensureCampusAddBtn(false); if(window.buildList) buildList(); }catch(e){} }
+  if(window.fsaRegionEditOff){ try{ window.fsaRegionEditOff(); }catch(e){} }
 }
 async function saveEdits(){
   const payload={};
@@ -2340,7 +2355,7 @@ async function saveEdits(){
 /* 토스트 */
 let tt; function toast(msg){ const el=document.getElementById('fsaToast'); el.textContent=msg; el.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=> el.classList.remove('show'),2800); }
 
-applyContent(); applyCampuses(); countVisit();
+applyContent(); applyCampuses(); applyRegions(); countVisit();
 </script>
 </body>
 </html>
