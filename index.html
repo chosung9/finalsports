@@ -475,6 +475,9 @@ body.fsa-edit #campusListWrap { overflow-y: auto !important; }
 body.fsa-edit .campus-list-scroll { animation: none !important; transform: none !important; }
 .campus-list-item .cli-del{background:transparent;border:0.5px solid rgba(203,31,47,.7);color:#ff6b6b;font-size:10px;font-weight:700;padding:4px 9px;border-radius:2px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;}
 .campus-list-item .cli-del:hover{background:#cb1f2f;color:#fff;}
+.campus-list-item .cli-right{display:flex;align-items:center;gap:8px;}
+.campus-list-item .cli-insta{font-size:9px;color:var(--red);border:.5px solid rgba(203,31,47,.5);padding:2px 7px;cursor:pointer;white-space:nowrap;letter-spacing:.5px;font-family:'Noto Sans KR',sans-serif;}
+.campus-list-item .cli-insta:hover{background:var(--red);color:#fff;}
 .campus-list-scroll::-webkit-scrollbar { width: 2px; }
 .campus-list-scroll::-webkit-scrollbar-thumb { background: var(--border-red); }
 .campus-list-item {
@@ -1658,6 +1661,7 @@ function selectCampus(i, iw) {
 
 let activeRegion = "전체";
 
+function getInstaUrl(v){ if(!v) return null; return v.startsWith('http') ? v : 'https://www.instagram.com/'+v; }
 function buildList(filterRegion) {
   if (filterRegion) activeRegion = filterRegion;
   const _cc=document.getElementById('campusCount'); if(_cc) _cc.textContent = CAMPUSES.length + ' CAMPUSES';
@@ -1665,7 +1669,7 @@ function buildList(filterRegion) {
   const filtered = CAMPUSES.map((c,i)=>({...c,i}))
     .filter(c => activeRegion === "전체" || c.region === activeRegion);
   const fsaEditing = document.body.classList.contains('fsa-edit');
-  const items = filtered.map(c => `
+  const items = filtered.map(c => { const _insta = getInstaUrl(c.insta); return `
     <div class="campus-list-item" data-idx="${c.i}" onclick="selectCampus(${c.i}, markers[${c.i}] ? markers[${c.i}].iw : null)">
       <div class="cli-left">
         <div class="cli-dot"></div>
@@ -1674,9 +1678,12 @@ function buildList(filterRegion) {
           <div class="cli-name">${c.name}</div>
         </div>
       </div>
-      ${fsaEditing ? `<button class="cli-del" onclick="event.stopPropagation(); window.fsaDeleteCampusAndSave && window.fsaDeleteCampusAndSave(${c.i})">삭제</button>` : `<span class="cli-arr">↗</span>`}
+      <div class="cli-right">
+        ${_insta ? `<span class="cli-insta" onclick="event.stopPropagation(); window.open('${_insta}','_blank')">INSTA</span>` : ``}
+        ${fsaEditing ? `<button class="cli-del" onclick="event.stopPropagation(); window.fsaDeleteCampusAndSave && window.fsaDeleteCampusAndSave(${c.i})">삭제</button>` : `<span class="cli-arr">↗</span>`}
+      </div>
     </div>
-  `).join("");
+  `; }).join("");
   // 두 배 복제로 끊김 없는 무한 스크롤
   list.innerHTML = items + items;
   // 속도 조정
@@ -2182,16 +2189,30 @@ function pickLocationOnMap(cb){
 async function addCampusFlow(){
   const name = prompt('지점 이름 (예: 세종 캠퍼스)'); if(!name) return;
   const region = prompt('지역 — 서울 / 경기 / 강원 / 충청 / 전라 / 경남', '서울'); if(!region) return;
-  const addr = prompt('주소') || '';
+  const addr = prompt('지점 주소 (도로명 또는 지번 주소)'); if(!addr) return;
   const tel = prompt('전화번호') || '';
   const insta = prompt('인스타그램 아이디 (@ 빼고, 없으면 비워두세요)') || '';
-  pickLocationOnMap(async (lat,lng)=>{
-    if(isNaN(lat)||isNaN(lng)){ toast('위치를 못 받았어요'); return; }
-    const obj = { name:name.trim(), region:region.trim(), lat:lat, lng:lng, addr:addr.trim(), tel:tel.trim(), hours:'평일 08:30~17:30', photos:[], insta:insta.replace('@','').trim() };
-    if(window.fsaAddCampus) window.fsaAddCampus(obj);
-    await saveCampuses();
-    toast('지점이 추가되었습니다 ✓');
-  });
+  toast('주소로 위치를 찾는 중...');
+  let lat=null, lng=null;
+  try{
+    const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q='+encodeURIComponent(addr+' 대한민국'));
+    const d = await r.json();
+    if(d && d.length){ lat=parseFloat(d[0].lat); lng=parseFloat(d[0].lon); }
+  }catch(e){ console.warn('주소 검색 실패', e); }
+  if(lat==null || isNaN(lat)){
+    toast('주소로 못 찾았어요 — 지도에서 위치를 클릭하세요 📍');
+    pickLocationOnMap((la,ln)=> fsaFinishAddCampus(name,region,addr,tel,insta,la,ln));
+    return;
+  }
+  fsaFinishAddCampus(name,region,addr,tel,insta,lat,lng);
+}
+async function fsaFinishAddCampus(name,region,addr,tel,insta,lat,lng){
+  if(isNaN(lat)||isNaN(lng)){ toast('위치를 못 받았어요'); return; }
+  const obj = { name:name.trim(), region:region.trim(), lat:lat, lng:lng, addr:addr.trim(), tel:tel.trim(), hours:'평일 08:30~17:30', photos:[], insta:insta.replace('@','').trim() };
+  if(window.fsaAddCampus) window.fsaAddCampus(obj);
+  await saveCampuses();
+  if(window.fsaMapCtx && window.fsaMapCtx.map && window.fsaMapCtx.map.flyTo){ try{ window.fsaMapCtx.map.flyTo([lat,lng],14,{duration:0.7}); }catch(e){} }
+  toast('지점이 추가되었습니다 ✓');
 }
 function ensureCampusAddBtn(show){
   const wrap = document.getElementById('campusListWrap');

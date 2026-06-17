@@ -809,16 +809,30 @@ function pickLocationOnMap(cb){
 async function addCampusFlow(){
   const name = prompt('지점 이름 (예: 세종 캠퍼스)'); if(!name) return;
   const region = prompt('지역 — 서울 / 경기 / 강원 / 충청 / 전라 / 경남', '서울'); if(!region) return;
-  const addr = prompt('주소') || '';
+  const addr = prompt('지점 주소 (도로명 또는 지번 주소)'); if(!addr) return;
   const tel = prompt('전화번호') || '';
   const insta = prompt('인스타그램 아이디 (@ 빼고, 없으면 비워두세요)') || '';
-  pickLocationOnMap(async (lat,lng)=>{
-    if(isNaN(lat)||isNaN(lng)){ toast('위치를 못 받았어요'); return; }
-    const obj = { name:name.trim(), region:region.trim(), lat:lat, lng:lng, addr:addr.trim(), tel:tel.trim(), hours:'평일 08:30~17:30', photos:[], insta:insta.replace('@','').trim() };
-    if(window.fsaAddCampus) window.fsaAddCampus(obj);
-    await saveCampuses();
-    toast('지점이 추가되었습니다 ✓');
-  });
+  toast('주소로 위치를 찾는 중...');
+  let lat=null, lng=null;
+  try{
+    const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q='+encodeURIComponent(addr+' 대한민국'));
+    const d = await r.json();
+    if(d && d.length){ lat=parseFloat(d[0].lat); lng=parseFloat(d[0].lon); }
+  }catch(e){ console.warn('주소 검색 실패', e); }
+  if(lat==null || isNaN(lat)){
+    toast('주소로 못 찾았어요 — 지도에서 위치를 클릭하세요 📍');
+    pickLocationOnMap((la,ln)=> fsaFinishAddCampus(name,region,addr,tel,insta,la,ln));
+    return;
+  }
+  fsaFinishAddCampus(name,region,addr,tel,insta,lat,lng);
+}
+async function fsaFinishAddCampus(name,region,addr,tel,insta,lat,lng){
+  if(isNaN(lat)||isNaN(lng)){ toast('위치를 못 받았어요'); return; }
+  const obj = { name:name.trim(), region:region.trim(), lat:lat, lng:lng, addr:addr.trim(), tel:tel.trim(), hours:'평일 08:30~17:30', photos:[], insta:insta.replace('@','').trim() };
+  if(window.fsaAddCampus) window.fsaAddCampus(obj);
+  await saveCampuses();
+  if(window.fsaMapCtx && window.fsaMapCtx.map && window.fsaMapCtx.map.flyTo){ try{ window.fsaMapCtx.map.flyTo([lat,lng],14,{duration:0.7}); }catch(e){} }
+  toast('지점이 추가되었습니다 ✓');
 }
 function ensureCampusAddBtn(show){
   const wrap = document.getElementById('campusListWrap');
