@@ -637,7 +637,7 @@ body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;backgroun
 </div>
 
 <!-- 인스타 연동 안내 배너 -->
-<div class="connect-banner" id="connectBanner">
+<div class="connect-banner" id="connectBanner" style="display:none;">
   <div class="connect-banner-text">
     <strong>📸 인스타그램 자동 연동 준비 중</strong><br>
     Meta 액세스 토큰을 입력하면 @final_univ 피드가 이 페이지에 자동으로 표시됩니다.
@@ -659,8 +659,12 @@ body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;backgroun
     </div>
   </div>
 
-  <!-- 피드 그리드 — 토큰 연동 전 플레이스홀더 -->
-  <div class="feed-grid" id="feedGrid">
+  <!-- 인스타그램 피드 (LightWidget · @final_univ) -->
+  <div class="ig-lightwidget" style="margin-bottom:8px;">
+    <script src="https://cdn.lightwidget.com/widgets/lightwidget.js"></script>
+    <iframe src="//lightwidget.com/widgets/3c8b54b43401549e84565107b7b8de87.html" scrolling="no" allowtransparency="true" class="lightwidget-widget" style="width:100%;border:0;overflow:hidden;"></iframe>
+  </div>
+  <div class="feed-grid" id="feedGrid" style="display:none;">
     <!-- 플레이스홀더 9개 — 토큰 연동 시 자동 교체됨 -->
     <div class="feed-card" data-tag="입시요강">
       <div class="feed-placeholder">

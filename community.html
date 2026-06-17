@@ -683,7 +683,7 @@ body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;backgroun
 
 <!-- ══ 파이널갤러리 ══ -->
 <div id="section-gallery">
-  <div class="connect-banner" id="galleryBanner">
+  <div class="connect-banner" id="galleryBanner" style="display:none;">
     <p><strong>📸 @final._.time 갤러리 연동 준비 중</strong><br>
     Meta 액세스 토큰을 입력하면 파이널 갤러리 피드가 자동으로 표시됩니다.<br>
     <span style="font-size:11px;color:rgba(203,31,47,0.7);">연동 계정: @final._.time</span></p>
@@ -701,7 +701,12 @@ body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;backgroun
         <a href="https://www.instagram.com/final._.time" target="_blank">@final._.time</a>
       </div>
     </div>
-    <div class="gallery-grid" id="galleryGrid">
+    <!-- 인스타그램 피드 (LightWidget · @final._.time) -->
+    <div class="ig-lightwidget" style="margin-bottom:8px;">
+      <script src="https://cdn.lightwidget.com/widgets/lightwidget.js"></script>
+      <iframe src="//lightwidget.com/widgets/42004c5e8eb358039448d068f8c56ecd.html" scrolling="no" allowtransparency="true" class="lightwidget-widget" style="width:100%;border:0;overflow:hidden;"></iframe>
+    </div>
+    <div class="gallery-grid" id="galleryGrid" style="display:none;">
       <!-- 플레이스홀더 12장 -->
       
       <div class="gallery-card">

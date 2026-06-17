@@ -1832,8 +1832,13 @@ window.fsaSetCampuses = function(list){ if(Array.isArray(list) && list.length){ 
     </div>
   </div>
 
-  <!-- 피드 그리드 — 인스타 연동 or 플레이스홀더 -->
-  <div class="feed-grid" id="mainFeedGrid">
+  <!-- 인스타그램 피드 (LightWidget) -->
+  <div class="ig-lightwidget" style="margin-bottom:8px;">
+    <script src="https://cdn.lightwidget.com/widgets/lightwidget.js"></script>
+    <iframe src="//lightwidget.com/widgets/3c8b54b43401549e84565107b7b8de87.html" scrolling="no" allowtransparency="true" class="lightwidget-widget" style="width:100%;border:0;overflow:hidden;"></iframe>
+  </div>
+  <!-- 기존 플레이스홀더 그리드 (숨김) -->
+  <div class="feed-grid" id="mainFeedGrid" style="display:none;">
     <!-- 플레이스홀더 6개 (토큰 연동 전) -->
     <div class="feed-item" data-tag="입시요강" onclick="location.href='info.html'">
       <div class="feed-tag">입시요강</div>
