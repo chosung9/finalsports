@@ -2086,7 +2086,7 @@ async function countVisit(){
 }
 
 /* 2) 수정 가능한 요소 수집 (명시 data-cms + 본문 텍스트 자동 인식) */
-const EXCLUDE='nav,.nav,.mobile-drawer,header,script,style,#fsaAdminBar,#fsaLoginModal,#fsaToast,#fsaLoginBtn,#kakao-map,#campusList,#mainFeedGrid,#regionTabs,#campusCount,.campus-detail-popup,.privacy-scroll-box,.privacy-text,.page-hero-bg,.hero-bg-word,form,a,button,select,option,textarea,input';
+const EXCLUDE='nav,.nav,.mobile-drawer,header,script,style,#fsaAdminBar,#fsaLoginModal,#fsaToast,#fsaLoginBtn,#kakao-map,#campusList,#campusListInner,#mainFeedGrid,#regionTabs,#campusCount,.campus-detail-popup,.privacy-scroll-box,.privacy-text,.page-hero-bg,.hero-bg-word,form,a,button,select,option,textarea,input';
 const INLINE=new Set(['SPAN','STRONG','B','I','EM','A','BR','SUP','SUB','MARK','SMALL','U','FONT','WBR']);
 
 function hashStr(s){ let h=5381; for(let i=0;i<s.length;i++){ h=((h<<5)+h+s.charCodeAt(i))>>>0; } return h.toString(36); }
