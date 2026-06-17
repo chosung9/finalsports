@@ -473,6 +473,8 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
 /* 수정 모드: 자동 스크롤 정지 + 마우스 휠로 리스트 보기 */
 body.fsa-edit #campusListWrap { overflow-y: auto !important; }
 body.fsa-edit .campus-list-scroll { animation: none !important; transform: none !important; }
+.campus-list-item .cli-del{background:transparent;border:0.5px solid rgba(203,31,47,.7);color:#ff6b6b;font-size:10px;font-weight:700;padding:4px 9px;border-radius:2px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;}
+.campus-list-item .cli-del:hover{background:#cb1f2f;color:#fff;}
 .campus-list-scroll::-webkit-scrollbar { width: 2px; }
 .campus-list-scroll::-webkit-scrollbar-thumb { background: var(--border-red); }
 .campus-list-item {
@@ -1379,7 +1381,7 @@ body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;backgroun
   </div>
   <div class="campus-map-panel">
     <div class="campus-map-panel-head">
-      <div class="sec-label" style="margin-bottom:4px;">26 CAMPUSES</div>
+      <div class="sec-label" style="margin-bottom:4px;" id="campusCount">26 CAMPUSES</div>
       <p>클릭하면 지도에서 위치를 확인합니다</p>
     </div>
     <div id="regionTabs" style="display:flex;flex-wrap:wrap;gap:1px;background:var(--border);border-bottom:0.5px solid var(--border);flex-shrink:0;"></div>
@@ -1656,9 +1658,11 @@ let activeRegion = "전체";
 
 function buildList(filterRegion) {
   if (filterRegion) activeRegion = filterRegion;
+  const _cc=document.getElementById('campusCount'); if(_cc) _cc.textContent = CAMPUSES.length + ' CAMPUSES';
   const list = document.getElementById("campusList");
   const filtered = CAMPUSES.map((c,i)=>({...c,i}))
     .filter(c => activeRegion === "전체" || c.region === activeRegion);
+  const fsaEditing = document.body.classList.contains('fsa-edit');
   const items = filtered.map(c => `
     <div class="campus-list-item" data-idx="${c.i}" onclick="selectCampus(${c.i}, markers[${c.i}] ? markers[${c.i}].iw : null)">
       <div class="cli-left">
@@ -1668,7 +1672,7 @@ function buildList(filterRegion) {
           <div class="cli-name">${c.name}</div>
         </div>
       </div>
-      <span class="cli-arr">↗</span>
+      ${fsaEditing ? `<button class="cli-del" onclick="event.stopPropagation(); window.fsaDeleteCampusAndSave && window.fsaDeleteCampusAndSave(${c.i})">삭제</button>` : `<span class="cli-arr">↗</span>`}
     </div>
   `).join("");
   // 두 배 복제로 끊김 없는 무한 스크롤
@@ -1735,6 +1739,9 @@ function loadLeafletFallback() {
       iconSize: [22, 30], iconAnchor: [11, 30], popupAnchor: [0, -34]
     });
 
+    function fsaAddMarkers(){
+      markers.forEach(mk=>{ try{ mk.marker.remove(); }catch(e){} });
+      markers.length = 0;
     CAMPUSES.forEach((c, i) => {
       const m = L.marker([c.lat, c.lng], { icon })
         .addTo(map)
@@ -1751,6 +1758,9 @@ function loadLeafletFallback() {
       });
       markers.push({ marker: m, iw: null });
     });
+    }
+    fsaAddMarkers();
+    window.fsaMapCtx = { map: map, addMarkers: fsaAddMarkers };
 
     buildList();
 
@@ -1764,6 +1774,12 @@ function loadLeafletFallback() {
   };
   document.head.appendChild(script);
 }
+
+/* ===== 지점(캠퍼스) 추가/삭제 전역 함수 ===== */
+window.fsaGetCampuses = function(){ return CAMPUSES; };
+window.fsaAddCampus = function(obj){ CAMPUSES.push(obj); if(window.fsaMapCtx) window.fsaMapCtx.addMarkers(); buildList(); };
+window.fsaDeleteCampus = function(idx){ if(idx>=0 && idx<CAMPUSES.length){ CAMPUSES.splice(idx,1); if(window.fsaMapCtx) window.fsaMapCtx.addMarkers(); buildList(); } };
+window.fsaSetCampuses = function(list){ if(Array.isArray(list) && list.length){ CAMPUSES.length=0; list.forEach(x=>CAMPUSES.push(x)); if(window.fsaMapCtx) window.fsaMapCtx.addMarkers(); buildList(); } };
 </script>
 
 
@@ -2045,6 +2061,7 @@ const auth = getAuth(app);
 const PAGE_ID    = (location.pathname.split('/').pop() || 'index').replace(/\.html?$/,'') || 'index';
 const contentRef = doc(db, 'siteContent', PAGE_ID);
 const statsCol   = collection(db, 'siteStats');
+const campusesRef = doc(db, 'siteContent', '__campuses');   // 메인↔캠퍼스현황 공용
 
 function dayKey(d){ return (d||new Date()).toLocaleDateString('en-CA',{timeZone:'Asia/Seoul'}); }
 
@@ -2073,7 +2090,7 @@ async function countVisit(){
 }
 
 /* 2) 수정 가능한 요소 수집 (명시 data-cms + 본문 텍스트 자동 인식) */
-const EXCLUDE='nav,.nav,.mobile-drawer,header,script,style,#fsaAdminBar,#fsaLoginModal,#fsaToast,#fsaLoginBtn,#kakao-map,#campusList,#mainFeedGrid,#regionTabs,.campus-detail-popup,.privacy-scroll-box,.privacy-text,.page-hero-bg,.hero-bg-word,form,a,button,select,option,textarea,input';
+const EXCLUDE='nav,.nav,.mobile-drawer,header,script,style,#fsaAdminBar,#fsaLoginModal,#fsaToast,#fsaLoginBtn,#kakao-map,#campusList,#mainFeedGrid,#regionTabs,#campusCount,.campus-detail-popup,.privacy-scroll-box,.privacy-text,.page-hero-bg,.hero-bg-word,form,a,button,select,option,textarea,input';
 const INLINE=new Set(['SPAN','STRONG','B','I','EM','A','BR','SUP','SUB','MARK','SMALL','U','FONT','WBR']);
 
 function hashStr(s){ let h=5381; for(let i=0;i<s.length;i++){ h=((h<<5)+h+s.charCodeAt(i))>>>0; } return h.toString(36); }
@@ -2141,6 +2158,58 @@ async function applyContent(){
     if(data.hero_video) applyHeroVideo(data.hero_video);
   }catch(e){ console.warn('내용 불러오기 실패',e); }
 }
+async function applyCampuses(){
+  if(!window.fsaSetCampuses) return;
+  try{ const cs=await getDoc(campusesRef); if(cs.exists() && Array.isArray(cs.data().campuses)) window.fsaSetCampuses(cs.data().campuses); }
+  catch(e){ console.warn('지점 불러오기 실패',e); }
+}
+
+/* 지점(캠퍼스) 추가/삭제 — 관리자 */
+async function saveCampuses(){
+  const list = window.fsaGetCampuses ? window.fsaGetCampuses() : null;
+  if(!list) return;
+  try{ await setDoc(campusesRef, { campuses: JSON.parse(JSON.stringify(list)) }, {merge:true}); }
+  catch(e){ toast('지점 저장 실패 — 권한 확인'); console.warn(e); }
+}
+window.fsaSaveCampusesShared = saveCampuses;
+window.fsaDeleteCampusAndSave = async function(idx){
+  if(!confirm('이 지점을 삭제할까요?')) return;
+  if(window.fsaDeleteCampus) window.fsaDeleteCampus(idx);
+  await saveCampuses();
+  toast('지점이 삭제되었습니다 ✓');
+};
+function pickLocationOnMap(cb){
+  const ctx = window.fsaMapCtx;
+  if(ctx && ctx.map && ctx.map.once){ toast('지도에서 지점 위치를 클릭하세요 📍'); ctx.map.once('click', e=> cb(e.latlng.lat, e.latlng.lng)); }
+  else { const ll = prompt('위도,경도를 직접 입력하세요 (예: 36.5,127.8)'); if(ll){ const p=ll.split(','); cb(parseFloat(p[0]), parseFloat(p[1])); } }
+}
+async function addCampusFlow(){
+  const name = prompt('지점 이름 (예: 세종 캠퍼스)'); if(!name) return;
+  const region = prompt('지역 — 서울 / 경기 / 강원 / 충청 / 전라 / 경남', '서울'); if(!region) return;
+  const addr = prompt('주소') || '';
+  const tel = prompt('전화번호') || '';
+  const insta = prompt('인스타그램 아이디 (@ 빼고, 없으면 비워두세요)') || '';
+  pickLocationOnMap(async (lat,lng)=>{
+    if(isNaN(lat)||isNaN(lng)){ toast('위치를 못 받았어요'); return; }
+    const obj = { name:name.trim(), region:region.trim(), lat:lat, lng:lng, addr:addr.trim(), tel:tel.trim(), hours:'평일 08:30~17:30', photos:[], insta:insta.replace('@','').trim() };
+    if(window.fsaAddCampus) window.fsaAddCampus(obj);
+    await saveCampuses();
+    toast('지점이 추가되었습니다 ✓');
+  });
+}
+function ensureCampusAddBtn(show){
+  const wrap = document.getElementById('campusListWrap');
+  if(!wrap) return;
+  let btn = document.getElementById('fsaAddCampusBtn');
+  if(!btn){
+    btn = document.createElement('button');
+    btn.id='fsaAddCampusBtn'; btn.type='button'; btn.textContent='➕ 지점 추가';
+    btn.style.cssText='display:none;width:100%;margin:0 0 8px;padding:9px;background:#cb1f2f;color:#fff;border:none;border-radius:2px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;';
+    btn.addEventListener('click', addCampusFlow);
+    wrap.parentElement.insertBefore(btn, wrap);
+  }
+  btn.style.display = show ? 'block' : 'none';
+}
 
 /* 4) 로그인 모달 */
 const modal=document.getElementById('fsaLoginModal');
@@ -2204,12 +2273,14 @@ function enterEdit(){
   editing=true; document.body.classList.add('fsa-edit');
   editableList().forEach(({el})=> el.setAttribute('contenteditable','true'));
   editBtn.classList.add('on'); editBtn.textContent='💾 저장하기';
-  toast('수정 모드 — 텍스트를 클릭해 고친 뒤 저장하세요');
+  if(window.fsaCampusEditOn){ try{ window.fsaCampusEditOn(); }catch(e){} } else { if(window.buildList){ try{ buildList(); }catch(e){} } ensureCampusAddBtn(true); }
+  toast('수정 모드 — 텍스트 수정 / 지점 추가·삭제 가능');
 }
 function exitEdit(){
   editing=false; document.body.classList.remove('fsa-edit');
   editableList().forEach(({el})=> el.removeAttribute('contenteditable'));
   editBtn.classList.remove('on'); editBtn.textContent='✏️ 수정 모드';
+  if(window.fsaCampusEditOff){ try{ window.fsaCampusEditOff(); }catch(e){} } else { ensureCampusAddBtn(false); if(window.buildList){ try{ buildList(); }catch(e){} } }
 }
 async function saveEdits(){
   const payload={};
@@ -2221,7 +2292,7 @@ async function saveEdits(){
 /* 토스트 */
 let tt; function toast(msg){ const el=document.getElementById('fsaToast'); el.textContent=msg; el.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=> el.classList.remove('show'),2800); }
 
-applyContent(); countVisit();
+applyContent(); applyCampuses(); countVisit();
 </script>
 </body>
 </html>
