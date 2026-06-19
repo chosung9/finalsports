@@ -564,6 +564,7 @@ body.fsa-edit .campus-list-scroll { animation: none !important; transform: none 
    PROCESS
 ══════════════════════════════ */
 .process-sec { background: var(--black); }
+.gallery-sec { background: var(--black); }
 .process-grid {
   display: grid; grid-template-columns: repeat(4, 1fr);
   border-top: 0.5px solid var(--border);
@@ -1789,33 +1790,25 @@ window.fsaSetCampuses = function(list){ if(Array.isArray(list) && list.length){ 
 
 
 
-<!-- ──────────────────── PROCESS ──────────────────── -->
-<section class="sec process-sec" id="info">
-  <div class="sec-label" data-cms="p_label">THE PROCESS</div>
-  <div class="sec-title" data-cms="p_title">ROAD TO VICTORY</div>
-  <div class="sec-title-ko" data-cms="p_title_ko">합격까지의 과정</div>
-  <div class="red-rule"></div>
-  <div class="process-grid">
-    <div class="process-step">
-      <div class="p-num">01</div>
-      <div class="p-title" data-cms="step1_title">무료 상담</div>
-      <div class="p-desc" data-cms="step1_desc">현재 수준과 목표 대학을 분석해 최적의 입시 전략을 수립합니다. 부담 없이 시작하세요.</div>
+<!-- ──────────────────── GALLERY ──────────────────── -->
+<section class="sec gallery-sec" id="gallery">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:44px;">
+    <div>
+      <div class="sec-label">INSTAGRAM</div>
+      <div class="sec-title">FINAL GALLERY</div>
+      <div class="sec-title-ko" data-cms="gallery_title_ko">파이널 갤러리</div>
+      <div class="red-rule"></div>
     </div>
-    <div class="process-step">
-      <div class="p-num">02</div>
-      <div class="p-title" data-cms="step2_title">맞춤 커리큘럼</div>
-      <div class="p-desc" data-cms="step2_desc">개인별 수준에 맞는 커리큘럼을 설계하고, 목표 대학에 최적화된 프로그램으로 진행합니다.</div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="font-size:11px;color:var(--white-25);">📷 @final._.time</span>
+      <button class="btn-outline" onclick="location.href='community.html'">더 보기 →</button>
     </div>
-    <div class="process-step">
-      <div class="p-num">03</div>
-      <div class="p-title" data-cms="step3_title">실기 집중 훈련</div>
-      <div class="p-desc" data-cms="step3_desc">1:1 맨투맨 코칭과 그룹 훈련을 병행해 실기 점수를 극대화합니다.</div>
-    </div>
-    <div class="process-step">
-      <div class="p-num">04</div>
-      <div class="p-title" data-cms="step4_title">최종 합격</div>
-      <div class="p-desc" data-cms="step4_desc">원서 전략 수립부터 최종 면접까지, 합격의 마지막 순간까지 함께합니다.</div>
-    </div>
+  </div>
+
+  <!-- 파이널 갤러리 인스타그램 피드 (Behold · @final._.time) -->
+  <div class="ig-behold">
+    <behold-widget feed-id="XxZZqsQ94p1QrXsSg6Ky"></behold-widget>
+    <script>(() => { const d=document,s=d.createElement("script");s.type="module";s.src="https://w.behold.so/widget.js";d.head.append(s); })();</script>
   </div>
 </section>
 
