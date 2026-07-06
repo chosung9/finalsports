@@ -97,9 +97,14 @@ body.admin-mode .admin-login-btn{color:var(--red);border-color:var(--border-red)
 .clph-sub{font-size:10px;color:var(--w25);}
 
 /* 지역 탭 */
-.region-tabs{display:flex;flex-wrap:wrap;gap:1px;background:var(--border);border-bottom:.5px solid var(--border);flex-shrink:0;}
-.region-tab{flex:1;min-width:32px;padding:7px 2px;font-family:var(--sans);font-size:9px;border:none;cursor:pointer;background:var(--card);color:var(--w25);transition:all .2s;}
+.region-tabs-wrap{display:flex;align-items:stretch;background:var(--border);border-bottom:.5px solid var(--border);flex-shrink:0;}
+.region-tabs{display:flex;flex-wrap:nowrap;gap:1px;overflow-x:auto;scroll-behavior:smooth;flex:1;-ms-overflow-style:none;scrollbar-width:none;}
+.region-tabs::-webkit-scrollbar{display:none;}
+.region-tab{flex:1 0 auto;white-space:nowrap;padding:8px 12px;font-family:var(--sans);font-size:10px;border:none;cursor:pointer;background:var(--card);color:var(--w25);transition:all .2s;}
 .region-tab.active{background:var(--red);color:var(--white);}
+.rt-arrow{flex:0 0 auto;width:26px;border:none;background:var(--card);color:var(--red);font-size:16px;font-weight:700;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.rt-arrow:hover{background:var(--red);color:#fff;}
+.rt-arrow:active{transform:scale(.9);}
 
 /* 관리자 입력바 */
 .admin-bar{display:none;align-items:center;gap:6px;padding:8px 12px;background:rgba(203,31,47,.06);border-bottom:.5px solid var(--border-red);flex-shrink:0;flex-wrap:wrap;}
@@ -107,9 +112,30 @@ body.admin-mode .admin-bar{display:flex;}
 .admin-input{flex:1;min-width:80px;background:var(--black);border:.5px solid var(--border);color:var(--white);font-family:var(--sans);font-size:11px;padding:6px 8px;outline:none;}
 .admin-add-btn{font-family:var(--sans);font-size:10px;font-weight:700;padding:6px 10px;background:var(--red);color:var(--white);border:none;cursor:pointer;white-space:nowrap;}
 .admin-del-btn{font-family:var(--sans);font-size:10px;color:rgba(255,100,100,.7);padding:5px 8px;border:.5px solid rgba(255,100,100,.3);background:transparent;cursor:pointer;white-space:nowrap;}
+/* 지점 추가/수정 입력 폼 모달 */
+.cf-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:9000;align-items:center;justify-content:center;padding:16px;}
+.cf-overlay.open{display:flex;}
+.cf-box{width:100%;max-width:380px;background:#141414;border:1px solid var(--border-red,#cb1f2f);border-radius:4px;padding:20px;font-family:var(--sans);max-height:90vh;overflow:auto;}
+.cf-title{font-size:16px;font-weight:800;color:#fff;margin:0 0 14px;}
+.cf-field{margin-bottom:11px;}
+.cf-field label{display:block;font-size:11px;color:rgba(255,255,255,.55);margin-bottom:4px;}
+.cf-field input,.cf-field select{width:100%;box-sizing:border-box;background:#0a0a0a;border:.5px solid var(--border,#333);color:#fff;font-family:inherit;font-size:13px;padding:8px 9px;outline:none;border-radius:2px;}
+.cf-field input:focus,.cf-field select:focus{border-color:#cb1f2f;}
+.cf-hint{font-size:10px;color:rgba(255,255,255,.35);margin-top:3px;}
+.cf-btns{display:flex;gap:8px;margin-top:16px;}
+.cf-save{flex:1;background:#cb1f2f;color:#fff;border:none;padding:11px;font-family:inherit;font-size:13px;font-weight:700;border-radius:2px;cursor:pointer;}
+.cf-save:disabled{opacity:.6;cursor:default;}
+.cf-cancel{flex:0 0 auto;background:transparent;color:rgba(255,255,255,.6);border:.5px solid var(--border,#333);padding:11px 16px;font-family:inherit;font-size:13px;border-radius:2px;cursor:pointer;}
 
 /* 리스트 스크롤 */
 .campus-list-scroll-wrap{flex:1;overflow:hidden;position:relative;}
+/* 수정 모드: 자동 흐름 멈춤 → 마우스 휠 스크롤 허용 */
+body.admin-mode .campus-list-scroll-wrap{overflow-y:auto;overflow-x:hidden;}
+body.admin-mode .campus-list-scroll-wrap::before,
+body.admin-mode .campus-list-scroll-wrap::after{display:none;}
+body.admin-mode .campus-list-scroll-wrap::-webkit-scrollbar{width:8px;}
+body.admin-mode .campus-list-scroll-wrap::-webkit-scrollbar-thumb{background:rgba(203,31,47,.5);border-radius:4px;}
+body.admin-mode .campus-list-scroll-wrap::-webkit-scrollbar-track{background:rgba(255,255,255,.05);}
 .campus-list-scroll-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:24px;background:linear-gradient(to bottom,var(--card),transparent);z-index:2;pointer-events:none;}
 .campus-list-scroll-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:24px;background:linear-gradient(to top,var(--card),transparent);z-index:2;pointer-events:none;}
 .campus-list-inner{display:flex;flex-direction:column;}
@@ -272,11 +298,13 @@ body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;backgroun
       </div>
       <div class="clph-sub">클릭하면 지도에서 위치를 확인합니다</div>
     </div>
-    <div class="region-tabs" id="regionTabs"></div>
+    <div class="region-tabs-wrap">
+      <button class="rt-arrow" onclick="scrollRegionTabs(-1)" aria-label="이전 지역">‹</button>
+      <div class="region-tabs" id="regionTabs"></div>
+      <button class="rt-arrow" onclick="scrollRegionTabs(1)" aria-label="다음 지역">›</button>
+    </div>
     <div class="admin-bar">
-      <input class="admin-input" type="text" id="adminInput" placeholder="캠퍼스명 입력" onkeydown="if(event.key==='Enter')addCampus()">
-      <button class="admin-add-btn" onclick="addCampus()">+ 추가</button>
-      <button class="admin-del-btn" onclick="deleteLast()">마지막 삭제</button>
+      <button class="admin-add-btn" style="flex:1;padding:9px;font-size:12px;" onclick="fsaOpenCampusForm('add')">➕ 지점 추가</button>
     </div>
     <div class="campus-list-scroll-wrap">
       <div class="campus-list-inner" id="campusListInner"></div>
@@ -379,13 +407,14 @@ function focusCampus(i){
   if(el)el.scrollIntoView({block:'nearest',behavior:'smooth'});
 }
 
-const REGIONS=['전체','서울','경기','강원','충청','전라','경남'];
+const REGIONS=['전체','서울','경기','인천','강원','충청','전라','경남'];
 function renderRegionTabs(){
   document.getElementById('regionTabs').innerHTML=REGIONS.map(r=>
     '<button class="region-tab'+(r===activeRegion?' active':'')+'" onclick="setRegion(\''+r+'\')">'+r+'</button>'
   ).join('');
 }
 function setRegion(r){activeRegion=r;renderRegionTabs();renderCampusList();}
+function scrollRegionTabs(dir){ const el=document.getElementById('regionTabs'); if(el) el.scrollBy({left:dir*130,behavior:'smooth'}); }
 
 function renderCampusList(){
   const inner=document.getElementById('campusListInner');
@@ -401,7 +430,7 @@ function renderCampusList(){
       '<div class="ci-name">'+c.name+'</div></div></div>'+
       '<div class="ci-right">'+
       (!clone&&url?'<span class="ci-insta" onclick="event.stopPropagation();window.open(\''+url+'\',\'_blank\')">INSTA</span>':'')+
-      (!clone?'<span class="ci-edit" onclick="event.stopPropagation();window.fsaEditCampusAndSave&&window.fsaEditCampusAndSave('+c.idx+')">수정</span>':'')+
+      (!clone?'<span class="ci-edit" onclick="event.stopPropagation();fsaOpenCampusForm(\'edit\','+c.idx+')">수정</span>':'')+
       (!clone?'<span class="ci-delete" onclick="event.stopPropagation();delCampus('+c.idx+')">✕</span>':'')+
       '</div></div>';
   }
@@ -470,11 +499,80 @@ function toggleMobileMenu(el){const item=el.parentElement;const open=item.classL
 })();
 
 /* ===== 지점 공용 연동 (메인 ↔ 캠퍼스현황) ===== */
+/* ===== 지점 입력 폼(모달) — 추가/수정 공용 ===== */
+let cfMode='add', cfIdx=-1;
+function fsaOpenCampusForm(mode, idx){
+  cfMode = mode; cfIdx = (idx==null?-1:idx);
+  const c = (mode==='edit' && CAMPUSES[cfIdx]) ? CAMPUSES[cfIdx] : null;
+  document.getElementById('cfTitle').textContent = mode==='edit' ? '지점 수정' : '지점 추가';
+  document.getElementById('cfName').value   = c ? (c.name||'')   : '';
+  document.getElementById('cfRegion').value = c ? (c.region||'서울') : '서울';
+  document.getElementById('cfAddr').value   = c ? (c.addr||'')   : '';
+  document.getElementById('cfTel').value    = c ? (c.tel||'')    : '';
+  document.getElementById('cfInsta').value  = c ? (c.insta||'')  : '';
+  document.getElementById('cfOverlay').classList.add('open');
+}
+function fsaCloseCampusForm(){ document.getElementById('cfOverlay').classList.remove('open'); }
+async function fsaSubmitCampusForm(){
+  const name   = document.getElementById('cfName').value.trim();
+  const region = document.getElementById('cfRegion').value;
+  const addr   = document.getElementById('cfAddr').value.trim();
+  const tel    = document.getElementById('cfTel').value.trim();
+  const insta  = document.getElementById('cfInsta').value.replace('@','').trim();
+  if(!name){ alert('지점명을 입력하세요.'); return; }
+  if(!addr){ alert('상세주소를 입력하세요.'); return; }
+  if(cfMode==='add' && CAMPUSES.find(c=>c.name===name)){ alert('이미 있는 캠퍼스입니다.'); return; }
+  const old = (cfMode==='edit') ? CAMPUSES[cfIdx] : null;
+  const btn = document.getElementById('cfSave');
+  let lat = old ? old.lat : null, lng = old ? old.lng : null;
+  const addrChanged = !old || (old.addr||'').trim() !== addr;
+  if(cfMode==='add' || addrChanged){
+    btn.textContent='위치 검색중...'; btn.disabled=true;
+    try{
+      const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q='+encodeURIComponent(addr+' 대한민국'));
+      const d = await r.json();
+      if(d && d.length){ lat=parseFloat(d[0].lat); lng=parseFloat(d[0].lon); }
+    }catch(e){ console.warn('주소 검색 실패', e); }
+    btn.textContent='저장'; btn.disabled=false;
+  }
+  if(lat==null || isNaN(lat)){ alert('주소로 위치를 찾지 못했어요. 주소를 조금 더 자세히 입력해 보세요.'); return; }
+  if(cfMode==='edit' && old){
+    CAMPUSES[cfIdx] = Object.assign({}, old, {name:name, region:region, addr:addr, tel:tel, insta:insta, lat:lat, lng:lng});
+  }else{
+    CAMPUSES.push({name:name, region:region, lat:lat, lng:lng, addr:addr, tel:tel, hours:'평일 08:30~17:30', photos:[], insta:insta});
+  }
+  buildCampusMarkers(); renderCampusList();
+  if(window.fsaSaveCampusesShared) window.fsaSaveCampusesShared();
+  if(campusMap){ try{ campusMap.flyTo([lat,lng],14,{duration:0.7}); }catch(e){} }
+  fsaCloseCampusForm();
+  alert(cfMode==='edit' ? '수정되었습니다 ✓' : '"'+name+'" 추가되었습니다 ✓');
+}
 window.fsaGetCampuses=function(){return CAMPUSES;};
 window.fsaSetCampuses=function(list){if(Array.isArray(list)&&list.length){CAMPUSES.length=0;list.forEach(x=>CAMPUSES.push(x));if(campusMap)buildCampusMarkers();if(document.getElementById('campusListInner'))renderCampusList();}};
 window.fsaCampusEditOn=function(){isAdmin=true;document.body.classList.add('admin-mode');renderCampusList();};
 window.fsaCampusEditOff=function(){isAdmin=false;document.body.classList.remove('admin-mode');renderCampusList();};
 </script>
+
+<!-- 지점 추가/수정 입력 폼 -->
+<div class="cf-overlay" id="cfOverlay">
+  <div class="cf-box">
+    <div class="cf-title" id="cfTitle">지점 추가</div>
+    <div class="cf-field"><label>지점명</label><input type="text" id="cfName" placeholder="예: 분당 캠퍼스"></div>
+    <div class="cf-field"><label>지역</label>
+      <select id="cfRegion">
+        <option>서울</option><option>경기</option><option>인천</option><option>강원</option><option>충청</option><option>전라</option><option>경남</option><option>경북</option><option>부산</option><option>대구</option><option>대전</option><option>울산</option><option>세종</option><option>광주</option><option>제주</option><option>기타</option>
+      </select></div>
+    <div class="cf-field"><label>상세주소</label><input type="text" id="cfAddr" placeholder="도로명 또는 지번 주소">
+      <div class="cf-hint">저장하면 주소로 지도 위치를 자동으로 찾습니다.</div></div>
+    <div class="cf-field"><label>전화번호</label><input type="text" id="cfTel" placeholder="예: 010-1234-5678"></div>
+    <div class="cf-field"><label>인스타그램 아이디</label><input type="text" id="cfInsta" placeholder="@ 없이 (예: final_bundang)">
+      <div class="cf-hint">입력하면 팝업에 '인스타그램 보기' 버튼이 생깁니다.</div></div>
+    <div class="cf-btns">
+      <button class="cf-save" id="cfSave" onclick="fsaSubmitCampusForm()">저장</button>
+      <button class="cf-cancel" onclick="fsaCloseCampusForm()">취소</button>
+    </div>
+  </div>
+</div>
 
 <!-- ════════ FSA 관리자 / CMS UI ════════ -->
 <div class="fsa-modal-ov" id="fsaLoginModal">
