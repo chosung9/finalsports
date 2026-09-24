@@ -11,10 +11,10 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --red:        #cb1f2f;
+  --red:        #ffffff;
   --red-deep:   #9e1824;
-  --red-dim:    rgba(203,31,47,0.12);
-  --red-faint:  rgba(203,31,47,0.06);
+  --red-dim:    rgba(255,255,255,0.12);
+  --red-faint:  rgba(255,255,255,0.06);
   --black:      #0b0d0c;
   --gray-dark:  #363838;
   --gray-mid:   #1e2020;
@@ -27,7 +27,7 @@
   --white-10:   rgba(255,255,255,0.10);
   --white-05:   rgba(255,255,255,0.05);
   --border:     rgba(255,255,255,0.07);
-  --border-red: rgba(203,31,47,0.25);
+  --border-red: rgba(255,255,255,0.25);
   --sans:       'Noto Sans KR', sans-serif;
   --display:    'Bebas Neue', 'Noto Sans KR', sans-serif;
 }
@@ -120,7 +120,7 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
   white-space: nowrap;
 }
 .nav-dropdown a:hover {
-  color: var(--white); background: rgba(203,31,47,0.08);
+  color: var(--white); background: rgba(255,255,255,0.08);
   padding-left: 24px;
 }
 .nav-dropdown a::before {
@@ -134,7 +134,7 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
 .nav-right { display: flex; align-items: center; gap: 20px; }
 .nav-tel { font-size: 12px; color: var(--white-25); letter-spacing: 0.5px; }
 .nav-cta {
-  background: var(--red); color: var(--white);
+  background: var(--red); color: #0a0a0a;
   font-family: var(--sans); font-size: 12px; font-weight: 700;
   padding: 9px 22px; border: none; cursor: pointer; letter-spacing: 0.5px;
   transition: background 0.2s;
@@ -182,11 +182,12 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
 .hero-video-overlay::after {
   content: '';
   position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
-  background: var(--red);
+  background: var(--red); display: none;
 }
 
 /* Big decorative type */
 .hero-bg-word {
+  display: none;
   position: absolute; right: -8px; bottom: -20px; z-index: 2;
   font-family: var(--display); font-size: 280px; letter-spacing: -8px; line-height: 1;
   color: rgba(255,255,255,0.04); pointer-events: none; user-select: none;
@@ -242,7 +243,7 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
 
 .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
 .btn-primary {
-  background: var(--red); color: var(--white);
+  background: var(--red); color: #0a0a0a;
   font-family: var(--sans); font-size: 13px; font-weight: 700;
   padding: 14px 32px; border: none; cursor: pointer; letter-spacing: 0.5px;
   transition: background 0.2s; position: relative; overflow: hidden;
@@ -285,9 +286,32 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
 /* ══════════════════════════════
    SECTION COMMON
 ══════════════════════════════ */
-.sec { padding: 96px 64px; }
+.sec { padding: 140px 64px; }
+/* ── 포토 스토리: 리조트피플식 풀블리드 사진 (images/ 폴더) ── */
+.photo-sec{padding:0;background:#0a0a0a;}
+.photo-full{position:relative;height:78vh;min-height:420px;background:#141414 center/cover no-repeat;overflow:hidden;}
+.photo-full::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),rgba(0,0,0,0) 55%);}
+.photo-cap{position:absolute;left:64px;bottom:56px;z-index:2;max-width:600px;}
+.photo-cap-en{font-family:var(--display);font-size:clamp(34px,5vw,64px);line-height:1;letter-spacing:1px;color:#fff;}
+.photo-cap-ko{margin-top:12px;font-size:14px;line-height:1.7;color:rgba(255,255,255,.7);}
+.photo-pair{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:2px;}
+.photo-pair .photo-full{height:62vh;min-height:360px;}
+@media(max-width:768px){.photo-full{height:60vh;}.photo-cap{left:24px;bottom:32px;}.photo-pair{grid-template-columns:1fr;}.photo-pair .photo-full{height:50vh;}}
+/* ── 편집형 레이아웃: AI틱 요소 제거 (아이콘·번호·장식숫자·대시) ── */
+.features-sec .feat-bg-num,.features-sec .feat-idx,.features-sec .feat-icon-wrap{display:none!important;}
+.features-sec .features-grid{display:block!important;max-width:1120px;margin-top:8px;}
+.features-sec .feat-card{display:grid;grid-template-columns:260px 1fr;gap:32px;align-items:start;padding:36px 0;border:0!important;border-top:1px solid rgba(255,255,255,.12)!important;background:transparent!important;position:static;overflow:visible;}
+.features-sec .feat-card:hover{background:transparent!important;}
+.features-sec .feat-card:last-child{border-bottom:1px solid rgba(255,255,255,.12)!important;}
+.features-sec .feat-name{font-family:var(--sans);font-size:20px;font-weight:700;color:#fff;letter-spacing:-.3px;margin:0;line-height:1.4;}
+.features-sec .feat-desc{font-size:15px;line-height:1.85;color:rgba(255,255,255,.62);margin:0;max-width:680px;}
+@media(max-width:768px){.features-sec .feat-card{grid-template-columns:1fr;gap:10px;padding:24px 0;}}
+.numbers-band .num-item::after,.numbers-band .num-tag::before{display:none!important;}
+.numbers-band .num-item::before{transform:none!important;height:1px!important;background:rgba(255,255,255,.12)!important;}
+.numbers-band .num-item:hover{background:transparent!important;}
+.numbers-band .num-tag{color:rgba(255,255,255,.45)!important;}
 .sec-label {
-  font-size: 9px; font-weight: 500; letter-spacing: 4px; color: var(--red);
+  font-size: 9px; font-weight: 500; letter-spacing: 4px; color: rgba(255,255,255,0.45);
   margin-bottom: 14px;
 }
 .sec-title {
@@ -336,7 +360,7 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
   line-height: 1; pointer-events: none; user-select: none;
 }
 .feat-idx {
-  font-size: 9px; letter-spacing: 3px; color: rgba(203,31,47,0.45);
+  font-size: 9px; letter-spacing: 3px; color: rgba(255,255,255,0.45);
   margin-bottom: 24px;
 }
 .feat-icon-wrap {
@@ -364,7 +388,7 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
   background: repeating-linear-gradient(
     -55deg,
     transparent, transparent 3px,
-    rgba(203,31,47,0.03) 3px, rgba(203,31,47,0.03) 4px
+    rgba(255,255,255,0.03) 3px, rgba(255,255,255,0.03) 4px
   );
   pointer-events: none;
 }
@@ -375,7 +399,7 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
   transition: background 0.4s;
 }
 .num-item:last-child { border-right: none; }
-.num-item:hover { background: rgba(203,31,47,0.04); }
+.num-item:hover { background: rgba(255,255,255,0.04); }
 
 /* 상단 레드 라인 — 호버 시 확장 */
 .num-item::before {
@@ -473,13 +497,13 @@ body { font-family: var(--sans); background: var(--black); color: var(--white); 
 /* 수정 모드: 자동 스크롤 정지 + 마우스 휠로 리스트 보기 */
 body.fsa-edit #campusListWrap { overflow-y: auto !important; }
 body.fsa-edit .campus-list-scroll { animation: none !important; transform: none !important; }
-.campus-list-item .cli-del{background:transparent;border:0.5px solid rgba(203,31,47,.7);color:#ff6b6b;font-size:10px;font-weight:700;padding:4px 9px;border-radius:2px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;}
+.campus-list-item .cli-del{background:transparent;border:0.5px solid rgba(255,255,255,.7);color:#ff6b6b;font-size:10px;font-weight:700;padding:4px 9px;border-radius:2px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;}
 .campus-list-item .cli-del:hover{background:#cb1f2f;color:#fff;}
 .campus-list-item .cli-edit{background:transparent;border:0.5px solid rgba(255,255,255,.3);color:rgba(255,255,255,.75);font-size:10px;font-weight:700;padding:4px 9px;border-radius:2px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;}
 .campus-list-item .cli-edit:hover{background:rgba(255,255,255,.9);color:#0a0a0a;}
 .campus-list-item .cli-right{display:flex;align-items:center;gap:8px;}
-.campus-list-item .cli-insta{font-size:9px;color:var(--red);border:.5px solid rgba(203,31,47,.5);padding:2px 7px;cursor:pointer;white-space:nowrap;letter-spacing:.5px;font-family:'Noto Sans KR',sans-serif;}
-.campus-list-item .cli-insta:hover{background:var(--red);color:#fff;}
+.campus-list-item .cli-insta{font-size:9px;color:var(--red);border:.5px solid rgba(255,255,255,.5);padding:2px 7px;cursor:pointer;white-space:nowrap;letter-spacing:.5px;font-family:'Noto Sans KR',sans-serif;}
+.campus-list-item .cli-insta:hover{background:var(--red);color:#0a0a0a;}
 .campus-list-scroll::-webkit-scrollbar { width: 2px; }
 .campus-list-scroll::-webkit-scrollbar-thumb { background: var(--border-red); }
 .campus-list-item {
@@ -489,7 +513,7 @@ body.fsa-edit .campus-list-scroll { animation: none !important; transform: none 
   display: flex; align-items: center; justify-content: space-between;
 }
 .campus-list-item:hover, .campus-list-item.active {
-  background: rgba(203,31,47,0.08);
+  background: rgba(255,255,255,0.08);
 }
 .campus-list-item.active .cli-name { color: var(--red); }
 .campus-list-item.active .cli-dot { background: var(--red); }
@@ -499,7 +523,7 @@ body.fsa-edit .campus-list-scroll { animation: none !important; transform: none 
   background: var(--gray-dark); flex-shrink: 0;
   transition: background 0.18s;
 }
-.cli-region { font-size: 9px; letter-spacing: 1.5px; color: rgba(203,31,47,0.6); }
+.cli-region { font-size: 9px; letter-spacing: 1.5px; color: rgba(255,255,255,0.6); }
 .cli-name { font-size: 13px; font-weight: 500; margin-top: 2px; transition: color 0.18s; }
 .cli-arr { font-size: 13px; color: var(--white-25); }
 
@@ -548,7 +572,7 @@ body.fsa-edit .campus-list-scroll { animation: none !important; transform: none 
 .campus-card:hover { background: #1e2020; }
 .campus-card:hover .campus-arr { color: var(--red); transform: translate(2px,-2px); }
 .campus-card-left { display: flex; flex-direction: column; gap: 4px; }
-.campus-region { font-size: 8px; letter-spacing: 2px; color: rgba(203,31,47,0.7); font-weight: 500; }
+.campus-region { font-size: 8px; letter-spacing: 2px; color: rgba(255,255,255,0.7); font-weight: 500; }
 .campus-name { font-size: 14px; font-weight: 500; }
 .campus-arr { font-size: 16px; color: rgba(255,255,255,0.15); transition: color 0.2s, transform 0.2s; }
 
@@ -564,7 +588,6 @@ body.fsa-edit .campus-list-scroll { animation: none !important; transform: none 
    PROCESS
 ══════════════════════════════ */
 .process-sec { background: var(--black); }
-.gallery-sec { background: var(--black); }
 .process-grid {
   display: grid; grid-template-columns: repeat(4, 1fr);
   border-top: 0.5px solid var(--border);
@@ -578,7 +601,7 @@ body.fsa-edit .campus-list-scroll { animation: none !important; transform: none 
 }
 .p-num {
   font-family: var(--display); font-size: 72px; line-height: 1;
-  color: rgba(203,31,47,0.12); letter-spacing: -1px;
+  color: rgba(255,255,255,0.12); letter-spacing: -1px;
   margin-bottom: 16px;
 }
 .p-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.3px; }
@@ -763,7 +786,7 @@ footer {
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; transition: background 0.2s;
 }
-.cdp-photo-btn:hover { background: rgba(203,31,47,0.7); }
+.cdp-photo-btn:hover { background: rgba(255,255,255,0.7); }
 .cdp-photo-btn.prev { left: 8px; }
 .cdp-photo-btn.next { right: 8px; }
 /* 정보 영역 */
@@ -780,7 +803,7 @@ footer {
 .cdp-actions { display: flex; gap: 8px; margin-top: auto; }
 .cdp-btn-primary {
   font-family: var(--sans); font-size: 11px; font-weight: 700;
-  padding: 8px 18px; background: var(--red); color: var(--white);
+  padding: 8px 18px; background: var(--red); color: #0a0a0a;
   border: none; cursor: pointer; letter-spacing: 0.5px; transition: background 0.2s;
 }
 .cdp-btn-primary:hover { background: var(--red-deep); }
@@ -799,7 +822,7 @@ footer {
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; transition: all 0.2s;
 }
-.cdp-close:hover { background: var(--red); color: var(--white); border-color: var(--red); }
+.cdp-close:hover { background: var(--red); color: #0a0a0a; border-color: var(--red); }
 /* 리스트 아이템 활성 시 점 색상 */
 .campus-list-item.active .cli-dot { background: var(--red); }
 .campus-list-item.active .cli-name { color: var(--red); }
@@ -885,7 +908,7 @@ footer {
 .mobile-drawer-cta {
   display: block; width: 100%;
   font-family: var(--sans); font-size: 14px; font-weight: 700;
-  padding: 14px; background: var(--red); color: var(--white);
+  padding: 14px; background: var(--red); color: #0a0a0a;
   border: none; cursor: pointer; text-align: center; letter-spacing: 0.5px;
   transition: background 0.2s;
 }
@@ -1087,9 +1110,9 @@ footer {
 #fsaAdminBar .logout{color:rgba(255,255,255,.5);}
 #fsaAdminBar .logout:hover{color:#fff;border-color:rgba(255,255,255,.5);}
 @media(max-width:680px){#fsaAdminBar{gap:10px;padding:8px 10px;}#fsaAdminBar .stat b{font-size:14px;}#fsaAdminBar .stat span{font-size:8px;}}
-body.fsa-edit [contenteditable="true"]{outline:1px dashed rgba(203,31,47,.7);outline-offset:3px;cursor:text;transition:background .15s;}
-body.fsa-edit [contenteditable="true"]:hover{background:rgba(203,31,47,.10);}
-body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;background:rgba(203,31,47,.06);}
+body.fsa-edit [contenteditable="true"]{outline:1px dashed rgba(255,255,255,.7);outline-offset:3px;cursor:text;transition:background .15s;}
+body.fsa-edit [contenteditable="true"]:hover{background:rgba(255,255,255,.10);}
+body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;background:rgba(255,255,255,.06);}
 #fsaToast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(20px);background:#cb1f2f;color:#fff;padding:11px 22px;border-radius:2px;font-size:13px;font-weight:600;z-index:4000;opacity:0;pointer-events:none;transition:all .3s;letter-spacing:.3px;box-shadow:0 8px 30px rgba(0,0,0,.5);max-width:90vw;text-align:center;font-family:'Noto Sans KR',sans-serif;}
 #fsaToast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
@@ -1345,6 +1368,31 @@ body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;backgroun
 
 </div>
 
+<!-- ──────────────────── PHOTO STORY ──────────────────── -->
+<!-- 사진 교체: GitHub 저장소에 images/ 폴더 만들고 main-01.jpg / main-02.jpg / main-03.jpg 올리면 자동 표시 -->
+<section class="photo-sec" id="story">
+  <div class="photo-full" style="background-image:url('images/main-01.jpg')">
+    <div class="photo-cap">
+      <div class="photo-cap-en" data-cms="ph1_en">WHERE EFFORT<br>BECOMES RESULT</div>
+      <div class="photo-cap-ko" data-cms="ph1_ko">매일의 훈련이 합격으로 이어지는 곳, 파이널의 캠퍼스.</div>
+    </div>
+  </div>
+  <div class="photo-pair">
+    <div class="photo-full" style="background-image:url('images/main-02.jpg')">
+      <div class="photo-cap">
+        <div class="photo-cap-en" data-cms="ph2_en">TRAINING</div>
+        <div class="photo-cap-ko" data-cms="ph2_ko">체계적인 실기 훈련 프로그램</div>
+      </div>
+    </div>
+    <div class="photo-full" style="background-image:url('images/main-03.jpg')">
+      <div class="photo-cap">
+        <div class="photo-cap-en" data-cms="ph3_en">COMMUNITY</div>
+        <div class="photo-cap-ko" data-cms="ph3_ko">함께 달리는 전국 30개 캠퍼스</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ──────────────────── CAMPUS ──────────────────── -->
 <section class="sec campus-sec" id="campus" style="padding-bottom:0;">
   <div class="campus-head">
@@ -1585,7 +1633,7 @@ function initNaverMap() {
   // 마커 SVG (레드 핀)
   const markerSVG = (active) => `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="34" viewBox="0 0 26 34">
     <path d="M13 0C5.82 0 0 5.82 0 13c0 10 13 21 13 21S26 23 26 13C26 5.82 20.18 0 13 0z"
-      fill="${active ? '#ff3344' : '#cb1f2f'}" />
+      fill="${active ? '#ffffff' : '#d9d9d9'}" />
     <circle cx="13" cy="13" r="5.5" fill="white"/>
   </svg>`;
 
@@ -1604,7 +1652,7 @@ function initNaverMap() {
     const iw = new naver.maps.InfoWindow({
       content: `<div style="
         background:#0b0d0c;
-        border:1.5px solid #cb1f2f;
+        border:1.5px solid rgba(255,255,255,.35);
         border-radius:2px;
         padding:8px 14px;
         font-family:'Noto Sans KR',sans-serif;
@@ -1612,14 +1660,14 @@ function initNaverMap() {
         white-space:nowrap;
         box-shadow:0 4px 20px rgba(0,0,0,0.7);
       ">
-        <span style="display:block;font-size:9px;letter-spacing:1.5px;color:#cb1f2f;margin-bottom:3px;">${c.region.toUpperCase()}</span>
+        <span style="display:block;font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.55);margin-bottom:3px;">${c.region.toUpperCase()}</span>
         ${c.name}
       </div>`,
       borderWidth: 0,
       backgroundColor: "transparent",
       disableAnchor: false,
       anchorSize: new naver.maps.Size(12, 10),
-      anchorColor: "#cb1f2f",
+      anchorColor: "#ffffff",
       pixelOffset: new naver.maps.Point(0, -6),
     });
 
@@ -1738,14 +1786,14 @@ function loadLeafletFallback() {
   script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
   script.onload = () => {
     const map = L.map("kakao-map").setView([36.5, 127.8], 7);
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-      attribution: "© OpenStreetMap © CARTO", maxZoom: 19
+    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+      attribution: "© Esri", maxZoom: 16
     }).addTo(map);
 
     const icon = L.divIcon({
       className: "",
       html: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" viewBox="0 0 26 34">
-        <path d="M13 0C5.82 0 0 5.82 0 13c0 10 13 21 13 21S26 23 26 13C26 5.82 20.18 0 13 0z" fill="#cb1f2f"/>
+        <path d="M13 0C5.82 0 0 5.82 0 13c0 10 13 21 13 21S26 23 26 13C26 5.82 20.18 0 13 0z" fill="#ffffff"/>
         <circle cx="13" cy="13" r="5.5" fill="white"/>
       </svg>`,
       iconSize: [22, 30], iconAnchor: [11, 30], popupAnchor: [0, -34]
@@ -1790,25 +1838,33 @@ window.fsaSetCampuses = function(list){ if(Array.isArray(list) && list.length){ 
 
 
 
-<!-- ──────────────────── GALLERY ──────────────────── -->
-<section class="sec gallery-sec" id="gallery">
-  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:44px;">
-    <div>
-      <div class="sec-label">INSTAGRAM</div>
-      <div class="sec-title">FINAL GALLERY</div>
-      <div class="sec-title-ko" data-cms="gallery_title_ko">파이널 갤러리</div>
-      <div class="red-rule"></div>
+<!-- ──────────────────── PROCESS ──────────────────── -->
+<section class="sec process-sec" id="info">
+  <div class="sec-label" data-cms="p_label">THE PROCESS</div>
+  <div class="sec-title" data-cms="p_title">ROAD TO VICTORY</div>
+  <div class="sec-title-ko" data-cms="p_title_ko">합격까지의 과정</div>
+  <div class="red-rule"></div>
+  <div class="process-grid">
+    <div class="process-step">
+      <div class="p-num">01</div>
+      <div class="p-title" data-cms="step1_title">무료 상담</div>
+      <div class="p-desc" data-cms="step1_desc">현재 수준과 목표 대학을 분석해 최적의 입시 전략을 수립합니다. 부담 없이 시작하세요.</div>
     </div>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <span style="font-size:11px;color:var(--white-25);">📷 @final._.time</span>
-      <button class="btn-outline" onclick="location.href='community.html'">더 보기 →</button>
+    <div class="process-step">
+      <div class="p-num">02</div>
+      <div class="p-title" data-cms="step2_title">맞춤 커리큘럼</div>
+      <div class="p-desc" data-cms="step2_desc">개인별 수준에 맞는 커리큘럼을 설계하고, 목표 대학에 최적화된 프로그램으로 진행합니다.</div>
     </div>
-  </div>
-
-  <!-- 파이널 갤러리 인스타그램 피드 (Behold · @final._.time) -->
-  <div class="ig-behold">
-    <behold-widget feed-id="XxZZqsQ94p1QrXsSg6Ky"></behold-widget>
-    <script>(() => { const d=document,s=d.createElement("script");s.type="module";s.src="https://w.behold.so/widget.js";d.head.append(s); })();</script>
+    <div class="process-step">
+      <div class="p-num">03</div>
+      <div class="p-title" data-cms="step3_title">실기 집중 훈련</div>
+      <div class="p-desc" data-cms="step3_desc">1:1 맨투맨 코칭과 그룹 훈련을 병행해 실기 점수를 극대화합니다.</div>
+    </div>
+    <div class="process-step">
+      <div class="p-num">04</div>
+      <div class="p-title" data-cms="step4_title">최종 합격</div>
+      <div class="p-desc" data-cms="step4_desc">원서 전략 수립부터 최종 면접까지, 합격의 마지막 순간까지 함께합니다.</div>
+    </div>
   </div>
 </section>
 
@@ -2349,6 +2405,12 @@ async function saveEdits(){
 let tt; function toast(msg){ const el=document.getElementById('fsaToast'); el.textContent=msg; el.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=> el.classList.remove('show'),2800); }
 
 applyContent(); applyCampuses(); applyRegions(); countVisit();
+</script>
+<script>
+/* 모바일 햄버거/드로어 메뉴 (공용) */
+function toggleDrawer(){const d=document.getElementById('mobileDrawer'),b=document.getElementById('hamburgerBtn');if(!d||!b)return;if(d.classList.contains('open')){d.classList.remove('open');b.classList.remove('open');document.body.style.overflow='';}else{d.classList.add('open');b.classList.add('open');document.body.style.overflow='hidden';}}
+function closeDrawer(){const d=document.getElementById('mobileDrawer'),b=document.getElementById('hamburgerBtn');if(d)d.classList.remove('open');if(b)b.classList.remove('open');document.body.style.overflow='';}
+function toggleMobileMenu(el){const item=el.parentElement;const open=item.classList.contains('open');document.querySelectorAll('.mobile-menu-item').forEach(i=>i.classList.remove('open'));if(!open)item.classList.add('open');}
 </script>
 </body>
 </html>

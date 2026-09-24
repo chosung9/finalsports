@@ -627,6 +627,11 @@ body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;backgroun
 <div class="filter-bar">
   <div class="filter-tags">
     <button class="filter-tag active" onclick="filterFeed('all',this)">전체</button>
+    <button class="filter-tag" onclick="filterFeed('입시요강',this)">입시요강</button>
+    <button class="filter-tag" onclick="filterFeed('합격자',this)">합격자</button>
+    <button class="filter-tag" onclick="filterFeed('실기',this)">실기정보</button>
+    <button class="filter-tag" onclick="filterFeed('일정',this)">입시일정</button>
+    <button class="filter-tag" onclick="filterFeed('꿀팁',this)">입시꿀팁</button>
   </div>
   <div class="filter-count">총 <span id="feedCount">9</span>개의 게시물</div>
 </div>
@@ -1237,6 +1242,12 @@ async function saveEdits(){
 let tt; function toast(msg){ const el=document.getElementById('fsaToast'); el.textContent=msg; el.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=> el.classList.remove('show'),2800); }
 
 applyContent(); applyCampuses(); applyRegions(); countVisit();
+</script>
+<script>
+/* 모바일 햄버거/드로어 메뉴 (공용) */
+function toggleDrawer(){const d=document.getElementById('mobileDrawer'),b=document.getElementById('hamburgerBtn');if(!d||!b)return;if(d.classList.contains('open')){d.classList.remove('open');b.classList.remove('open');document.body.style.overflow='';}else{d.classList.add('open');b.classList.add('open');document.body.style.overflow='hidden';}}
+function closeDrawer(){const d=document.getElementById('mobileDrawer'),b=document.getElementById('hamburgerBtn');if(d)d.classList.remove('open');if(b)b.classList.remove('open');document.body.style.overflow='';}
+function toggleMobileMenu(el){const item=el.parentElement;const open=item.classList.contains('open');document.querySelectorAll('.mobile-menu-item').forEach(i=>i.classList.remove('open'));if(!open)item.classList.add('open');}
 </script>
 </body>
 </html>

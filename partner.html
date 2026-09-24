@@ -1434,8 +1434,8 @@ let recruitMarkers = [];
 
 function initRecruitMap() {
   recruitMap = L.map('recruitMap', { zoomControl:true }).setView([36.5, 127.8], 7);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution:'© OpenStreetMap © CARTO', maxZoom:18
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+    attribution:'© Esri', maxZoom:16
   }).addTo(recruitMap);
 
   renderAll();
@@ -2041,6 +2041,12 @@ async function saveEdits(){
 let tt; function toast(msg){ const el=document.getElementById('fsaToast'); el.textContent=msg; el.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=> el.classList.remove('show'),2800); }
 
 applyContent(); applyCampuses(); applyRegions(); countVisit();
+</script>
+<script>
+/* 모바일 햄버거/드로어 메뉴 (공용) */
+function toggleDrawer(){const d=document.getElementById('mobileDrawer'),b=document.getElementById('hamburgerBtn');if(!d||!b)return;if(d.classList.contains('open')){d.classList.remove('open');b.classList.remove('open');document.body.style.overflow='';}else{d.classList.add('open');b.classList.add('open');document.body.style.overflow='hidden';}}
+function closeDrawer(){const d=document.getElementById('mobileDrawer'),b=document.getElementById('hamburgerBtn');if(d)d.classList.remove('open');if(b)b.classList.remove('open');document.body.style.overflow='';}
+function toggleMobileMenu(el){const item=el.parentElement;const open=item.classList.contains('open');document.querySelectorAll('.mobile-menu-item').forEach(i=>i.classList.remove('open'));if(!open)item.classList.add('open');}
 </script>
 </body>
 </html>
