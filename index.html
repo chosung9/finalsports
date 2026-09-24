@@ -1116,6 +1116,7 @@ body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;backgroun
 #fsaToast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(20px);background:#cb1f2f;color:#fff;padding:11px 22px;border-radius:2px;font-size:13px;font-weight:600;z-index:4000;opacity:0;pointer-events:none;transition:all .3s;letter-spacing:.3px;box-shadow:0 8px 30px rgba(0,0,0,.5);max-width:90vw;text-align:center;font-family:'Noto Sans KR',sans-serif;}
 #fsaToast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
+<style>.leaflet-marker-icon svg{filter:drop-shadow(0 2px 3px rgba(0,0,0,.75));}</style>
 </head>
 <body>
 
@@ -1633,7 +1634,7 @@ function initNaverMap() {
   // 마커 SVG (레드 핀)
   const markerSVG = (active) => `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="34" viewBox="0 0 26 34">
     <path d="M13 0C5.82 0 0 5.82 0 13c0 10 13 21 13 21S26 23 26 13C26 5.82 20.18 0 13 0z"
-      fill="${active ? '#ffffff' : '#d9d9d9'}" />
+      fill="${active ? '#ff3344' : '#cb1f2f'}" />
     <circle cx="13" cy="13" r="5.5" fill="white"/>
   </svg>`;
 
@@ -1789,6 +1790,7 @@ function loadLeafletFallback() {
     L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
       attribution: "© Esri", maxZoom: 16
     }).addTo(map);
+    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}", { maxZoom: 16 }).addTo(map); // 도시명·도로 라벨
 
     const icon = L.divIcon({
       className: "",

@@ -12,11 +12,11 @@
 html, body { width:100%; max-width:100%; overflow-x:hidden; }
 img, video, iframe { max-width:100%; }
 :root {
-  --red:#cb1f2f; --red-deep:#9e1824; --red-faint:rgba(203,31,47,0.06);
+  --red: #ffffff; --red-deep:#9e1824; --red-faint:rgba(255,255,255,0.06);
   --black:#0b0d0c; --gray-panel:#161818; --gray-card:#111313; --gray-dark:#363838;
   --white:#fff; --white-80:rgba(255,255,255,0.80); --white-50:rgba(255,255,255,0.50);
   --white-25:rgba(255,255,255,0.25);
-  --border:rgba(255,255,255,0.07); --border-red:rgba(203,31,47,0.25);
+  --border:rgba(255,255,255,0.07); --border-red:rgba(255,255,255,0.25);
   --sans:'Noto Sans KR',sans-serif; --display:'Bebas Neue','Noto Sans KR',sans-serif;
 }
 html { scroll-behavior:smooth; }
@@ -60,11 +60,11 @@ a { text-decoration:none; color:inherit; }
   display:block; padding:10px 20px; font-size:12px; color:var(--white-50);
   transition:color 0.15s,background 0.15s,padding-left 0.15s; white-space:nowrap;
 }
-.nav-dropdown a:hover { color:var(--white); background:rgba(203,31,47,0.08); padding-left:24px; }
+.nav-dropdown a:hover { color:var(--white); background:rgba(255,255,255,0.08); padding-left:24px; }
 .nav-right { display:flex; align-items:center; gap:20px; }
 .nav-tel { font-size:12px; color:var(--white-25); }
 .nav-cta {
-  background:var(--red); color:var(--white); font-family:var(--sans);
+  background:var(--red); color:#0a0a0a; font-family:var(--sans);
   font-size:12px; font-weight:700; padding:9px 22px; border:none; cursor:pointer;
 }
 .nav-cta:hover { background:var(--red-deep); }
@@ -76,7 +76,7 @@ a { text-decoration:none; color:inherit; }
 }
 .page-hero::before {
   content:''; position:absolute; inset:0;
-  background:repeating-linear-gradient(-55deg,transparent,transparent 2px,rgba(203,31,47,0.03) 2px,rgba(203,31,47,0.03) 3px);
+  background:repeating-linear-gradient(-55deg,transparent,transparent 2px,rgba(255,255,255,0.03) 2px,rgba(255,255,255,0.03) 3px);
 }
 .page-hero-bg {
   position:absolute; right:-20px; bottom:-30px; font-family:var(--display);
@@ -103,7 +103,7 @@ a { text-decoration:none; color:inherit; }
 /* ══ 가맹점 모집 지도 섹션 ══ */
 .recruit-map-section { background:var(--black); padding:64px 64px 0; }
 .recruit-map-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:32px; flex-wrap:wrap; gap:16px; }
-.sec-label { font-size:9px; font-weight:500; letter-spacing:4px; color:var(--red); margin-bottom:8px; }
+.sec-label { font-size:9px; font-weight:500; letter-spacing:4px; color: rgba(255,255,255,0.45); margin-bottom:8px; }
 .recruit-map-header h2 { font-size:22px; font-weight:700; letter-spacing:-0.5px; }
 
 /* 지역 검색 */
@@ -121,7 +121,7 @@ a { text-decoration:none; color:inherit; }
 .region-search input:focus { background:#1a1c1c; }
 .region-search input::placeholder { color:var(--white-25); }
 .region-search-btn {
-  background:var(--red); border:none; color:var(--white);
+  background:var(--red); border:none; color:#0a0a0a;
   font-family:var(--sans); font-size:12px; font-weight:700;
   padding:9px 18px; cursor:pointer; transition:background 0.2s; white-space:nowrap;
 }
@@ -148,7 +148,7 @@ a { text-decoration:none; color:inherit; }
 .map-add-btn {
   position:absolute; top:12px; left:12px; z-index:10;
   font-family:var(--sans); font-size:11px; font-weight:700;
-  padding:8px 16px; background:var(--red); color:var(--white);
+  padding:8px 16px; background:var(--red); color:#0a0a0a;
   border:none; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.5);
   transition:background 0.2s;
 }
@@ -163,7 +163,7 @@ a { text-decoration:none; color:inherit; }
 .autocomplete-item {
   padding:10px 16px; font-size:12px; color:var(--white-50); cursor:pointer; transition:all 0.15s;
 }
-.autocomplete-item:hover { background:rgba(203,31,47,0.1); color:var(--white); padding-left:20px; }
+.autocomplete-item:hover { background:rgba(255,255,255,0.1); color:var(--white); padding-left:20px; }
 .autocomplete-item .region-type { font-size:9px; color:var(--red); margin-left:8px; letter-spacing:1px; }
 .region-search { position:relative; }
 
@@ -212,19 +212,19 @@ a { text-decoration:none; color:inherit; }
   display:flex; align-items:center; justify-content:space-between;
   cursor:pointer; transition:background 0.2s; flex-shrink:0;
 }
-.recruit-list-item:hover { background:rgba(203,31,47,0.06); }
-.recruit-list-item.highlighted { background:rgba(203,31,47,0.1); }
+.recruit-list-item:hover { background:rgba(255,255,255,0.06); }
+.recruit-list-item.highlighted { background:rgba(255,255,255,0.1); }
 .rli-left { display:flex; align-items:center; gap:10px; }
 .rli-dot {
   width:7px; height:7px; border-radius:50%; background:var(--red); flex-shrink:0;
-  box-shadow:0 0 6px rgba(203,31,47,0.6); animation:pulse 2s ease-in-out infinite;
+  box-shadow:0 0 6px rgba(255,255,255,0.6); animation:pulse 2s ease-in-out infinite;
 }
 @keyframes pulse {
-  0%,100% { box-shadow:0 0 4px rgba(203,31,47,0.4); }
-  50% { box-shadow:0 0 10px rgba(203,31,47,0.9); }
+  0%,100% { box-shadow:0 0 4px rgba(255,255,255,0.4); }
+  50% { box-shadow:0 0 10px rgba(255,255,255,0.9); }
 }
 .rli-info { display:flex; flex-direction:column; gap:2px; }
-.rli-region { font-size:8px; letter-spacing:1.5px; color:rgba(203,31,47,0.7); }
+.rli-region { font-size:8px; letter-spacing:1.5px; color:rgba(255,255,255,0.7); }
 .rli-name { font-size:13px; font-weight:500; }
 .rli-badge {
   font-size:8px; letter-spacing:1px; color:var(--red);
@@ -263,7 +263,7 @@ a { text-decoration:none; color:inherit; }
   background:var(--red); transform:scaleX(0); transition:transform 0.4s; transform-origin:left;
 }
 .fi-card:hover::before { transform:scaleX(1); }
-.fi-num { font-family:'Oswald',sans-serif; font-size:48px; color:rgba(203,31,47,0.1); margin-bottom:16px; }
+.fi-num { font-family:'Oswald',sans-serif; font-size:48px; color:rgba(255,255,255,0.1); margin-bottom:16px; }
 .fi-title { font-size:17px; font-weight:700; margin-bottom:10px; }
 .fi-body { font-size:13px; color:var(--white-50); line-height:1.8; }
 
@@ -306,7 +306,7 @@ body.admin-mode .admin-ctrl-block { display:block; }
 .admin-login-btn:hover { color:var(--white-80); border-color:rgba(255,255,255,0.25); }
 body.admin-mode .admin-login-btn {
   color:var(--red); border-color:var(--border-red);
-  background:rgba(203,31,47,0.08);
+  background:rgba(255,255,255,0.08);
 }
 
 
@@ -379,7 +379,7 @@ body.admin-mode .admin-login-btn {
   transition: border-color 0.2s, background 0.2s;
 }
 .form-input:focus {
-  border-color: rgba(203,31,47,0.5);
+  border-color: rgba(255,255,255,0.5);
   border-bottom-color: var(--red);
   background: #0f1110;
 }
@@ -425,13 +425,13 @@ body.admin-mode .recruit-list-item .rli-delete {
   display: none;
   align-items: center; justify-content: center;
   width: 22px; height: 22px; flex-shrink: 0;
-  background: rgba(203,31,47,0.15);
+  background: rgba(255,255,255,0.15);
   color: var(--red); font-size: 12px;
   border: 0.5px solid var(--border-red);
   cursor: pointer; transition: all 0.2s;
   border-radius: 2px;
 }
-.rli-delete:hover { background: var(--red); color: #fff; }
+.rli-delete:hover { background: var(--red); color:#0a0a0a; }
 .rli-actions { display:flex; align-items:center; gap:6px; flex-shrink:0; }
 .rli-edit {
   display: none; align-items: center; justify-content: center;
@@ -446,7 +446,7 @@ body.admin-mode .recruit-list-item .rli-edit { display: flex; }
 /* 드래그 중 */
 .recruit-list-item.dragging {
   opacity: 0.4;
-  background: rgba(203,31,47,0.06) !important;
+  background: rgba(255,255,255,0.06) !important;
 }
 .recruit-list-item.drag-over {
   border-top: 2px solid var(--red);
@@ -549,7 +549,7 @@ footer { background:#060808; padding:52px 64px; border-top:0.5px solid var(--bor
 .mobile-drawer-cta {
   display: block; width: 100%;
   font-family: var(--sans); font-size: 14px; font-weight: 700;
-  padding: 14px; background: var(--red); color: var(--white);
+  padding: 14px; background: var(--red); color:#0a0a0a;
   border: none; cursor: pointer; text-align: center; letter-spacing: 0.5px;
   transition: background 0.2s;
 }
@@ -751,12 +751,13 @@ footer { background:#060808; padding:52px 64px; border-top:0.5px solid var(--bor
 #fsaAdminBar .logout{color:rgba(255,255,255,.5);}
 #fsaAdminBar .logout:hover{color:#fff;border-color:rgba(255,255,255,.5);}
 @media(max-width:680px){#fsaAdminBar{gap:10px;padding:8px 10px;}#fsaAdminBar .stat b{font-size:14px;}#fsaAdminBar .stat span{font-size:8px;}}
-body.fsa-edit [contenteditable="true"]{outline:1px dashed rgba(203,31,47,.7);outline-offset:3px;cursor:text;transition:background .15s;}
-body.fsa-edit [contenteditable="true"]:hover{background:rgba(203,31,47,.10);}
-body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;background:rgba(203,31,47,.06);}
+body.fsa-edit [contenteditable="true"]{outline:1px dashed rgba(255,255,255,.7);outline-offset:3px;cursor:text;transition:background .15s;}
+body.fsa-edit [contenteditable="true"]:hover{background:rgba(255,255,255,.10);}
+body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;background:rgba(255,255,255,.06);}
 #fsaToast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(20px);background:#cb1f2f;color:#fff;padding:11px 22px;border-radius:2px;font-size:13px;font-weight:600;z-index:4000;opacity:0;pointer-events:none;transition:all .3s;letter-spacing:.3px;box-shadow:0 8px 30px rgba(0,0,0,.5);max-width:90vw;text-align:center;font-family:'Noto Sans KR',sans-serif;}
 #fsaToast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
+<style>.leaflet-marker-icon svg{filter:drop-shadow(0 2px 3px rgba(0,0,0,.75));}</style>
 </head>
 <body>
 
@@ -1105,7 +1106,7 @@ body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;backgroun
         <div style="font-size:9px;letter-spacing:3px;color:var(--red);margin-bottom:8px;">문의내용</div>
         <textarea id="c-msg" placeholder="협력 제안 내용을 입력하세요" style="width:100%;min-height:160px;background:var(--gray-card);border:0.5px solid var(--border);color:var(--white);font-family:var(--sans);font-size:13px;padding:12px 14px;outline:none;resize:vertical;line-height:1.7;"></textarea>
       </div>
-      <button onclick="submitPartner()" style="width:100%;font-family:var(--sans);font-size:14px;font-weight:700;padding:15px;background:var(--red);color:var(--white);border:none;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#9e1824'" onmouseout="this.style.background='var(--red)'">
+      <button onclick="submitPartner()" style="width:100%;font-family:var(--sans);font-size:14px;font-weight:700;padding:15px;background:var(--red);color:#0a0a0a;border:none;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#e6e6e6'" onmouseout="this.style.background='var(--red)'">
         문의 보내기
       </button>
     </div>
@@ -1437,6 +1438,7 @@ function initRecruitMap() {
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
     attribution:'© Esri', maxZoom:16
   }).addTo(recruitMap);
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {maxZoom:16}).addTo(recruitMap); // 도시명·도로 라벨
 
   renderAll();
 }
@@ -1456,7 +1458,7 @@ function addMarkerToMap(r, idx) {
   const m = L.marker([r.lat, r.lng], {icon:redIcon()})
     .addTo(recruitMap)
     .bindPopup(`<div style="font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:600;color:#0b0d0c;">
-      ${r.name}<br><span style="font-size:10px;color:#cb1f2f;font-weight:400;">모집중</span>
+      ${r.name}<br><span style="font-size:10px;color:rgba(255,255,255,.6);font-weight:400;">모집중</span>
     </div>`, {closeButton:false});
   recruitMarkers.push(m);
 }

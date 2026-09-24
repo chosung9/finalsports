@@ -10,11 +10,11 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html,body{width:100%;overflow-x:hidden;font-family:'Noto Sans KR',sans-serif;background:#0b0d0c;color:#fff;}
 :root{
-  --red:#cb1f2f;--red-deep:#9e1824;
+  --red: #ffffff;--red-deep:#9e1824;
   --black:#0b0d0c;--panel:#161818;--card:#111313;--gray:#363838;
   --white:#fff;--w80:rgba(255,255,255,.80);--w50:rgba(255,255,255,.50);
   --w25:rgba(255,255,255,.25);
-  --border:rgba(255,255,255,.07);--border-red:rgba(203,31,47,.25);
+  --border:rgba(255,255,255,.07);--border-red:rgba(255,255,255,.25);
   --sans:'Noto Sans KR',sans-serif;--display:'Bebas Neue',sans-serif;
 }
 a{text-decoration:none;color:inherit;}
@@ -35,10 +35,10 @@ a{text-decoration:none;color:inherit;}
 .nav-dropdown{position:absolute;top:68px;left:0;min-width:140px;background:rgba(11,13,12,.97);border:.5px solid var(--border);border-top:2px solid var(--red);backdrop-filter:blur(16px);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .25s,transform .25s,visibility .25s;z-index:200;padding:8px 0;}
 .nav-links>li:hover .nav-dropdown{opacity:1;visibility:visible;transform:translateY(0);}
 .nav-dropdown a{display:block;padding:10px 20px;font-size:12px;color:var(--w50);transition:color .15s,background .15s,padding-left .15s;white-space:nowrap;}
-.nav-dropdown a:hover{color:var(--white);background:rgba(203,31,47,.08);padding-left:24px;}
+.nav-dropdown a:hover{color:var(--white);background:rgba(255,255,255,.08);padding-left:24px;}
 .nav-right{display:flex;align-items:center;gap:16px;}
 .nav-tel{font-size:12px;color:var(--w25);}
-.nav-cta{background:var(--red);color:var(--white);font-family:var(--sans);font-size:12px;font-weight:700;padding:9px 20px;border:none;cursor:pointer;white-space:nowrap;}
+.nav-cta{background:var(--red);color:#0a0a0a;font-family:var(--sans);font-size:12px;font-weight:700;padding:9px 20px;border:none;cursor:pointer;white-space:nowrap;}
 .hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;width:40px;height:40px;cursor:pointer;gap:5px;background:transparent;border:none;}
 .hamburger span{display:block;width:22px;height:2px;background:var(--white);border-radius:2px;transition:all .3s;}
 .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
@@ -58,12 +58,12 @@ a{text-decoration:none;color:inherit;}
 .mobile-drawer-bottom{padding:28px 24px 0;border-top:.5px solid var(--border);margin-top:16px;}
 .mobile-drawer-tel{font-size:22px;font-weight:700;color:var(--red);margin-bottom:6px;}
 .mobile-drawer-hours{font-size:11px;color:var(--w25);margin-bottom:20px;}
-.mobile-drawer-cta{display:block;width:100%;font-family:var(--sans);font-size:14px;font-weight:700;padding:14px;background:var(--red);color:var(--white);border:none;cursor:pointer;}
+.mobile-drawer-cta{display:block;width:100%;font-family:var(--sans);font-size:14px;font-weight:700;padding:14px;background:var(--red);color:#0a0a0a;border:none;cursor:pointer;}
 
 /* 섹션 헤더 */
 .campus-header{background:var(--panel);padding:24px clamp(16px,4vw,64px);border-bottom:2px solid var(--red);margin-top:68px;}
 .campus-header-inner{display:flex;justify-content:space-between;align-items:center;}
-.campus-header .sec-label{font-size:9px;font-weight:500;letter-spacing:4px;color:var(--red);margin-bottom:8px;}
+.campus-header .sec-label{font-size:9px;font-weight:500;letter-spacing:4px;color: rgba(255,255,255,0.45);margin-bottom:8px;}
 .campus-header h2{font-size:clamp(20px,3vw,28px);font-weight:700;letter-spacing:-1px;}
 
 /* 지도+패널 — partner.html과 동일한 구조 */
@@ -101,16 +101,16 @@ body.admin-mode .admin-login-btn{color:var(--red);border-color:var(--border-red)
 .region-tabs{display:flex;flex-wrap:nowrap;gap:1px;overflow-x:auto;scroll-behavior:smooth;flex:1;-ms-overflow-style:none;scrollbar-width:none;}
 .region-tabs::-webkit-scrollbar{display:none;}
 .region-tab{flex:1 0 auto;white-space:nowrap;padding:8px 12px;font-family:var(--sans);font-size:10px;border:none;cursor:pointer;background:var(--card);color:var(--w25);transition:all .2s;}
-.region-tab.active{background:var(--red);color:var(--white);}
+.region-tab.active{background:var(--red);color:#0a0a0a;}
 .rt-arrow{flex:0 0 auto;width:26px;border:none;background:var(--card);color:var(--red);font-size:16px;font-weight:700;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
-.rt-arrow:hover{background:var(--red);color:#fff;}
+.rt-arrow:hover{background:var(--red);color:#0a0a0a;}
 .rt-arrow:active{transform:scale(.9);}
 
 /* 관리자 입력바 */
-.admin-bar{display:none;align-items:center;gap:6px;padding:8px 12px;background:rgba(203,31,47,.06);border-bottom:.5px solid var(--border-red);flex-shrink:0;flex-wrap:wrap;}
+.admin-bar{display:none;align-items:center;gap:6px;padding:8px 12px;background:rgba(255,255,255,.06);border-bottom:.5px solid var(--border-red);flex-shrink:0;flex-wrap:wrap;}
 body.admin-mode .admin-bar{display:flex;}
 .admin-input{flex:1;min-width:80px;background:var(--black);border:.5px solid var(--border);color:var(--white);font-family:var(--sans);font-size:11px;padding:6px 8px;outline:none;}
-.admin-add-btn{font-family:var(--sans);font-size:10px;font-weight:700;padding:6px 10px;background:var(--red);color:var(--white);border:none;cursor:pointer;white-space:nowrap;}
+.admin-add-btn{font-family:var(--sans);font-size:10px;font-weight:700;padding:6px 10px;background:var(--red);color:#0a0a0a;border:none;cursor:pointer;white-space:nowrap;}
 .admin-del-btn{font-family:var(--sans);font-size:10px;color:rgba(255,100,100,.7);padding:5px 8px;border:.5px solid rgba(255,100,100,.3);background:transparent;cursor:pointer;white-space:nowrap;}
 /* 지점 추가/수정 입력 폼 모달 */
 .cf-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:9000;align-items:center;justify-content:center;padding:16px;}
@@ -134,26 +134,26 @@ body.admin-mode .campus-list-scroll-wrap{overflow-y:auto;overflow-x:hidden;}
 body.admin-mode .campus-list-scroll-wrap::before,
 body.admin-mode .campus-list-scroll-wrap::after{display:none;}
 body.admin-mode .campus-list-scroll-wrap::-webkit-scrollbar{width:8px;}
-body.admin-mode .campus-list-scroll-wrap::-webkit-scrollbar-thumb{background:rgba(203,31,47,.5);border-radius:4px;}
+body.admin-mode .campus-list-scroll-wrap::-webkit-scrollbar-thumb{background:rgba(255,255,255,.5);border-radius:4px;}
 body.admin-mode .campus-list-scroll-wrap::-webkit-scrollbar-track{background:rgba(255,255,255,.05);}
 .campus-list-scroll-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:24px;background:linear-gradient(to bottom,var(--card),transparent);z-index:2;pointer-events:none;}
 .campus-list-scroll-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:24px;background:linear-gradient(to top,var(--card),transparent);z-index:2;pointer-events:none;}
 .campus-list-inner{display:flex;flex-direction:column;}
 @keyframes campusListUp{0%{transform:translateY(0);}100%{transform:translateY(-50%);}}
 .campus-item{padding:12px 16px;border-bottom:.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .2s;flex-shrink:0;}
-.campus-item:hover{background:rgba(203,31,47,.06);}
-.campus-item.active{background:rgba(203,31,47,.1);}
+.campus-item:hover{background:rgba(255,255,255,.06);}
+.campus-item.active{background:rgba(255,255,255,.1);}
 .campus-item.active .ci-name{color:var(--red);}
 .campus-item.active .ci-dot{background:var(--red);}
 .ci-left{display:flex;align-items:center;gap:10px;}
 .ci-dot{width:6px;height:6px;border-radius:50%;background:var(--gray);flex-shrink:0;}
-.ci-region{font-size:9px;letter-spacing:1.5px;color:rgba(203,31,47,.7);}
+.ci-region{font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.7);}
 .ci-name{font-size:13px;font-weight:500;}
 .ci-right{display:flex;align-items:center;gap:6px;}
 .ci-insta{font-size:9px;color:var(--red);border:.5px solid var(--border-red);padding:2px 7px;cursor:pointer;white-space:nowrap;}
-.ci-insta:hover{background:var(--red);color:#fff;}
-.ci-delete{display:none;width:18px;height:18px;align-items:center;justify-content:center;background:rgba(203,31,47,.12);color:var(--red);font-size:10px;border:.5px solid var(--border-red);cursor:pointer;flex-shrink:0;}
-.ci-delete:hover{background:var(--red);color:#fff;}
+.ci-insta:hover{background:var(--red);color:#0a0a0a;}
+.ci-delete{display:none;width:18px;height:18px;align-items:center;justify-content:center;background:rgba(255,255,255,.12);color:var(--red);font-size:10px;border:.5px solid var(--border-red);cursor:pointer;flex-shrink:0;}
+.ci-delete:hover{background:var(--red);color:#0a0a0a;}
 body.admin-mode .ci-delete{display:flex;}
 .ci-edit{display:none;font-size:9px;color:rgba(255,255,255,.75);border:.5px solid rgba(255,255,255,.3);padding:2px 7px;cursor:pointer;white-space:nowrap;}
 .ci-edit:hover{background:rgba(255,255,255,.9);color:#0a0a0a;}
@@ -166,13 +166,13 @@ body.admin-mode .campus-item{cursor:grab;}
 .final-popup .leaflet-popup-content-wrapper{background:transparent!important;border:none!important;box-shadow:none!important;padding:0!important;}
 .final-popup .leaflet-popup-content{margin:0!important;}
 .final-popup .leaflet-popup-tip-container{display:none!important;}
-.map-popup{background:#0b0d0c;border:1.5px solid #cb1f2f;border-radius:2px;padding:10px 14px;font-family:'Noto Sans KR',sans-serif;font-size:12px;color:#fff;box-shadow:0 4px 20px rgba(0,0,0,.7);min-width:160px;}
-.map-popup .pop-region{font-size:9px;letter-spacing:2px;color:#cb1f2f;margin-bottom:4px;}
+.map-popup{background:#0b0d0c;border:1.5px solid rgba(255,255,255,.35);border-radius:2px;padding:10px 14px;font-family:'Noto Sans KR',sans-serif;font-size:12px;color:#fff;box-shadow:0 4px 20px rgba(0,0,0,.7);min-width:160px;}
+.map-popup .pop-region{font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.55);margin-bottom:4px;}
 .map-popup .pop-name{font-size:14px;font-weight:700;margin-bottom:6px;}
 .map-popup .pop-addr{font-size:11px;color:rgba(255,255,255,.5);line-height:1.5;margin-bottom:4px;}
 .map-popup .pop-tel{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:8px;}
-.map-popup .pop-insta{display:inline-block;font-size:10px;color:#cb1f2f;border:.5px solid rgba(203,31,47,.4);padding:4px 10px;cursor:pointer;}
-.map-popup .pop-insta:hover{background:#cb1f2f;color:#fff;}
+.map-popup .pop-insta{display:inline-block;font-size:10px;color:#fff;border:.5px solid rgba(255,255,255,.4);padding:4px 10px;cursor:pointer;}
+.map-popup .pop-insta:hover{background:#fff;color:#0a0a0a;}
 
 /* FOOTER */
 footer{background:#060808;padding:clamp(32px,5vw,52px) clamp(16px,4vw,64px);border-top:.5px solid var(--border);}
@@ -230,12 +230,13 @@ footer{background:#060808;padding:clamp(32px,5vw,52px) clamp(16px,4vw,64px);bord
 #fsaAdminBar .logout{color:rgba(255,255,255,.5);}
 #fsaAdminBar .logout:hover{color:#fff;border-color:rgba(255,255,255,.5);}
 @media(max-width:680px){#fsaAdminBar{gap:10px;padding:8px 10px;}#fsaAdminBar .stat b{font-size:14px;}#fsaAdminBar .stat span{font-size:8px;}}
-body.fsa-edit [contenteditable="true"]{outline:1px dashed rgba(203,31,47,.7);outline-offset:3px;cursor:text;transition:background .15s;}
-body.fsa-edit [contenteditable="true"]:hover{background:rgba(203,31,47,.10);}
-body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;background:rgba(203,31,47,.06);}
+body.fsa-edit [contenteditable="true"]{outline:1px dashed rgba(255,255,255,.7);outline-offset:3px;cursor:text;transition:background .15s;}
+body.fsa-edit [contenteditable="true"]:hover{background:rgba(255,255,255,.10);}
+body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;background:rgba(255,255,255,.06);}
 #fsaToast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(20px);background:#cb1f2f;color:#fff;padding:11px 22px;border-radius:2px;font-size:13px;font-weight:600;z-index:4000;opacity:0;pointer-events:none;transition:all .3s;letter-spacing:.3px;box-shadow:0 8px 30px rgba(0,0,0,.5);max-width:90vw;text-align:center;font-family:'Noto Sans KR',sans-serif;}
 #fsaToast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
+<style>.leaflet-marker-icon svg{filter:drop-shadow(0 2px 3px rgba(0,0,0,.75));}</style>
 </head>
 <body>
 <nav class="nav">
@@ -367,6 +368,7 @@ function initCampusMap(){
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',{
     attribution:'© Esri',maxZoom:16
   }).addTo(campusMap);
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}',{maxZoom:16}).addTo(campusMap); // 도시명·도로 라벨
   buildCampusMarkers();
   renderRegionTabs();
   renderCampusList();

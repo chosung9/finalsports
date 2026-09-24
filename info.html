@@ -12,11 +12,11 @@
 html, body { width:100%; max-width:100%; overflow-x:hidden; }
 img, video, iframe { max-width:100%; }
 :root {
-  --red:#cb1f2f; --red-deep:#9e1824; --red-faint:rgba(203,31,47,0.06);
+  --red: #ffffff; --red-deep:#9e1824; --red-faint:rgba(255,255,255,0.06);
   --black:#0b0d0c; --gray-panel:#161818; --gray-card:#111313;
   --white:#fff; --white-80:rgba(255,255,255,0.80); --white-50:rgba(255,255,255,0.50);
   --white-25:rgba(255,255,255,0.25);
-  --border:rgba(255,255,255,0.07); --border-red:rgba(203,31,47,0.25);
+  --border:rgba(255,255,255,0.07); --border-red:rgba(255,255,255,0.25);
   --sans:'Noto Sans KR',sans-serif; --display:'Bebas Neue','Noto Sans KR',sans-serif;
 }
 html { scroll-behavior:smooth; }
@@ -60,11 +60,11 @@ a { text-decoration:none; color:inherit; }
   display:block; padding:10px 20px; font-size:12px; color:var(--white-50);
   transition:color 0.15s,background 0.15s,padding-left 0.15s; white-space:nowrap;
 }
-.nav-dropdown a:hover { color:var(--white); background:rgba(203,31,47,0.08); padding-left:24px; }
+.nav-dropdown a:hover { color:var(--white); background:rgba(255,255,255,0.08); padding-left:24px; }
 .nav-right { display:flex; align-items:center; gap:20px; }
 .nav-tel { font-size:12px; color:var(--white-25); }
 .nav-cta {
-  background:var(--red); color:var(--white); font-family:var(--sans);
+  background:var(--red); color:#0a0a0a; font-family:var(--sans);
   font-size:12px; font-weight:700; padding:9px 22px; border:none; cursor:pointer; transition:background 0.2s;
 }
 .nav-cta:hover { background:var(--red-deep); }
@@ -76,7 +76,7 @@ a { text-decoration:none; color:inherit; }
 }
 .page-hero::before {
   content:''; position:absolute; inset:0;
-  background:repeating-linear-gradient(-55deg,transparent,transparent 2px,rgba(203,31,47,0.03) 2px,rgba(203,31,47,0.03) 3px);
+  background:repeating-linear-gradient(-55deg,transparent,transparent 2px,rgba(255,255,255,0.03) 2px,rgba(255,255,255,0.03) 3px);
 }
 .page-hero-bg {
   position:absolute; right:-20px; bottom:-30px; font-family:var(--display);
@@ -113,7 +113,7 @@ a { text-decoration:none; color:inherit; }
   background:transparent; cursor:pointer; transition:all 0.2s; letter-spacing:0.5px;
 }
 .filter-tag:hover { color:var(--white-80); border-color:rgba(255,255,255,0.3); }
-.filter-tag.active { background:var(--red); color:var(--white); border-color:var(--red); }
+.filter-tag.active { background:var(--red); color:#0a0a0a; border-color:var(--red); }
 .filter-count { font-size:11px; color:var(--white-25); letter-spacing:0.5px; }
 .filter-count span { color:var(--red); font-weight:700; }
 
@@ -122,7 +122,7 @@ a { text-decoration:none; color:inherit; }
 .insta-header {
   display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:36px;
 }
-.insta-header-left .sec-label { font-size:9px; letter-spacing:4px; color:var(--red); margin-bottom:8px; }
+.insta-header-left .sec-label { font-size:9px; letter-spacing:4px; color: rgba(255,255,255,0.45); margin-bottom:8px; }
 .insta-header-left h2 { font-size:22px; font-weight:700; letter-spacing:-0.5px; }
 .insta-account {
   display:flex; align-items:center; gap:8px;
@@ -156,8 +156,8 @@ a { text-decoration:none; color:inherit; }
 }
 .feed-placeholder-icon { font-size:28px; opacity:0.2; }
 .feed-placeholder-tag {
-  font-size:8px; letter-spacing:2px; color:rgba(203,31,47,0.5);
-  border:0.5px solid rgba(203,31,47,0.3); padding:3px 10px;
+  font-size:8px; letter-spacing:2px; color:rgba(255,255,255,0.5);
+  border:0.5px solid rgba(255,255,255,0.3); padding:3px 10px;
 }
 .feed-placeholder-text { font-size:11px; color:var(--white-25); line-height:1.6; text-align:center; padding:0 16px; }
 
@@ -193,14 +193,14 @@ a { text-decoration:none; color:inherit; }
 /* ── 연동 안내 배너 ── */
 .connect-banner {
   margin:0 64px 56px; padding:20px 28px;
-  background:rgba(203,31,47,0.06); border:0.5px solid rgba(203,31,47,0.2);
+  background:rgba(255,255,255,0.06); border:0.5px solid rgba(255,255,255,0.2);
   display:flex; align-items:center; justify-content:space-between; gap:20px;
 }
 .connect-banner-text { font-size:13px; color:var(--white-50); line-height:1.6; }
 .connect-banner-text strong { color:var(--white); }
 .connect-banner-btn {
   font-family:var(--sans); font-size:11px; font-weight:700;
-  padding:8px 20px; background:var(--red); color:var(--white);
+  padding:8px 20px; background:var(--red); color:#0a0a0a;
   border:none; cursor:pointer; white-space:nowrap; transition:background 0.2s; flex-shrink:0;
 }
 .connect-banner-btn:hover { background:var(--red-deep); }
@@ -301,7 +301,7 @@ footer { background:#060808; padding:52px 64px; border-top:0.5px solid var(--bor
 .mobile-drawer-cta {
   display: block; width: 100%;
   font-family: var(--sans); font-size: 14px; font-weight: 700;
-  padding: 14px; background: var(--red); color: var(--white);
+  padding: 14px; background: var(--red); color:#0a0a0a;
   border: none; cursor: pointer; text-align: center; letter-spacing: 0.5px;
   transition: background 0.2s;
 }
@@ -503,9 +503,9 @@ footer { background:#060808; padding:52px 64px; border-top:0.5px solid var(--bor
 #fsaAdminBar .logout{color:rgba(255,255,255,.5);}
 #fsaAdminBar .logout:hover{color:#fff;border-color:rgba(255,255,255,.5);}
 @media(max-width:680px){#fsaAdminBar{gap:10px;padding:8px 10px;}#fsaAdminBar .stat b{font-size:14px;}#fsaAdminBar .stat span{font-size:8px;}}
-body.fsa-edit [contenteditable="true"]{outline:1px dashed rgba(203,31,47,.7);outline-offset:3px;cursor:text;transition:background .15s;}
-body.fsa-edit [contenteditable="true"]:hover{background:rgba(203,31,47,.10);}
-body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;background:rgba(203,31,47,.06);}
+body.fsa-edit [contenteditable="true"]{outline:1px dashed rgba(255,255,255,.7);outline-offset:3px;cursor:text;transition:background .15s;}
+body.fsa-edit [contenteditable="true"]:hover{background:rgba(255,255,255,.10);}
+body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;background:rgba(255,255,255,.06);}
 #fsaToast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(20px);background:#cb1f2f;color:#fff;padding:11px 22px;border-radius:2px;font-size:13px;font-weight:600;z-index:4000;opacity:0;pointer-events:none;transition:all .3s;letter-spacing:.3px;box-shadow:0 8px 30px rgba(0,0,0,.5);max-width:90vw;text-align:center;font-family:'Noto Sans KR',sans-serif;}
 #fsaToast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
