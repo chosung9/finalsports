@@ -1742,7 +1742,7 @@ function buildList(filterRegion) {
   list.style.animationDuration = duration + 's';
 
   // 지역 탭 그리기
-  const regions = ["전체","서울","경기","강원","충청","전라","경남"];
+  const regions = ["전체","서울","경기","인천","강원","충청","전라","경남"];
   const tabs = document.getElementById("regionTabs");
   if (tabs) {
     tabs.innerHTML = regions.map(r => `
@@ -1751,7 +1751,7 @@ function buildList(filterRegion) {
         font-family:var(--sans);font-size:9px;letter-spacing:1px;
         border:none;cursor:pointer;
         background:${r===activeRegion?'var(--red)':'var(--gray-card)'};
-        color:${r===activeRegion?'#fff':'rgba(255,255,255,0.35)'};
+        color:${r===activeRegion?'#0a0a0a':'rgba(255,255,255,0.35)'};
         transition:all 0.2s;
       ">${r}</button>
     `).join("");
