@@ -1784,7 +1784,7 @@ function loadLeafletFallback() {
       markers.forEach(mk=>{ try{ mk.marker.remove(); }catch(e){} });
       markers.length = 0;
     CAMPUSES.forEach((c, i) => {
-      const m = L.marker([c.lat, c.lng], { icon })
+      const m = L.marker([c.lat, c.lng], { icon, riseOnHover: true })
         .addTo(map)
         .bindPopup(`<div style="font-family:'Noto Sans KR',sans-serif;font-weight:600;font-size:13px;">${c.name}</div>`, {
           closeButton: false
@@ -1802,6 +1802,13 @@ function loadLeafletFallback() {
     }
     fsaAddMarkers();
     window.fsaMapCtx = { map: map, addMarkers: fsaAddMarkers };
+    /* 리스트 호버 → 핀 강조 */
+    const mapWrap=document.querySelector('.campus-map-wrap');
+    function hl(i,on){ const mk=markers[i]&&markers[i].marker; const el=mk&&mk.getElement(); if(!el) return;
+      el.classList.toggle('pin-hl',on); if(on) mk.setZIndexOffset(1000); else mk.setZIndexOffset(0);
+      if(mapWrap) mapWrap.classList.toggle('pin-dim',on); }
+    document.addEventListener('mouseover',e=>{ const li=e.target.closest&&e.target.closest('.campus-list-item'); if(!li||!li.dataset.idx) return; hl(+li.dataset.idx,true); });
+    document.addEventListener('mouseout',e=>{ const li=e.target.closest&&e.target.closest('.campus-list-item'); if(!li||!li.dataset.idx) return; if(li.contains(e.relatedTarget)) return; hl(+li.dataset.idx,false); });
 
     buildList();
 
@@ -2496,12 +2503,22 @@ html{scroll-behavior:smooth;}
 .page-combo .photo-cap-en{font-size:clamp(22px,2.4vw,36px);}
 .page-combo .photo-cap-ko{font-size:12px;margin-top:6px;}
 /* 캠퍼스: 제목+지도를 한 화면에 */
-.campus-sec{padding:72px 0 0!important;display:flex;flex-direction:column;}
-.campus-sec .campus-head{padding:0 64px 22px;}
+.campus-sec{padding:72px 0 0!important;display:flex;flex-direction:column;height:100vh;max-height:100vh;overflow:hidden;}
+.campus-sec .campus-head{padding:0 64px 22px;flex-shrink:0;}
 .campus-sec .sec-title-ko{font-size:clamp(24px,2.6vw,36px);}
-.campus-sec .campus-map-wrap{height:auto;flex:1;min-height:0;}
+.campus-sec .campus-map-wrap{height:auto;flex:1;min-height:0;overflow:hidden;}
+.campus-sec .campus-map-panel{display:flex;flex-direction:column;min-height:0;height:100%;overflow:hidden;}
+.campus-sec .campus-map-frame{min-height:0;height:100%;}
+.campus-sec #campusListWrap{overflow-y:auto!important;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.25) transparent;}
+.campus-sec #campusListWrap::-webkit-scrollbar{width:6px;}
+.campus-sec #campusListWrap::-webkit-scrollbar-thumb{background:rgba(255,255,255,.25);border-radius:3px;}
 @media(max-width:768px){.campus-sec .campus-head{padding:0 24px 16px;}}
 @media(max-width:768px){html.snap{scroll-snap-type:none;}.page-combo .photo-sec{grid-template-columns:1fr;}.page-combo .process-sec{padding:56px 24px 24px;}}
+/* 리스트 호버 → 핀 강조 */
+.leaflet-marker-icon{transition:transform .25s ease,opacity .25s ease,filter .25s ease;transform-origin:50% 100%;}
+.campus-map-wrap.pin-dim .leaflet-marker-icon:not(.pin-hl){opacity:.35;}
+.leaflet-marker-icon.pin-hl{transform:scale(1.55) translateY(-6px)!important;opacity:1!important;filter:drop-shadow(0 0 10px rgba(203,31,47,.95)) drop-shadow(0 6px 10px rgba(0,0,0,.7));animation:pinPulse 1s ease-in-out infinite;}
+@keyframes pinPulse{0%,100%{filter:drop-shadow(0 0 6px rgba(203,31,47,.7)) drop-shadow(0 6px 10px rgba(0,0,0,.7))}50%{filter:drop-shadow(0 0 18px rgba(203,31,47,1)) drop-shadow(0 6px 10px rgba(0,0,0,.7))}}
 /* 사진 변경 버튼 (수정 모드) */
 .fsa-photo-btn{display:none;position:absolute;top:14px;right:14px;z-index:5;align-items:center;gap:6px;padding:8px 12px;background:#cb1f2f;color:#fff;border:none;border-radius:2px;font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.5);}
 .fsa-photo-btn:hover{background:#9e1824;}
