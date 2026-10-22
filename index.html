@@ -1382,7 +1382,6 @@ body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;backgroun
     </div>
 
   </div>
-</section>
 
 <div class="campus-map-wrap">
   <div class="campus-map-frame" style="position:relative;">
@@ -1429,6 +1428,7 @@ body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;backgroun
     </div>
   </div>
 </div>
+</section>
 
 <script>
 const CAMPUSES = [
@@ -2476,8 +2476,9 @@ function toggleMobileMenu(el){const item=el.parentElement;const open=item.classL
 /* 느린 섹션 전환감: 섹션 라벨 가로선 */
 .sec-label.rv{transition-delay:0s}.sec-title.rv,.sec-title-ko.rv{transition-delay:.12s}
 /* ═══ 스크롤 스냅: 앞 5화면만 페이지 단위, 이후 자유 ═══ */
-html{scroll-snap-type:y proximity;}
-.hero,.features-sec,.campus-sec,.page-combo,.feed-sec{scroll-snap-align:start;scroll-snap-stop:always;}
+html.snap{scroll-snap-type:y mandatory;}
+html.snap .hero,html.snap .features-sec,html.snap .campus-sec,html.snap .page-combo,html.snap .feed-sec{scroll-snap-align:start;scroll-snap-stop:always;}
+html{scroll-behavior:smooth;}
 .features-sec,.campus-sec,.page-combo,.feed-sec{min-height:100vh;box-sizing:border-box;}
 .cta-sec{scroll-snap-align:none;}
 /* 합격 과정 + 사진: 한 화면에 압축 */
@@ -2495,12 +2496,12 @@ html{scroll-snap-type:y proximity;}
 .page-combo .photo-cap-en{font-size:clamp(22px,2.4vw,36px);}
 .page-combo .photo-cap-ko{font-size:12px;margin-top:6px;}
 /* 캠퍼스: 제목+지도를 한 화면에 */
-.campus-sec{padding-top:72px!important;display:flex;flex-direction:column;}
-.campus-sec .sec-title{font-size:clamp(28px,3.4vw,44px);}
-.campus-sec .sec-title-ko{font-size:clamp(18px,1.8vw,24px);}
-.campus-sec .red-rule{margin:10px 0 22px;}
-.campus-sec .campus-map-wrap{height:auto;flex:1;min-height:420px;}
-@media(max-width:768px){html{scroll-snap-type:none;}.page-combo .photo-sec{grid-template-columns:1fr;}.page-combo .process-sec{padding:56px 24px 24px;}}
+.campus-sec{padding:72px 0 0!important;display:flex;flex-direction:column;}
+.campus-sec .campus-head{padding:0 64px 22px;}
+.campus-sec .sec-title-ko{font-size:clamp(24px,2.6vw,36px);}
+.campus-sec .campus-map-wrap{height:auto;flex:1;min-height:0;}
+@media(max-width:768px){.campus-sec .campus-head{padding:0 24px 16px;}}
+@media(max-width:768px){html.snap{scroll-snap-type:none;}.page-combo .photo-sec{grid-template-columns:1fr;}.page-combo .process-sec{padding:56px 24px 24px;}}
 /* 사진 변경 버튼 (수정 모드) */
 .fsa-photo-btn{display:none;position:absolute;top:14px;right:14px;z-index:5;align-items:center;gap:6px;padding:8px 12px;background:#cb1f2f;color:#fff;border:none;border-radius:2px;font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.5);}
 .fsa-photo-btn:hover{background:#9e1824;}
@@ -2605,6 +2606,12 @@ html{scroll-snap-type:y proximity;}
       requestAnimationFrame(loop);
     })();
   }
+  /* 앞 5화면 페이지 스냅, 이후 자유 스크롤 */
+  const feedSec=document.querySelector('.feed-sec'); const docEl=document.documentElement;
+  if(!window.matchMedia('(max-width:768px)').matches) docEl.classList.add('snap');
+  function updateSnap(){ if(!feedSec) return; const y=window.scrollY||0, limit=feedSec.offsetTop+10;
+    if(y>limit){ docEl.classList.remove('snap'); } else if(!window.matchMedia('(max-width:768px)').matches){ docEl.classList.add('snap'); } }
+  window.addEventListener('scroll',updateSnap,{passive:true}); updateSnap();
   function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(frame);} }
   window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',onScroll); frame();
 })();
