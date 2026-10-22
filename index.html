@@ -2515,9 +2515,11 @@ html{scroll-behavior:smooth;}
 @media(max-width:768px){.campus-sec .campus-head{padding:0 24px 16px;}}
 @media(max-width:768px){html.snap{scroll-snap-type:none;}.page-combo .photo-sec{grid-template-columns:1fr;}.page-combo .process-sec{padding:56px 24px 24px;}}
 /* 리스트 호버 → 핀 강조 */
-.leaflet-marker-icon{transition:transform .25s ease,opacity .25s ease,filter .25s ease;transform-origin:50% 100%;}
+.leaflet-marker-icon{transition:opacity .25s ease;overflow:visible!important;}
+.leaflet-marker-icon svg{transition:transform .25s ease,filter .25s ease;transform-origin:50% 100%;overflow:visible;}
 .campus-map-wrap.pin-dim .leaflet-marker-icon:not(.pin-hl){opacity:.35;}
-.leaflet-marker-icon.pin-hl{transform:scale(1.55) translateY(-6px)!important;opacity:1!important;filter:drop-shadow(0 0 10px rgba(203,31,47,.95)) drop-shadow(0 6px 10px rgba(0,0,0,.7));animation:pinPulse 1s ease-in-out infinite;}
+.leaflet-marker-icon.pin-hl{opacity:1!important;}
+.leaflet-marker-icon.pin-hl svg{transform:scale(1.6) translateY(-4px);animation:pinPulse 1s ease-in-out infinite;}
 @keyframes pinPulse{0%,100%{filter:drop-shadow(0 0 6px rgba(203,31,47,.7)) drop-shadow(0 6px 10px rgba(0,0,0,.7))}50%{filter:drop-shadow(0 0 18px rgba(203,31,47,1)) drop-shadow(0 6px 10px rgba(0,0,0,.7))}}
 /* 사진 변경 버튼 (수정 모드) */
 .fsa-photo-btn{display:none;position:absolute;top:14px;right:14px;z-index:5;align-items:center;gap:6px;padding:8px 12px;background:#cb1f2f;color:#fff;border:none;border-radius:2px;font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.5);}
