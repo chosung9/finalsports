@@ -2524,7 +2524,7 @@ function toggleMobileMenu(el){const item=el.parentElement;const open=item.classL
 /* 느린 섹션 전환감: 섹션 라벨 가로선 */
 .sec-label.rv{transition-delay:0s}.sec-title.rv,.sec-title-ko.rv{transition-delay:.12s}
 /* ═══ 스크롤 스냅: 앞 5화면만 페이지 단위, 이후 자유 ═══ */
-html.snap{scroll-snap-type:y mandatory;}
+html.snap{scroll-snap-type:y mandatory!important;overflow-x:hidden;}
 html.snap .hero,html.snap .features-sec,html.snap .campus-sec,html.snap .page-combo,html.snap .feed-sec{scroll-snap-align:start;scroll-snap-stop:always;}
 html{scroll-behavior:smooth;}
 .features-sec,.campus-sec,.page-combo,.feed-sec{min-height:100vh;box-sizing:border-box;}
@@ -2574,7 +2574,8 @@ html{scroll-behavior:smooth;}
 .hstat .stat-burst i{position:absolute;left:0;top:0;width:5px;height:5px;border-radius:50%;background:var(--c,#cb1f2f);box-shadow:0 0 8px var(--c,#cb1f2f);animation:burst .7s ease-out forwards;transform:translate(-50%,-50%);}
 @keyframes burst{0%{opacity:1;transform:translate(-50%,-50%) translate(0,0) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) translate(var(--dx),var(--dy)) scale(.3)}}
 /* ═══════ LIGHT THEME (포스터 톤) 오버라이드 ═══════ */
-html,body{overflow-x:hidden!important;max-width:100vw;}
+body{overflow-x:clip;max-width:100vw;}
+html{overflow-x:hidden;}
 body{background:
   linear-gradient(115deg, rgba(15,27,61,.06) 0%, rgba(15,27,61,0) 35%),
   linear-gradient(295deg, rgba(203,31,47,.05) 0%, rgba(203,31,47,0) 30%),
