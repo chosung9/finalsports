@@ -1264,7 +1264,7 @@ body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;backgroun
     </div>
 
     <h1 class="hero-headline" data-cms="h_headline">
-      SAME SCORE.
+      <span class="ko" style="margin-top:0;">파이널체대입시</span>
       <span class="ko">같은 점수,<br><span class="red">다른 결과.</span></span>
     </h1>
 
@@ -1765,7 +1765,16 @@ function loadLeafletFallback() {
   const script = document.createElement("script");
   script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
   script.onload = () => {
-    const map = L.map("kakao-map").setView([36.5, 127.8], 7);
+    const map = L.map("kakao-map", { scrollWheelZoom: false }).setView([36.5, 127.8], 7);
+    /* 한반도(육지) 위에서만 휠 확대/축소 — 바다·외국 위에선 페이지 스크롤 */
+    const KR = L.latLngBounds([33.0, 125.8], [38.7, 129.7]);
+    const mapEl = document.getElementById("kakao-map");
+    mapEl.addEventListener("wheel", (e) => {
+      const ll = map.mouseEventToLatLng(e);
+      if (!KR.contains(ll)) return;                 /* 바다 → 그냥 페이지 스크롤 */
+      e.preventDefault();                           /* 육지 → 지도 줌 */
+      map.setZoomAround(map.mouseEventToContainerPoint(e), map.getZoom() + (e.deltaY < 0 ? 1 : -1), { animate: true });
+    }, { passive: false });
     L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
       attribution: "© Esri", maxZoom: 16
     }).addTo(map);
