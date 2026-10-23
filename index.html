@@ -1786,7 +1786,10 @@ function loadLeafletFallback() {
     CAMPUSES.forEach((c, i) => {
       const m = L.marker([c.lat, c.lng], { icon, riseOnHover: true })
         .addTo(map)
-        .bindPopup(`<div style="font-family:'Noto Sans KR',sans-serif;font-weight:600;font-size:13px;">${c.name}</div>`, {
+        .bindPopup((()=>{ const u=getInstaUrl(c.insta);
+          return `<div style="font-family:'Noto Sans KR',sans-serif;font-size:13px;min-width:120px;">
+            <div style="font-weight:700;margin-bottom:${u?'6px':'0'};">${c.name}</div>`+
+            (u?`<a href="${u}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#cb1f2f;text-decoration:none;border:1px solid #cb1f2f;padding:4px 9px;border-radius:2px;">📷 인스타그램 보기</a>`:'')+`</div>`; })(), {
           closeButton: false
         });
       m.on("click", () => {
@@ -2524,6 +2527,14 @@ html{scroll-behavior:smooth;}
 /* 사진 변경 버튼 (수정 모드) */
 .fsa-photo-btn{display:none;position:absolute;top:14px;right:14px;z-index:5;align-items:center;gap:6px;padding:8px 12px;background:#cb1f2f;color:#fff;border:none;border-radius:2px;font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.5);}
 .fsa-photo-btn:hover{background:#9e1824;}
+/* 히어로 숫자: 카운트업 + 팡 */
+.hstat{cursor:pointer;user-select:none;position:relative;}
+.hstat-n{display:inline-block;transition:transform .12s ease;}
+.hstat-n.pop{animation:statPop .55s cubic-bezier(.2,1.6,.4,1);}
+@keyframes statPop{0%{transform:scale(1)}35%{transform:scale(1.45);text-shadow:0 0 22px rgba(203,31,47,.95),0 0 44px rgba(203,31,47,.6)}100%{transform:scale(1);text-shadow:none}}
+.hstat .stat-burst{position:absolute;left:50%;top:38%;width:0;height:0;pointer-events:none;}
+.hstat .stat-burst i{position:absolute;left:0;top:0;width:5px;height:5px;border-radius:50%;background:var(--c,#cb1f2f);box-shadow:0 0 8px var(--c,#cb1f2f);animation:burst .7s ease-out forwards;transform:translate(-50%,-50%);}
+@keyframes burst{0%{opacity:1;transform:translate(-50%,-50%) translate(0,0) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) translate(var(--dx),var(--dy)) scale(.3)}}
 /* 입자 캔버스 */
 .hs-particles{position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:9990;pointer-events:none;display:block;}
 /* 스크롤 진행바 */
@@ -2631,6 +2642,27 @@ html{scroll-behavior:smooth;}
   function updateSnap(){ if(!feedSec) return; const y=window.scrollY||0, limit=feedSec.offsetTop+10;
     if(y>limit){ docEl.classList.remove('snap'); } else if(!window.matchMedia('(max-width:768px)').matches){ docEl.classList.add('snap'); } }
   window.addEventListener('scroll',updateSnap,{passive:true}); updateSnap();
+  /* 히어로 숫자 카운트업 + 팡 (클릭 시 반복) */
+  (function(){
+    const stats=document.querySelectorAll('.hero .hstat'); if(!stats.length) return;
+    const cols=['#cb1f2f','#ffffff','#ffcf7a','#ff6b78'];
+    function burst(el){ let b=el.querySelector('.stat-burst'); if(!b){ b=document.createElement('span'); b.className='stat-burst'; el.appendChild(b); }
+      b.innerHTML=''; for(let i=0;i<18;i++){ const s=document.createElement('i'); const a=Math.random()*6.28, d=40+Math.random()*60;
+        s.style.setProperty('--dx',(Math.cos(a)*d).toFixed(0)+'px'); s.style.setProperty('--dy',(Math.sin(a)*d-20).toFixed(0)+'px'); s.style.setProperty('--c',cols[i%cols.length]); s.style.animationDelay=(Math.random()*.08)+'s'; b.appendChild(s); } }
+    function pop(n){ n.classList.remove('pop'); void n.offsetWidth; n.classList.add('pop'); }
+    function run(el){ const n=el.querySelector('.hstat-n'); if(!n) return;
+      if(!n.dataset.final) n.dataset.final=n.textContent.trim();
+      const txt=n.dataset.final, m=txt.match(/^(\D*)(\d+)(.*)$/);
+      if(!m || /[가-힣]/.test(txt)){ pop(n); burst(el); return; }  /* 숫자만 있는 경우만 카운트, 한글 포함(선호도 1위 등)은 팡만 */
+      const target=parseInt(m[2],10), pre=m[1], post=m[3]; let t0=null; const dur=450+Math.min(250,target*4);
+      n.textContent=pre+'0'+post;
+      function step(ts){ if(!t0)t0=ts; const k=Math.min(1,(ts-t0)/dur); const e=1-Math.pow(1-k,3);
+        n.textContent=pre+Math.round(target*e)+post;
+        if(k<1) requestAnimationFrame(step); else { n.textContent=txt; pop(n); burst(el); } }
+      requestAnimationFrame(step); }
+    stats.forEach(el=>{ el.addEventListener('click',()=>run(el)); });
+    if(!reduce){ setTimeout(()=>stats.forEach((el,i)=>setTimeout(()=>run(el),i*220)),900); }
+  })();
   function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(frame);} }
   window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',onScroll); frame();
 })();
