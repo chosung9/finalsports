@@ -515,9 +515,9 @@ function getInstaUrl(v){if(!v)return null;return v.startsWith('http')?v:'https:/
 let campusMap=null, campusMarkers=[], activeRegion='전체', isAdmin=false, dragSrc=null;
 
 function initCampusMap(){
-  campusMap = L.map('campusMapDiv',{zoomControl:true}).setView([36.5,127.8],7);
+  campusMap = L.map('campusMapDiv', { maxZoom: 13, zoomControl:true}).setView([36.5,127.8],7);
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{
-    attribution:'© Esri',maxZoom:18
+    attribution:'© Esri',maxZoom:13
   }).addTo(campusMap);
   buildCampusMarkers();
   renderRegionTabs();
@@ -695,7 +695,7 @@ async function fsaSubmitCampusForm(){
   }
   buildCampusMarkers(); renderCampusList();
   if(window.fsaSaveCampusesShared) window.fsaSaveCampusesShared();
-  if(campusMap){ try{ campusMap.flyTo([lat,lng],14,{duration:0.7}); }catch(e){} }
+  if(campusMap){ try{ campusMap.flyTo([lat,lng], 13,{duration:0.7}); }catch(e){} }
   fsaCloseCampusForm();
   alert(cfMode==='edit' ? '수정되었습니다 ✓' : '"'+name+'" 추가되었습니다 ✓');
 }
@@ -928,7 +928,7 @@ window.fsaEditCampusAndSave = async function(idx){
   const newList = list.map((x,i)=> i===idx ? Object.assign({}, x, { name:name.trim(), region:region.trim(), addr:addr.trim(), tel:tel.trim(), insta:insta.replace('@','').trim(), lat:lat, lng:lng }) : x);
   if(window.fsaSetCampuses) window.fsaSetCampuses(newList);
   await saveCampuses();
-  if(window.fsaMapCtx && window.fsaMapCtx.map && window.fsaMapCtx.map.flyTo){ try{ window.fsaMapCtx.map.flyTo([lat,lng],14,{duration:0.7}); }catch(e){} }
+  if(window.fsaMapCtx && window.fsaMapCtx.map && window.fsaMapCtx.map.flyTo){ try{ window.fsaMapCtx.map.flyTo([lat,lng], 13,{duration:0.7}); }catch(e){} }
   toast('지점이 수정되었습니다 ✓');
 };
 function pickLocationOnMap(cb){
@@ -961,7 +961,7 @@ async function fsaFinishAddCampus(name,region,addr,tel,insta,lat,lng){
   const obj = { name:name.trim(), region:region.trim(), lat:lat, lng:lng, addr:addr.trim(), tel:tel.trim(), hours:'평일 08:30~17:30', photos:[], insta:insta.replace('@','').trim() };
   if(window.fsaAddCampus) window.fsaAddCampus(obj);
   await saveCampuses();
-  if(window.fsaMapCtx && window.fsaMapCtx.map && window.fsaMapCtx.map.flyTo){ try{ window.fsaMapCtx.map.flyTo([lat,lng],14,{duration:0.7}); }catch(e){} }
+  if(window.fsaMapCtx && window.fsaMapCtx.map && window.fsaMapCtx.map.flyTo){ try{ window.fsaMapCtx.map.flyTo([lat,lng], 13,{duration:0.7}); }catch(e){} }
   toast('지점이 추가되었습니다 ✓');
 }
 function ensureCampusAddBtn(show){

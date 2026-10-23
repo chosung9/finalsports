@@ -1701,7 +1701,7 @@ function selectCampus(i, iw) {
 
   // 지도 이동
   naverMap.panTo(new naver.maps.LatLng(CAMPUSES[i].lat, CAMPUSES[i].lng));
-  naverMap.setZoom(14, true);
+  naverMap.setZoom(13, true);
 
   // 인포윈도우 열기 (간단 말풍선)
   if (iw) {
@@ -1795,7 +1795,7 @@ function loadLeafletFallback() {
   const script = document.createElement("script");
   script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
   script.onload = () => {
-    const map = L.map("kakao-map", { scrollWheelZoom: false }).setView([36.5, 127.8], 7);
+    const map = L.map("kakao-map", { maxZoom: 13,  scrollWheelZoom: false }).setView([36.5, 127.8], 7);
     /* 한반도(육지) 위에서만 휠 확대/축소 — 바다·외국 위에선 페이지 스크롤 */
     const KR = L.latLngBounds([33.0, 125.8], [38.7, 129.7]);
     const mapEl = document.getElementById("kakao-map");
@@ -1806,7 +1806,7 @@ function loadLeafletFallback() {
       map.setZoomAround(map.mouseEventToContainerPoint(e), map.getZoom() + (e.deltaY < 0 ? 1 : -1), { animate: true });
     }, { passive: false });
     L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}", {
-      attribution: "© Esri", maxZoom: 18
+      attribution: "© Esri", maxZoom: 13
     }).addTo(map);
 
     const icon = L.divIcon({
@@ -1831,7 +1831,7 @@ function loadLeafletFallback() {
           closeButton: false
         });
       m.on("click", () => {
-        map.flyTo([c.lat, c.lng], 14, { duration: 0.7 });
+        map.flyTo([c.lat, c.lng], 13, { duration: 0.7 });
         m.openPopup();
         document.querySelectorAll(".campus-list-item").forEach((el, j) => el.classList.toggle("active", j === i));
         const el = document.querySelectorAll(".campus-list-item")[i];
@@ -2329,7 +2329,7 @@ window.fsaEditCampusAndSave = async function(idx){
   const newList = list.map((x,i)=> i===idx ? Object.assign({}, x, { name:name.trim(), region:region.trim(), addr:addr.trim(), tel:tel.trim(), insta:insta.replace('@','').trim(), lat:lat, lng:lng }) : x);
   if(window.fsaSetCampuses) window.fsaSetCampuses(newList);
   await saveCampuses();
-  if(window.fsaMapCtx && window.fsaMapCtx.map && window.fsaMapCtx.map.flyTo){ try{ window.fsaMapCtx.map.flyTo([lat,lng],14,{duration:0.7}); }catch(e){} }
+  if(window.fsaMapCtx && window.fsaMapCtx.map && window.fsaMapCtx.map.flyTo){ try{ window.fsaMapCtx.map.flyTo([lat,lng], 13,{duration:0.7}); }catch(e){} }
   toast('지점이 수정되었습니다 ✓');
 };
 function pickLocationOnMap(cb){
@@ -2362,7 +2362,7 @@ async function fsaFinishAddCampus(name,region,addr,tel,insta,lat,lng){
   const obj = { name:name.trim(), region:region.trim(), lat:lat, lng:lng, addr:addr.trim(), tel:tel.trim(), hours:'평일 08:30~17:30', photos:[], insta:insta.replace('@','').trim() };
   if(window.fsaAddCampus) window.fsaAddCampus(obj);
   await saveCampuses();
-  if(window.fsaMapCtx && window.fsaMapCtx.map && window.fsaMapCtx.map.flyTo){ try{ window.fsaMapCtx.map.flyTo([lat,lng],14,{duration:0.7}); }catch(e){} }
+  if(window.fsaMapCtx && window.fsaMapCtx.map && window.fsaMapCtx.map.flyTo){ try{ window.fsaMapCtx.map.flyTo([lat,lng], 13,{duration:0.7}); }catch(e){} }
   toast('지점이 추가되었습니다 ✓');
 }
 function ensureCampusAddBtn(show){
