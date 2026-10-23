@@ -578,6 +578,16 @@ footer p,footer li,footer td,footer .desc,footer .sub,footer .meta,.cta-sec p,.c
 .tl-item:hover .tl-year,.timeline-item:hover .tl-year{color:var(--red)!important;transform:scale(1.05);}
 .modal-close:hover,.cdp-close:hover{background:var(--red)!important;color:#fff!important;}
 </style>
+
+<style id="heroCompact">
+.page-hero{padding:104px 64px 20px!important;}
+.page-hero .breadcrumb{margin-bottom:6px!important;}
+.page-hero .page-title{font-size:clamp(30px,3.4vw,44px)!important;margin-bottom:0!important;}
+.page-hero .page-title-ko{font-size:clamp(14px,1.4vw,18px)!important;}
+.page-hero-bg{font-size:120px!important;bottom:-20px!important;}
+@media(max-width:768px){.page-hero{padding:96px 20px 24px!important;}.page-hero .page-title{font-size:clamp(30px,8vw,44px)!important;}}
+.sub-tabs + .sec{padding-top:36px!important;}
+</style>
 </head><body>
 <nav class="nav">
   <a href="index.html" class="nav-logo">
@@ -1155,5 +1165,36 @@ applyContent(); applyCampuses(); applyRegions(); countVisit();
 function toggleDrawer(){const d=document.getElementById('mobileDrawer'),b=document.getElementById('hamburgerBtn');if(!d||!b)return;if(d.classList.contains('open')){d.classList.remove('open');b.classList.remove('open');document.body.style.overflow='';}else{d.classList.add('open');b.classList.add('open');document.body.style.overflow='hidden';}}
 function closeDrawer(){const d=document.getElementById('mobileDrawer'),b=document.getElementById('hamburgerBtn');if(d)d.classList.remove('open');if(b)b.classList.remove('open');document.body.style.overflow='';}
 function toggleMobileMenu(el){const item=el.parentElement;const open=item.classList.contains('open');document.querySelectorAll('.mobile-menu-item').forEach(i=>i.classList.remove('open'));if(!open)item.classList.add('open');}
+</script>
+
+<!-- 마우스 커서 반짝이 (메인과 동일) -->
+<style>.hs-cursor-fx{position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:9990;pointer-events:none;display:block;}</style>
+<canvas class="hs-cursor-fx" id="hsCursorFx" aria-hidden="true"></canvas>
+<script>
+(function(){
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cv=document.getElementById('hsCursorFx'); if(!cv||reduce||!window.matchMedia('(hover:hover)').matches) return;
+  const ctx=cv.getContext('2d'); let W,H;
+  function size(){ W=cv.width=window.innerWidth; H=cv.height=window.innerHeight; } size(); window.addEventListener('resize',size);
+  const S=[]; let cx=-999,cy=-999,gx=-999,gy=-999,lastX=0,lastY=0,on=false;
+  const cols=['203,31,47','255,205,120','255,255,255','255,120,130'];
+  function spawn(x,y,n){ for(let i=0;i<n;i++){ const a=Math.random()*6.28,sp=Math.random()*1.6+.3;
+    S.push({x:x,y:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-.6,r:Math.random()*2+.8,life:1,dec:Math.random()*.02+.012,c:cols[(Math.random()*cols.length)|0],star:Math.random()<.35}); } }
+  document.addEventListener('mousemove',e=>{ cx=e.clientX; cy=e.clientY; on=true;
+    const d=Math.hypot(cx-lastX,cy-lastY); if(d>6){ spawn(cx,cy,Math.min(6,1+(d/10)|0)); lastX=cx; lastY=cy; } },{passive:true});
+  document.addEventListener('mouseleave',()=>{ on=false; });
+  function star(x,y,r){ ctx.beginPath(); for(let i=0;i<8;i++){ const rr=i%2?r*.38:r,a=i*Math.PI/4; ctx.lineTo(x+Math.cos(a)*rr,y+Math.sin(a)*rr);} ctx.closePath(); ctx.fill(); }
+  (function loop(){
+    ctx.clearRect(0,0,W,H);
+    if(on){ gx+=(cx-gx)*.18; gy+=(cy-gy)*.18;
+      const g=ctx.createRadialGradient(gx,gy,0,gx,gy,90); g.addColorStop(0,'rgba(203,31,47,.28)'); g.addColorStop(.5,'rgba(203,31,47,.08)'); g.addColorStop(1,'rgba(203,31,47,0)');
+      ctx.shadowBlur=0; ctx.fillStyle=g; ctx.beginPath(); ctx.arc(gx,gy,90,0,6.28); ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,.9)'; ctx.shadowColor='#fff'; ctx.shadowBlur=12; ctx.beginPath(); ctx.arc(gx,gy,2.2,0,6.28); ctx.fill(); }
+    for(let i=S.length-1;i>=0;i--){ const s=S[i]; s.x+=s.vx; s.y+=s.vy; s.vy+=.02; s.vx*=.985; s.life-=s.dec; if(s.life<=0){ S.splice(i,1); continue; }
+      ctx.fillStyle='rgba('+s.c+','+s.life.toFixed(2)+')'; ctx.shadowColor='rgba('+s.c+',1)'; ctx.shadowBlur=10;
+      if(s.star) star(s.x,s.y,s.r*2.2*s.life); else { ctx.beginPath(); ctx.arc(s.x,s.y,s.r*s.life,0,6.28); ctx.fill(); } }
+    requestAnimationFrame(loop);
+  })();
+})();
 </script>
 </body></html>

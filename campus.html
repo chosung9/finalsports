@@ -380,6 +380,14 @@ footer p,footer li,footer td,footer .desc,footer .sub,footer .meta,.cta-sec p,.c
 .modal-close:hover,.cdp-close:hover{background:var(--red)!important;color:#fff!important;}
 .leaflet-tile-pane{filter:saturate(.35) contrast(1.05) brightness(1.02);}
 </style>
+
+<style id="listHoverScroll">
+/* 리스트: 자동 흐름 → 마우스 올리면 멈추고 휠로 이동 (메인과 동일) */
+.campus-list-scroll-wrap{overflow-y:auto!important;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.25) transparent;}
+.campus-list-scroll-wrap::-webkit-scrollbar{width:6px;}
+.campus-list-scroll-wrap::-webkit-scrollbar-thumb{background:rgba(255,255,255,.25);border-radius:3px;}
+.campus-list-scroll-wrap:hover .campus-list-inner{animation-play-state:paused!important;}
+</style>
 </head>
 <body>
 <nav class="nav">
@@ -488,12 +496,12 @@ const CAMPUSES = [
   {name:"송파 캠퍼스",  region:"서울", lat:37.5022, lng:127.1123, addr:"서울시 송파구 송파동 20-9 천마빌딩",                 tel:"010-6339-1339", insta:"final_songpa"},
   {name:"구리 캠퍼스",  region:"경기", lat:37.5953, lng:127.1298, addr:"경기도 구리시 검배로 64 지층",                       tel:"010-9176-4121", insta:"final_guri"},
   {name:"동탄 캠퍼스",  region:"경기", lat:37.2002, lng:127.0784, addr:"경기도 화성시 메타폴리스로54 파라곤2 207호",          tel:"010-4202-9990", insta:"final_dongtan"},
-  {name:"분당 캠퍼스",  region:"경기", lat:37.3860, lng:127.1245, addr:"경기도 성남시 분당구 수내로 201 삼부APT 상가동 B1",   tel:"010-8777-9641", insta:"final_bundang"},
+  {name:"분당 캠퍼스",  region:"경기", lat:37.3780, lng:127.1180, addr:"경기도 성남시 분당구 수내로 201 삼부APT 상가동 B1",   tel:"010-8777-9641", insta:"final_bundang"},
   {name:"수원 캠퍼스",  region:"경기", lat:37.2890, lng:127.0090, addr:"경기도 수원시 장안구 영화동 390-19 1층",              tel:"010-9460-9029", insta:"final_suwon"},
   {name:"수지 캠퍼스",  region:"경기", lat:37.3219, lng:127.0976, addr:"경기도 용인시 수지구 정평로120 한국아파트 상가동 B1",  tel:"010-9229-8864", insta:"final_suji"},
   {name:"안양 캠퍼스",  region:"경기", lat:37.3943, lng:126.9568, addr:"경기도 안양시 동안구 평촌대로 107 B101",              tel:"010-4413-5448", insta:"final_anyang"},
   {name:"영통 캠퍼스",  region:"경기", lat:37.2511, lng:127.0660, addr:"경기도 수원시 영통구 중부대로480 퍼시픽콘트롤즈 6층", tel:"010-8239-7479", insta:"final_yeongtong"},
-  {name:"용인 캠퍼스",  region:"경기", lat:37.2413, lng:127.1775, addr:"경기도 용인시 기흥구 언동로87 제이제이클랜 3층",      tel:"010-9229-8864", insta:"final_yongin"},
+  {name:"용인 캠퍼스",  region:"경기", lat:37.3060, lng:127.1260, addr:"경기도 용인시 기흥구 동백죽전대로175번길 4-1",      tel:"010-9229-8864", insta:"final_yongin"},
   {name:"일산 캠퍼스",  region:"경기", lat:37.6576, lng:126.7720, addr:"경기도 고양시 일산서구 중앙로 1371 뉴서울프라자 B1", tel:"010-7192-0391", insta:"final_ilsan"},
   {name:"평택 캠퍼스",  region:"경기", lat:36.9921, lng:127.1128, addr:"경기도 평택시 평택4로 52 동아빌딩 지하1층",           tel:"010-2321-6971", insta:"final_pyeongtaek"},
   {name:"하남미사 캠퍼스",region:"경기",lat:37.5447, lng:127.2048, addr:"경기도 하남시 신평로168번길 80",                    tel:"010-6533-1712", insta:"final_hanam_misa"},
@@ -515,7 +523,16 @@ function getInstaUrl(v){if(!v)return null;return v.startsWith('http')?v:'https:/
 let campusMap=null, campusMarkers=[], activeRegion='전체', isAdmin=false, dragSrc=null;
 
 function initCampusMap(){
-  campusMap = L.map('campusMapDiv', { maxZoom: 13, zoomControl:true}).setView([36.5,127.8],7);
+  campusMap = L.map('campusMapDiv', { maxZoom: 13, scrollWheelZoom:false, zoomControl:true}).setView([36.5,127.8],7);
+  (function(){ /* 한반도 위에서만 휠 확대/축소 */
+    const KR = L.latLngBounds([33.0,125.8],[38.7,129.7]);
+    document.getElementById('campusMapDiv').addEventListener('wheel', (e)=>{
+      const ll = campusMap.mouseEventToLatLng(e);
+      if(!KR.contains(ll)) return;
+      e.preventDefault();
+      campusMap.setZoomAround(campusMap.mouseEventToContainerPoint(e), campusMap.getZoom() + (e.deltaY<0?1:-1), {animate:true});
+    }, {passive:false});
+  })();
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{
     attribution:'© Esri',maxZoom:13
   }).addTo(campusMap);
@@ -1062,6 +1079,37 @@ async function saveEdits(){
 let tt; function toast(msg){ const el=document.getElementById('fsaToast'); el.textContent=msg; el.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=> el.classList.remove('show'),2800); }
 
 applyContent(); applyCampuses(); applyRegions(); countVisit();
+</script>
+
+<!-- 마우스 커서 반짝이 (메인과 동일) -->
+<style>.hs-cursor-fx{position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:9990;pointer-events:none;display:block;}</style>
+<canvas class="hs-cursor-fx" id="hsCursorFx" aria-hidden="true"></canvas>
+<script>
+(function(){
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cv=document.getElementById('hsCursorFx'); if(!cv||reduce||!window.matchMedia('(hover:hover)').matches) return;
+  const ctx=cv.getContext('2d'); let W,H;
+  function size(){ W=cv.width=window.innerWidth; H=cv.height=window.innerHeight; } size(); window.addEventListener('resize',size);
+  const S=[]; let cx=-999,cy=-999,gx=-999,gy=-999,lastX=0,lastY=0,on=false;
+  const cols=['203,31,47','255,205,120','255,255,255','255,120,130'];
+  function spawn(x,y,n){ for(let i=0;i<n;i++){ const a=Math.random()*6.28,sp=Math.random()*1.6+.3;
+    S.push({x:x,y:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-.6,r:Math.random()*2+.8,life:1,dec:Math.random()*.02+.012,c:cols[(Math.random()*cols.length)|0],star:Math.random()<.35}); } }
+  document.addEventListener('mousemove',e=>{ cx=e.clientX; cy=e.clientY; on=true;
+    const d=Math.hypot(cx-lastX,cy-lastY); if(d>6){ spawn(cx,cy,Math.min(6,1+(d/10)|0)); lastX=cx; lastY=cy; } },{passive:true});
+  document.addEventListener('mouseleave',()=>{ on=false; });
+  function star(x,y,r){ ctx.beginPath(); for(let i=0;i<8;i++){ const rr=i%2?r*.38:r,a=i*Math.PI/4; ctx.lineTo(x+Math.cos(a)*rr,y+Math.sin(a)*rr);} ctx.closePath(); ctx.fill(); }
+  (function loop(){
+    ctx.clearRect(0,0,W,H);
+    if(on){ gx+=(cx-gx)*.18; gy+=(cy-gy)*.18;
+      const g=ctx.createRadialGradient(gx,gy,0,gx,gy,90); g.addColorStop(0,'rgba(203,31,47,.28)'); g.addColorStop(.5,'rgba(203,31,47,.08)'); g.addColorStop(1,'rgba(203,31,47,0)');
+      ctx.shadowBlur=0; ctx.fillStyle=g; ctx.beginPath(); ctx.arc(gx,gy,90,0,6.28); ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,.9)'; ctx.shadowColor='#fff'; ctx.shadowBlur=12; ctx.beginPath(); ctx.arc(gx,gy,2.2,0,6.28); ctx.fill(); }
+    for(let i=S.length-1;i>=0;i--){ const s=S[i]; s.x+=s.vx; s.y+=s.vy; s.vy+=.02; s.vx*=.985; s.life-=s.dec; if(s.life<=0){ S.splice(i,1); continue; }
+      ctx.fillStyle='rgba('+s.c+','+s.life.toFixed(2)+')'; ctx.shadowColor='rgba('+s.c+',1)'; ctx.shadowBlur=10;
+      if(s.star) star(s.x,s.y,s.r*2.2*s.life); else { ctx.beginPath(); ctx.arc(s.x,s.y,s.r*s.life,0,6.28); ctx.fill(); } }
+    requestAnimationFrame(loop);
+  })();
+})();
 </script>
 </body>
 </html>
