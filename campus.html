@@ -360,6 +360,25 @@ strong[style*="color:#fff"],strong[style*="color: #fff"],span[style*="color:#fff
 .clph-count{color:#ff3b4a!important;}
 .clph-sub{color:rgba(255,255,255,.6)!important;}
 .campus-map-frame{background:#e9ecf2!important;}
+
+/* 푸터 링크/소셜 — 네이비 위 흰 글자 */
+footer a,.footer a,.site-footer a,.cta-sec a,footer small,.footer small,.footer-links a,.footer-sns a,.footer-social a,.footer-brand-wrap small{color:rgba(255,255,255,.72)!important;}
+footer a:hover,.footer a:hover,.cta-sec a:hover{color:#ff3b4a!important;}
+footer p,footer li,footer td,footer .desc,footer .sub,footer .meta,.cta-sec p,.cta-sec li{color:rgba(255,255,255,.72)!important;}
+
+/* ═══ 호버 반응 (포스터 톤) ═══ */
+.intro-card,.ai-feat,.fi-card,.feat-card,.feed-item,.campus-card,.process-step,.tl-item,.timeline-item,.value-item,.gallery-item,.recruit-list-item,.benefit-card,.info-card,.grid-item{transition:transform .25s ease,box-shadow .25s ease,background .25s ease,border-color .25s ease;position:relative;}
+.intro-card:hover,.ai-feat:hover,.fi-card:hover,.feed-item:hover,.campus-card:hover,.process-step:hover,.value-item:hover,.gallery-item:hover,.benefit-card:hover,.info-card:hover,.grid-item:hover{background:#fff!important;transform:translateY(-4px);box-shadow:0 16px 36px rgba(15,27,61,.14),inset 0 3px 0 var(--red)!important;}
+.intro-card:hover *,.ai-feat:hover *,.fi-card:hover *,.feed-item:hover *,.campus-card:hover *,.process-step:hover *,.value-item:hover *,.benefit-card:hover *,.info-card:hover *,.grid-item:hover *{color:var(--navy);}
+.intro-card:hover .intro-card-num,.ai-feat:hover .ai-feat-num,.fi-card:hover .fi-num,.intro-card:hover .intro-card-title,.ai-feat:hover .ai-feat-title,.fi-card:hover .fi-title,.process-step:hover .p-title,.feed-item:hover .feed-title{color:var(--red)!important;}
+.ai-feat:hover .ai-feat-desc,.intro-card:hover .intro-card-desc,.fi-card:hover .fi-desc,.process-step:hover .p-desc{color:rgba(15,27,61,.72)!important;}
+.features-sec .feat-card:hover{background:rgba(203,31,47,.04)!important;transform:none;box-shadow:none!important;padding-left:12px;}
+.features-sec .feat-card:hover .feat-name{color:var(--red)!important;}
+.numbers-band .num-item:hover{background:rgba(255,255,255,.06)!important;}
+.recruit-list-item:hover,.campus-item:hover{background:rgba(255,255,255,.08)!important;}
+.tl-item:hover .tl-year,.timeline-item:hover .tl-year{color:var(--red)!important;transform:scale(1.05);}
+.modal-close:hover,.cdp-close:hover{background:var(--red)!important;color:#fff!important;}
+.leaflet-tile-pane{filter:saturate(.35) contrast(1.05) brightness(1.02);}
 </style>
 </head>
 <body>
@@ -452,6 +471,14 @@ strong[style*="color:#fff"],strong[style*="color: #fff"],span[style*="color:#fff
 </footer>
 
 <script>
+
+/* 타일 폴백: 밝은 지도 타일이 없으면 어두운 Esri 타일로 자동 교체 */
+(function(){ if(!window.L) return; const DARK='https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}';
+  const orig=L.TileLayer.prototype.initialize; L.TileLayer.include({ _fsaErr:0 });
+  L.Map.addInitHook(function(){ this.on('layeradd',e=>{ const l=e.layer; if(!(l instanceof L.TileLayer)||!l._url||l._url.indexOf('World_Street_Map')<0) return;
+    l.on('tileerror',()=>{ l._fsaErr=(l._fsaErr||0)+1; if(l._fsaErr>=6 && !l._fsaSwapped){ l._fsaSwapped=true; l.setUrl(DARK); document.querySelectorAll('.leaflet-tile-pane').forEach(p=>p.style.filter='none'); } }); }); });
+})();
+
 const CAMPUSES = [
   {name:"관악 캠퍼스",  region:"서울", lat:37.4784, lng:126.9294, addr:"서울시 관악구 난곡로 63가길 60 로얄빌딩 지하1층",    tel:"010-7104-0794", insta:"final_gwanak"},
   {name:"광진 캠퍼스",  region:"서울", lat:37.5616, lng:127.0869, addr:"서울시 광진구 면목로 59 경원타운 B1/B2",             tel:"010-9945-0726", insta:"final_gwangjin"},
@@ -489,10 +516,9 @@ let campusMap=null, campusMarkers=[], activeRegion='전체', isAdmin=false, drag
 
 function initCampusMap(){
   campusMap = L.map('campusMapDiv',{zoomControl:true}).setView([36.5,127.8],7);
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',{
-    attribution:'© Esri',maxZoom:16
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{
+    attribution:'© Esri',maxZoom:18
   }).addTo(campusMap);
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}',{maxZoom:16}).addTo(campusMap); // 도시명·도로 라벨
   buildCampusMarkers();
   renderRegionTabs();
   renderCampusList();

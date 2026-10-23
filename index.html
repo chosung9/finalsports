@@ -1119,7 +1119,26 @@ body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;backgroun
 #fsaToast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(20px);background:#cb1f2f;color:#fff;padding:11px 22px;border-radius:2px;font-size:13px;font-weight:600;z-index:4000;opacity:0;pointer-events:none;transition:all .3s;letter-spacing:.3px;box-shadow:0 8px 30px rgba(0,0,0,.5);max-width:90vw;text-align:center;font-family:'Noto Sans KR',sans-serif;}
 #fsaToast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
-<style>.leaflet-marker-icon svg{filter:drop-shadow(0 2px 3px rgba(0,0,0,.75));}</style>
+<style>.leaflet-marker-icon svg{filter:drop-shadow(0 2px 3px rgba(0,0,0,.75));}
+/* 푸터 링크/소셜 — 네이비 위 흰 글자 */
+footer a,.footer a,.site-footer a,.cta-sec a,footer small,.footer small,.footer-links a,.footer-sns a,.footer-social a,.footer-brand-wrap small{color:rgba(255,255,255,.72)!important;}
+footer a:hover,.footer a:hover,.cta-sec a:hover{color:#ff3b4a!important;}
+footer p,footer li,footer td,footer .desc,footer .sub,footer .meta,.cta-sec p,.cta-sec li{color:rgba(255,255,255,.72)!important;}
+
+/* ═══ 호버 반응 (포스터 톤) ═══ */
+.intro-card,.ai-feat,.fi-card,.feat-card,.feed-item,.campus-card,.process-step,.tl-item,.timeline-item,.value-item,.gallery-item,.recruit-list-item,.benefit-card,.info-card,.grid-item{transition:transform .25s ease,box-shadow .25s ease,background .25s ease,border-color .25s ease;position:relative;}
+.intro-card:hover,.ai-feat:hover,.fi-card:hover,.feed-item:hover,.campus-card:hover,.process-step:hover,.value-item:hover,.gallery-item:hover,.benefit-card:hover,.info-card:hover,.grid-item:hover{background:#fff!important;transform:translateY(-4px);box-shadow:0 16px 36px rgba(15,27,61,.14),inset 0 3px 0 var(--red)!important;}
+.intro-card:hover *,.ai-feat:hover *,.fi-card:hover *,.feed-item:hover *,.campus-card:hover *,.process-step:hover *,.value-item:hover *,.benefit-card:hover *,.info-card:hover *,.grid-item:hover *{color:var(--navy);}
+.intro-card:hover .intro-card-num,.ai-feat:hover .ai-feat-num,.fi-card:hover .fi-num,.intro-card:hover .intro-card-title,.ai-feat:hover .ai-feat-title,.fi-card:hover .fi-title,.process-step:hover .p-title,.feed-item:hover .feed-title{color:var(--red)!important;}
+.ai-feat:hover .ai-feat-desc,.intro-card:hover .intro-card-desc,.fi-card:hover .fi-desc,.process-step:hover .p-desc{color:rgba(15,27,61,.72)!important;}
+.features-sec .feat-card:hover{background:rgba(203,31,47,.04)!important;transform:none;box-shadow:none!important;padding-left:12px;}
+.features-sec .feat-card:hover .feat-name{color:var(--red)!important;}
+.numbers-band .num-item:hover{background:rgba(255,255,255,.06)!important;}
+.recruit-list-item:hover,.campus-item:hover{background:rgba(255,255,255,.08)!important;}
+.tl-item:hover .tl-year,.timeline-item:hover .tl-year{color:var(--red)!important;transform:scale(1.05);}
+.modal-close:hover,.cdp-close:hover{background:var(--red)!important;color:#fff!important;}
+.leaflet-tile-pane{filter:saturate(.35) contrast(1.05) brightness(1.02);}
+</style>
 </head>
 <body>
 
@@ -1434,6 +1453,14 @@ body.fsa-edit [contenteditable="true"]:focus{outline:2px solid #cb1f2f;backgroun
 </section>
 
 <script>
+
+/* 타일 폴백: 밝은 지도 타일이 없으면 어두운 Esri 타일로 자동 교체 */
+(function(){ if(!window.L) return; const DARK='https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}';
+  const orig=L.TileLayer.prototype.initialize; L.TileLayer.include({ _fsaErr:0 });
+  L.Map.addInitHook(function(){ this.on('layeradd',e=>{ const l=e.layer; if(!(l instanceof L.TileLayer)||!l._url||l._url.indexOf('World_Street_Map')<0) return;
+    l.on('tileerror',()=>{ l._fsaErr=(l._fsaErr||0)+1; if(l._fsaErr>=6 && !l._fsaSwapped){ l._fsaSwapped=true; l.setUrl(DARK); document.querySelectorAll('.leaflet-tile-pane').forEach(p=>p.style.filter='none'); } }); }); });
+})();
+
 const CAMPUSES = [
   // ── 서울
   { name:"관악 캠퍼스",    region:"서울", lat:37.4784, lng:126.9294,
@@ -1778,10 +1805,9 @@ function loadLeafletFallback() {
       e.preventDefault();                           /* 육지 → 지도 줌 */
       map.setZoomAround(map.mouseEventToContainerPoint(e), map.getZoom() + (e.deltaY < 0 ? 1 : -1), { animate: true });
     }, { passive: false });
-    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
-      attribution: "© Esri", maxZoom: 16
+    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}", {
+      attribution: "© Esri", maxZoom: 18
     }).addTo(map);
-    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}", { maxZoom: 16 }).addTo(map); // 도시명·도로 라벨
 
     const icon = L.divIcon({
       className: "",
@@ -2548,6 +2574,7 @@ html{scroll-behavior:smooth;}
 .hstat .stat-burst i{position:absolute;left:0;top:0;width:5px;height:5px;border-radius:50%;background:var(--c,#cb1f2f);box-shadow:0 0 8px var(--c,#cb1f2f);animation:burst .7s ease-out forwards;transform:translate(-50%,-50%);}
 @keyframes burst{0%{opacity:1;transform:translate(-50%,-50%) translate(0,0) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) translate(var(--dx),var(--dy)) scale(.3)}}
 /* ═══════ LIGHT THEME (포스터 톤) 오버라이드 ═══════ */
+html,body{overflow-x:hidden!important;max-width:100vw;}
 body{background:
   linear-gradient(115deg, rgba(15,27,61,.06) 0%, rgba(15,27,61,0) 35%),
   linear-gradient(295deg, rgba(203,31,47,.05) 0%, rgba(203,31,47,0) 30%),
@@ -2573,10 +2600,9 @@ body{background:
 .hero .btn-primary{background:var(--red)!important;color:#fff!important;}
 .hero .btn-ghost{color:#fff!important;border-color:rgba(255,255,255,.5)!important;}
 .hero .hstat{border-color:rgba(255,255,255,.15)!important;background:rgba(10,15,35,.75)!important;}
-.hero .hero-stats{z-index:7!important;bottom:110px!important;}
+.hero .hero-stats{z-index:7!important;}
 /* 대각선 띠: 히어로 하단 */
-.hero::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:90px;z-index:6;pointer-events:none;
-  background:linear-gradient(170deg,transparent 0 46%,var(--red) 46% 52%,var(--navy) 52% 58%,#f4f5f8 58%);}
+
 /* 섹션 공통 */
 .sec-label{color:var(--red)!important;}
 .sec-title,.sec-title-ko,.ko-h2{color:var(--navy)!important;}

@@ -621,6 +621,24 @@ strong[style*="color:#fff"],strong[style*="color: #fff"],span[style*="color:#fff
 .map-popup .pop-region,.map-popup .pop-insta{color:var(--red)!important;}
 .admin-bar{background:rgba(203,31,47,.06)!important;}
 .campus-list-scroll-wrap::before,.campus-list-scroll-wrap::after{display:none!important;}
+
+/* 푸터 링크/소셜 — 네이비 위 흰 글자 */
+footer a,.footer a,.site-footer a,.cta-sec a,footer small,.footer small,.footer-links a,.footer-sns a,.footer-social a,.footer-brand-wrap small{color:rgba(255,255,255,.72)!important;}
+footer a:hover,.footer a:hover,.cta-sec a:hover{color:#ff3b4a!important;}
+footer p,footer li,footer td,footer .desc,footer .sub,footer .meta,.cta-sec p,.cta-sec li{color:rgba(255,255,255,.72)!important;}
+
+/* ═══ 호버 반응 (포스터 톤) ═══ */
+.intro-card,.ai-feat,.fi-card,.feat-card,.feed-item,.campus-card,.process-step,.tl-item,.timeline-item,.value-item,.gallery-item,.recruit-list-item,.benefit-card,.info-card,.grid-item{transition:transform .25s ease,box-shadow .25s ease,background .25s ease,border-color .25s ease;position:relative;}
+.intro-card:hover,.ai-feat:hover,.fi-card:hover,.feed-item:hover,.campus-card:hover,.process-step:hover,.value-item:hover,.gallery-item:hover,.benefit-card:hover,.info-card:hover,.grid-item:hover{background:#fff!important;transform:translateY(-4px);box-shadow:0 16px 36px rgba(15,27,61,.14),inset 0 3px 0 var(--red)!important;}
+.intro-card:hover *,.ai-feat:hover *,.fi-card:hover *,.feed-item:hover *,.campus-card:hover *,.process-step:hover *,.value-item:hover *,.benefit-card:hover *,.info-card:hover *,.grid-item:hover *{color:var(--navy);}
+.intro-card:hover .intro-card-num,.ai-feat:hover .ai-feat-num,.fi-card:hover .fi-num,.intro-card:hover .intro-card-title,.ai-feat:hover .ai-feat-title,.fi-card:hover .fi-title,.process-step:hover .p-title,.feed-item:hover .feed-title{color:var(--red)!important;}
+.ai-feat:hover .ai-feat-desc,.intro-card:hover .intro-card-desc,.fi-card:hover .fi-desc,.process-step:hover .p-desc{color:rgba(15,27,61,.72)!important;}
+.features-sec .feat-card:hover{background:rgba(203,31,47,.04)!important;transform:none;box-shadow:none!important;padding-left:12px;}
+.features-sec .feat-card:hover .feat-name{color:var(--red)!important;}
+.numbers-band .num-item:hover{background:rgba(255,255,255,.06)!important;}
+.recruit-list-item:hover,.campus-item:hover{background:rgba(255,255,255,.08)!important;}
+.tl-item:hover .tl-year,.timeline-item:hover .tl-year{color:var(--red)!important;transform:scale(1.05);}
+.modal-close:hover,.cdp-close:hover{background:var(--red)!important;color:#fff!important;}
 </style>
 </head>
 <body>
