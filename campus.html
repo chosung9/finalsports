@@ -639,7 +639,7 @@ function focusCampus(i){
   const pins=document.getElementById('kpins'),tip=document.getElementById('kTip'),box=document.getElementById('campusKorea');
   const proj=(lat,lng)=>[X[0]*lng+X[1]*lat+X[2],Y[0]*lng+Y[1]*lat+Y[2]];
   const pt=svg.createSVGPoint(); const provs=[...svg.querySelectorAll('.kprov')];
-  function classify(c){ const [x,y]=proj(c.lat,c.lng); if(c._kx===x&&c._ky===y&&c.prov) return; c._kx=x;c._ky=y; pt.x=x;pt.y=y;
+  function classify(c){ const [x,y]=proj(c.lat,c.lng); if(c._kx===x&&c._ky===y&&c.prov&&c._dx!=null) return; c._kx=x;c._ky=y; pt.x=x;pt.y=y;
     let hit=provs.find(p=>p.isPointInFill(pt));
     if(!hit){ let bd=1e9; for(const p of provs){ const r=p.getBBox(); const d=Math.hypot(x-(r.x+r.width/2),y-(r.y+r.height/2)); if(d<bd){bd=d;hit=p;} } }
     c.prov=hit.dataset.id; if(c.prov==='jeju'){ c._dx=JX(x); c._dy=JY(y); } else { c._dx=x; c._dy=y; } }
@@ -1031,7 +1031,7 @@ async function applyRegions(){
 async function saveCampuses(){
   const list = window.fsaGetCampuses ? window.fsaGetCampuses() : null;
   if(!list) return;
-  try{ await setDoc(campusesRef, { campuses: JSON.parse(JSON.stringify(list)) }, {merge:true}); }
+  try{ await setDoc(campusesRef, { campuses: JSON.parse(JSON.stringify(list,(k,v)=> (k==='prov'||k.startsWith('_'))?undefined:v)) }, {merge:true}); }
   catch(e){ toast('지점 저장 실패 — 권한 확인'); console.warn(e); }
 }
 window.fsaSaveCampusesShared = saveCampuses;
