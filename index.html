@@ -2427,7 +2427,7 @@ window.fsaEditCampusAndSave = async function(idx){
   const llIn = prompt('좌표 직접 입력 (선택) — 지도 위치가 틀릴 때만. 네이버지도 우클릭 → 좌표 복사\n예: 33.2525, 126.5620  (비우면 주소로 자동 검색)', ''); if(llIn===null) return;
   let lat=c.lat, lng=c.lng;
   const manual = llIn.trim().match(/^(-?\d+(?:\.\d+)?)\s*[, ]\s*(-?\d+(?:\.\d+)?)$/);
-  if(manual){ lat=parseFloat(manual[1]); lng=parseFloat(manual[2]); if(lat<lng){ const t=lat; lat=lng; lng=t; } }
+  if(manual){ lat=parseFloat(manual[1]); lng=parseFloat(manual[2]); if(lat>lng){ const t=lat; lat=lng; lng=t; }   /* 경도,위도 순으로 넣어도 자동 교정 */ }
   else if(addr.trim() && addr.trim() !== (c.addr||'').trim()){
     toast('주소로 위치를 다시 찾는 중...');
     try{
