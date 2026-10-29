@@ -640,9 +640,13 @@ function focusCampus(i){
   const pins=document.getElementById('kpins'),tip=document.getElementById('kTip'),box=document.getElementById('campusKorea');
   const proj=(lat,lng)=>[X[0]*lng+X[1]*lat+X[2],Y[0]*lng+Y[1]*lat+Y[2]];
   const pt=svg.createSVGPoint(); const provs=[...svg.querySelectorAll('.kprov')];
-  function classify(c){ const [x,y]=proj(c.lat,c.lng); if(c._kx===x&&c._ky===y&&c.prov&&c._dx!=null) return; c._kx=x;c._ky=y; pt.x=x;pt.y=y;
-    let hit=provs.find(p=>p.isPointInFill(pt));
-    if(!hit){ let bd=1e9; for(const p of provs){ const r=p.getBBox(); const d=Math.hypot(x-(r.x+r.width/2),y-(r.y+r.height/2)); if(d<bd){bd=d;hit=p;} } }
+  const BB0={"busan": [321.5, 382.2, 47.0, 39.2], "daegu": [280.8, 313.1, 39.3, 45.2], "daejeon": [178.1, 255.7, 27.8, 35.9], "gangwon": [161.5, 0.4, 216.5, 192.9], "gwangju": [123.6, 396.5, 33.5, 23.3], "gyeonggi": [66.4, 40.7, 165.3, 166.1], "incheon": [87.7, 118.9, 46.1, 33.7], "jeju": [73.7, 588.6, 76.8, 41.7], "north-chungcheong": [177.6, 166.6, 131.4, 145.6], "north-gyeongsang": [227.1, 127.5, 296.6, 237.1], "north-jeolla": [99.1, 292.3, 141.6, 100.9], "sejong": [166.7, 227.8, 21.4, 48.2], "seoul": [133.3, 111.5, 38.4, 30.7], "south-chungcheong": [69.1, 184.7, 145.6, 131.2], "south-gyeongsang": [210.8, 322.7, 151.1, 147.0], "south-jeolla": [0.4, 372.2, 229.8, 154.5], "ulsan": [340.9, 346.3, 45.2, 42.2]};   /* 원본 경계상자(인셋 이동 전) — 가장 가까운 지역 판정용 */
+  function classify(c){ const [x,y]=proj(c.lat,c.lng);   /* 저장된 캐시값은 신뢰하지 않고 매번 다시 계산 */
+    const rendered=svg.getClientRects().length>0;           /* 숨겨진 상태(관리자 모드 등)에선 결과를 캐시하지 않음 */
+    if(rendered){ c._kx=x;c._ky=y; } else { delete c._kx; delete c._ky; }
+    pt.x=x;pt.y=y;
+    let hit=rendered?provs.find(p=>p.isPointInFill(pt)):null;
+    if(!hit){ let bd=1e9,bid=null; for(const id in BB0){ const r=BB0[id]; const d=Math.hypot(x-(r[0]+r[2]/2),y-(r[1]+r[3]/2)); if(d<bd){bd=d;bid=id;} } hit=provs.find(p=>p.dataset.id===bid); }
     c.prov=hit.dataset.id; if(c.prov==='jeju'){ c._dx=JX(x); c._dy=JY(y); } else { c._dx=x; c._dy=y; } }
   const count=id=>CAMPUSES.filter(c=>c.prov===id).length;
   let sel=null,anim,cur=VB.split(' ').map(Number); const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
