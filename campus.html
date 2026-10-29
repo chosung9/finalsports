@@ -704,8 +704,8 @@ function renderCampusList(){
     inner.style.animation='none';
   }else{
     const items=filtered.map(c=>mk(c,false)).join('');
-    inner.innerHTML=items+items;
-    inner.style.animation='campusListUp '+(Math.max(20,filtered.length*2))+'s linear infinite';
+    if(filtered.length>6){ inner.innerHTML=items+items; inner.style.animation='campusListUp '+(Math.max(20,filtered.length*2))+'s linear infinite'; }
+    else { inner.innerHTML=items; inner.style.animation='none'; }
   }
   document.getElementById('campusCount').textContent=CAMPUSES.length;
   if(window.fsaKoreaSync) fsaKoreaSync();

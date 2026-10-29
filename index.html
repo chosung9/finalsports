@@ -1795,11 +1795,12 @@ function buildList(filterRegion) {
     </div>
   `; }).join("");
   // 두 배 복제로 끊김 없는 무한 스크롤
-  list.innerHTML = items + items;
+  const loop = filtered.length > 6;                 /* 항목이 적으면 복제·자동 흐름 없음 */
+  list.innerHTML = loop ? items + items : items;
   if (window.fsaKoreaSync) fsaKoreaSync();
-  // 속도 조정
   const duration = Math.max(20, filtered.length * 1.8);
   list.style.animationDuration = duration + 's';
+  list.style.animationName = loop ? '' : 'none';
 
   // 지역 탭 그리기
   const regions = ["전체","서울","경기","인천","강원","충청","전라","경남","경북","제주"];
