@@ -2415,12 +2415,15 @@ window.fsaEditCampusAndSave = async function(idx){
   if(!list || !list[idx]) return;
   const c = list[idx];
   const name = prompt('지점 이름', c.name||''); if(name===null) return;
-  const region = prompt('지역 — 서울 / 경기 / 강원 / 충청 / 전라 / 경남', c.region||''); if(region===null) return;
+  const region = prompt('지역 — 서울 / 경기 / 인천 / 강원 / 충청 / 전라 / 경남 / 경북 / 제주', c.region||''); if(region===null) return;
   const addr = prompt('지점 주소 (도로명 또는 지번 주소)', c.addr||''); if(addr===null) return;
   const tel = prompt('전화번호', c.tel||''); if(tel===null) return;
   const insta = prompt('인스타그램 아이디 (@ 빼고, 없으면 비움)', c.insta||''); if(insta===null) return;
+  const llIn = prompt('좌표 직접 입력 (선택) — 지도 위치가 틀릴 때만. 네이버지도 우클릭 → 좌표 복사\n예: 33.2525, 126.5620  (비우면 주소로 자동 검색)', ''); if(llIn===null) return;
   let lat=c.lat, lng=c.lng;
-  if(addr.trim() && addr.trim() !== (c.addr||'').trim()){
+  const manual = llIn.trim().match(/^(-?\d+(?:\.\d+)?)\s*[, ]\s*(-?\d+(?:\.\d+)?)$/);
+  if(manual){ lat=parseFloat(manual[1]); lng=parseFloat(manual[2]); if(lat<lng){ const t=lat; lat=lng; lng=t; } }
+  else if(addr.trim() && addr.trim() !== (c.addr||'').trim()){
     toast('주소로 위치를 다시 찾는 중...');
     try{
       const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q='+encodeURIComponent(addr+' 대한민국'));

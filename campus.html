@@ -492,6 +492,7 @@ footer p,footer li,footer td,footer .desc,footer .sub,footer .meta,.cta-sec p,.c
     </div>
     <div class="admin-bar">
       <button class="admin-add-btn" style="flex:1;padding:9px;font-size:12px;" onclick="fsaOpenCampusForm('add')">➕ 지점 추가</button>
+      <button class="admin-add-btn" style="flex:0 0 auto;padding:9px;font-size:12px;background:#fff;color:#0f1b3d;border:1px solid rgba(15,27,61,.3);" onclick="fsaCheckLocations()">📍 위치 점검</button>
       <button class="admin-add-btn" id="fsaBulkBtn" style="flex:1;padding:9px;font-size:12px;background:#0f1b3d;color:#fff;display:none;" onclick="fsaBulkImport()">📥 신규 캠퍼스 일괄 추가</button>
     </div>
     <div class="campus-list-scroll-wrap">
@@ -773,6 +774,7 @@ function fsaOpenCampusForm(mode, idx){
   document.getElementById('cfTitle').textContent = mode==='edit' ? '지점 수정' : '지점 추가';
   document.getElementById('cfName').value   = c ? (c.name||'')   : '';
   document.getElementById('cfRegion').value = c ? (c.region||'서울') : '서울';
+  document.getElementById('cfLatLng').value = '';
   document.getElementById('cfAddr').value   = c ? (c.addr||'')   : '';
   document.getElementById('cfTel').value    = c ? (c.tel||'')    : '';
   document.getElementById('cfInsta').value  = c ? (c.insta||'')  : '';
@@ -792,7 +794,9 @@ async function fsaSubmitCampusForm(){
   const btn = document.getElementById('cfSave');
   let lat = old ? old.lat : null, lng = old ? old.lng : null;
   const addrChanged = !old || (old.addr||'').trim() !== addr;
-  if(cfMode==='add' || addrChanged){
+  const manual = document.getElementById('cfLatLng').value.trim().match(/^(-?\d+(?:\.\d+)?)\s*[, ]\s*(-?\d+(?:\.\d+)?)$/);
+  if(manual){ lat=parseFloat(manual[1]); lng=parseFloat(manual[2]); if(lat<lng){ const t=lat; lat=lng; lng=t; } }   /* 좌표 직접 입력 우선 */
+  else if(cfMode==='add' || addrChanged){
     btn.textContent='위치 검색중...'; btn.disabled=true;
     try{
       const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q='+encodeURIComponent(addr+' 대한민국'));
@@ -840,6 +844,42 @@ async function fsaBulkImport(){
   btn.disabled=false; fsaBulkRefresh();
   alert(todo.length+'개 추가 완료 ✓'+(miss.length?'\n\n주소 검색이 안 돼 대략 위치로 넣은 곳(수정에서 주소 확인 필요):\n- '+miss.join('\n- '):''));
 }
+
+/* ── 위치 점검: 주소의 도시명과 좌표가 맞는지 대략 검사 ── */
+const FSA_CITY_BOX={ /* [latMin,latMax,lngMin,lngMax] */
+ '서울':[37.42,37.71,126.76,127.19],'인천':[37.36,37.62,126.55,126.82],'수원':[37.22,37.34,126.92,127.09],'용인':[37.16,37.37,127.03,127.32],'성남':[37.32,37.48,127.03,127.21],'분당':[37.33,37.42,127.07,127.16],
+ '고양':[37.59,37.73,126.70,126.97],'일산':[37.63,37.72,126.72,126.83],'화성':[37.04,37.31,126.68,127.16],'동탄':[37.17,37.24,127.05,127.14],'안양':[37.36,37.44,126.87,126.99],'구리':[37.56,37.64,127.10,127.17],
+ '하남':[37.48,37.59,127.14,127.26],'평택':[36.92,37.09,126.84,127.16],'부천':[37.47,37.54,126.75,126.83],'의정부':[37.70,37.78,127.01,127.10],'남양주':[37.55,37.75,127.10,127.35],'김포':[37.58,37.72,126.55,126.78],
+ '춘천':[37.79,37.96,127.63,127.82],'원주':[37.28,37.42,127.86,128.00],'청주':[36.54,36.73,127.36,127.57],'천안':[36.74,36.90,127.03,127.27],'대전':[36.24,36.46,127.28,127.52],'세종':[36.42,36.66,127.10,127.40],'공주':[36.38,36.52,127.02,127.20],'논산':[36.14,36.26,127.02,127.20],
+ '전주':[35.77,35.88,127.06,127.22],'익산':[35.89,36.01,126.88,127.06],'군산':[35.92,36.02,126.63,126.82],'광주':[35.07,35.26,126.73,126.97],'순천':[34.90,35.02,127.43,127.57],'목포':[34.77,34.85,126.34,126.46],'여수':[34.70,34.80,127.63,127.78],
+ '진주':[35.14,35.23,128.02,128.16],'마산':[35.15,35.26,128.52,128.62],'창원':[35.14,35.32,128.52,128.76],'김해':[35.19,35.30,128.78,128.95],'부산':[35.04,35.32,128.93,129.27],'울산':[35.44,35.66,129.18,129.46],
+ '대구':[35.77,35.93,128.43,128.76],'구미':[36.07,36.17,128.29,128.46],'포항':[35.95,36.10,129.30,129.45],'제주시':[33.44,33.56,126.38,126.68],'제주':[33.20,33.57,126.15,126.95],'서귀포':[33.22,33.31,126.42,126.66]
+};
+function fsaCheckLocations(){
+  const rows=[];
+  CAMPUSES.forEach((c,i)=>{
+    const addrStr=(c.addr||''); const nameStr=(c.name||'');
+    const pick=(t)=>{ const ks=Object.keys(FSA_CITY_BOX).filter(k=>t.includes(k)&&!(k==='서울'&&t.includes('뉴서울'))).sort((a,b)=>b.length-a.length); return ks.find(k=>k!=='제주')||ks[0]; };
+    const key=pick(addrStr)||pick(nameStr);
+    let status='⚪ 기준 없음(눈으로 확인)';
+    if(!(isFinite(c.lat)&&isFinite(c.lng))) status='🔴 좌표 없음';
+    else if(key){ const b=FSA_CITY_BOX[key]; const ok=c.lat>=b[0]&&c.lat<=b[1]&&c.lng>=b[2]&&c.lng<=b[3]; status= ok?'🟢 정상 ('+key+')':'🔴 '+key+' 범위 밖 — 확인 필요'; }
+    rows.push({i:i,name:c.name,status:status,bad:status.startsWith('🔴')});
+  });
+  rows.sort((a,b)=>(b.bad?1:0)-(a.bad?1:0));
+  const bad=rows.filter(r=>r.bad).length;
+  let ov=document.getElementById('fsaLocCheck'); if(ov) ov.remove();
+  ov=document.createElement('div'); ov.id='fsaLocCheck';
+  ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:5000;display:flex;align-items:center;justify-content:center;padding:20px;';
+  ov.innerHTML='<div style="background:#fff;color:#0f1b3d;max-width:560px;width:100%;max-height:85vh;overflow:auto;border-radius:3px;padding:20px 22px;font-family:\'Noto Sans KR\',sans-serif;">'+
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><b style="font-size:16px;">📍 위치 점검 결과 — 확인 필요 '+bad+'곳</b><button onclick="document.getElementById(\'fsaLocCheck\').remove()" style="border:none;background:none;font-size:18px;cursor:pointer;">✕</button></div>'+
+    '<div style="font-size:11px;color:#666;margin-bottom:12px;line-height:1.6;">주소에 적힌 도시 범위와 핀 좌표를 비교한 결과예요. 🔴은 "수정 → 좌표 직접 입력"으로 잡아주세요. 🟢이어도 시 안에서 수백 m 어긋날 수는 있어요.</div>'+
+    rows.map(r=>'<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #eee;font-size:13px;"><span><b>'+r.name+'</b><br><span style="font-size:11px;color:#555;">'+r.status+'</span></span>'+
+      '<button onclick="document.getElementById(\'fsaLocCheck\').remove();focusCampus('+r.i+');fsaOpenCampusForm(\'edit\','+r.i+')" style="border:1px solid #0f1b3d;background:#fff;padding:5px 10px;font-size:11px;cursor:pointer;border-radius:2px;">수정</button></div>').join('')+
+    '</div>';
+  ov.addEventListener('click',e=>{ if(e.target===ov) ov.remove(); });
+  document.body.appendChild(ov);
+}
 window.fsaGetCampuses=function(){return CAMPUSES;};
 window.fsaSetCampuses=function(list){if(Array.isArray(list)&&list.length){CAMPUSES.length=0;list.forEach(x=>CAMPUSES.push(x));fsaBulkRefresh();if(campusMap)buildCampusMarkers();if(document.getElementById('campusListInner'))renderCampusList();}};
 window.fsaCampusEditOn=function(){isAdmin=true;document.body.classList.add('admin-mode');renderCampusList();};
@@ -857,6 +897,8 @@ window.fsaCampusEditOff=function(){isAdmin=false;document.body.classList.remove(
       </select></div>
     <div class="cf-field"><label>상세주소</label><input type="text" id="cfAddr" placeholder="도로명 또는 지번 주소">
       <div class="cf-hint">저장하면 주소로 지도 위치를 자동으로 찾습니다.</div></div>
+    <div class="cf-field"><label>좌표 직접 입력 <span style="font-weight:400;opacity:.6">(선택)</span></label><input type="text" id="cfLatLng" placeholder="예: 33.2525, 126.5620  — 주소 검색 위치가 틀릴 때만">
+      <div class="cf-hint">네이버지도에서 위치 우클릭 → 좌표 복사해서 붙여넣으면 이 좌표가 우선 적용됩니다.</div></div>
     <div class="cf-field"><label>전화번호</label><input type="text" id="cfTel" placeholder="예: 010-1234-5678"></div>
     <div class="cf-field"><label>인스타그램 아이디</label><input type="text" id="cfInsta" placeholder="@ 없이 (예: final_bundang)">
       <div class="cf-hint">입력하면 팝업에 '인스타그램 보기' 버튼이 생깁니다.</div></div>
